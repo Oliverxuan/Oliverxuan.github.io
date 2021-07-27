@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2021/7 | Hexo</title>
+  <title>循环队列的实现 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2021/07/index.html">
+  <meta name="description" content="问题描述：设计你的循环队列实现。 循环队列是一种线性数据结构，其操作表现基于 FIFO（先进先出）原则并且队尾被连接在队首之后以形成一个循环。它也被称为“环形缓冲器”。 循环队列的一个好处是我们可以利用这个队列之前用过的空间。在一个普通队列里，一旦一个队列满了，我们就不能插入下一个元素，即使在队列前面仍有空间。但是使用循环队列，我们能使用这些空间去存储新的值。 你的实现应该支持如下操作： MyCi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="循环队列的实现">
+<meta property="og:url" content="http://example.com/2021/07/28/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="问题描述：设计你的循环队列实现。 循环队列是一种线性数据结构，其操作表现基于 FIFO（先进先出）原则并且队尾被连接在队首之后以形成一个循环。它也被称为“环形缓冲器”。 循环队列的一个好处是我们可以利用这个队列之前用过的空间。在一个普通队列里，一旦一个队列满了，我们就不能插入下一个元素，即使在队列前面仍有空间。但是使用循环队列，我们能使用这些空间去存储新的值。 你的实现应该支持如下操作： MyCi">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-27T17:21:50.000Z">
+<meta property="article:modified_time" content="2021-07-27T17:30:46.034Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="leetcode">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -150,36 +155,75 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-循环队列的实现" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/07/28/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
-  	<time datetime="2021-07-27T17:21:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-28</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/28/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0/">循环队列的实现</a>
+    <h1 class="article-title" itemprop="name">
+      循环队列的实现
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2021/07/28/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2021-07-27T17:21:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-28</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>设计你的循环队列实现。 循环队列是一种线性数据结构，其操作表现基于 FIFO（先进先出）原则并且队尾被连接在队首之后以形成一个循环。它也被称为“环形缓冲器”。</p>
+<p>循环队列的一个好处是我们可以利用这个队列之前用过的空间。在一个普通队列里，一旦一个队列满了，我们就不能插入下一个元素，即使在队列前面仍有空间。但是使用循环队列，我们能使用这些空间去存储新的值。</p>
+<p>你的实现应该支持如下操作：</p>
+<p>MyCircularQueue(k): 构造器，设置队列长度为 k 。<br>Front: 从队首获取元素。如果队列为空，返回 -1 。<br>Rear: 获取队尾元素。如果队列为空，返回 -1 。<br>enQueue(value): 向循环队列插入一个元素。如果成功插入则返回真。<br>deQueue(): 从循环队列中删除一个元素。如果成功删除则返回真。<br>isEmpty(): 检查循环队列是否为空。<br>isFull(): 检查循环队列是否已满。</p>
+<p>来源：力扣（LeetCode）<br>链接：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/design-circular-queue">https://leetcode-cn.com/problems/design-circular-queue</a></p>
+<h3 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h3><p>MyCircularQueue circularQueue = new MyCircularQueue(3); // 设置长度为 3<br>circularQueue.enQueue(1);  // 返回 true<br>circularQueue.enQueue(2);  // 返回 true<br>circularQueue.enQueue(3);  // 返回 true<br>circularQueue.enQueue(4);  // 返回 false，队列已满<br>circularQueue.Rear();  // 返回 3<br>circularQueue.isFull();  // 返回 true<br>circularQueue.deQueue();  // 返回 true<br>circularQueue.enQueue(4);  // 返回 true<br>circularQueue.Rear();  // 返回 4</p>
+<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><ol>
+<li>首先要明白循环队列的原理</li>
+<li>如何设计循环队列中的两个指针</li>
+<li>细节处理</li>
+</ol>
+<p>循环队列原理<br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1yx411e7nb?from=search&amp;seid=13632348157331521482/">https://www.bilibili.com/video/BV1yx411e7nb?from=search&amp;seid=13632348157331521482/</a></p>
+<h3 id="实现难点："><a href="#实现难点：" class="headerlink" title="实现难点："></a>实现难点：</h3><ol>
+<li>为什么要在 eg：head（head+1）% size 取模？</li>
+<li>为什么 get tail 的时候不能直接返回？</li>
+<li>细节处理</li>
+</ol>
+<h3 id="实现代码："><a href="#实现代码：" class="headerlink" title="实现代码："></a>实现代码：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">public class MyCircularQueue &#123;</span><br><span class="line">    //构造原始数组</span><br><span class="line">    int[] arr;</span><br><span class="line">    //数组长度</span><br><span class="line">    int size;</span><br><span class="line">    //头指针，记录循环列表的头部</span><br><span class="line">    int head;</span><br><span class="line">    //尾指针，记录循环列表的尾部</span><br><span class="line">    int tail;</span><br><span class="line">    //计数器，记录总共有多少个元素</span><br><span class="line">    int count;</span><br><span class="line"></span><br><span class="line">    //构造器，将原始的数组arr转化为实体，以及一些变量的初始化</span><br><span class="line">    public MyCircularQueue(int k) &#123;</span><br><span class="line">        arr = new int[k];</span><br><span class="line">        size = k;</span><br><span class="line">        head = 0;</span><br><span class="line">        tail = 0;</span><br><span class="line">        count = 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //入队操作</span><br><span class="line">    public boolean enQueue(int value) &#123;</span><br><span class="line">        //先判断队列是否已满。</span><br><span class="line">        if (isFull()) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[tail] = value;</span><br><span class="line">        //关键点！此处的指针也应该跟着循环，不能说到了数组的size（最大长度）就一直无限延续</span><br><span class="line">        //所以这里需要取模运算&quot;%&quot; 例：k=size=7  tail=7 tail=（7+1%7=1 所以下次tail</span><br><span class="line">        //的位置就在下角标为 1 的位置 从而达到循环指针的目的 后面的head指针同理</span><br><span class="line">        tail = (tail + 1) % size;</span><br><span class="line">        count++;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //出队操作</span><br><span class="line">    public boolean deQueue() &#123;</span><br><span class="line">        //判断是否为空</span><br><span class="line">        if (isEmpty()) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        head = (head + 1) % size;</span><br><span class="line">        count--;</span><br><span class="line">        return true;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //取头元素</span><br><span class="line">    public int Front() &#123;</span><br><span class="line">        if (isEmpty()) &#123;</span><br><span class="line">            return -1;</span><br><span class="line">        &#125;</span><br><span class="line">        return arr[head];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public int Rear() &#123;</span><br><span class="line">        if(isEmpty())&#123;</span><br><span class="line">            return -1;</span><br><span class="line">        &#125;</span><br><span class="line">        //此处需要注意tail的真实位置到底指向的是哪里。</span><br><span class="line">        //注意数据的处理不能取负。</span><br><span class="line">        return arr[(tail - 1 + size) % size];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //判断空</span><br><span class="line">    public boolean isEmpty() &#123;</span><br><span class="line">        return count==0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //判断满</span><br><span class="line">    public boolean isFull() &#123;</span><br><span class="line">        return size==count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>在对循环队列实现的时候，注意的细节点有很多，需要做到指针循环才能达到整体的循环目的。<br>总的来说还是难度中等。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -191,95 +235,106 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2021/07/28/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2021-07-25T14:47:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-25</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">hexo s 时4000端口被占用问题</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/">hexo s 时4000端口被占用问题</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">技术踩坑</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/07/25/%E5%85%B3%E4%BA%8E%E5%A4%A7%E4%B8%89%E4%B8%80%E5%B9%B4%E7%9A%84%E8%AE%A1%E5%88%92/" class="archive-article-date">
-  	<time datetime="2021-07-25T14:39:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/25/%E5%85%B3%E4%BA%8E%E5%A4%A7%E4%B8%89%E4%B8%80%E5%B9%B4%E7%9A%84%E8%AE%A1%E5%88%92/">关于大三一年的计划</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">规划</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
 
           </div>
@@ -302,8 +357,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
