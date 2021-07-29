@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Hexo</title>
+  <title>Oliver-xuan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="Oliver-xuan">
 <meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="Oliver-xuan">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Oliverxuan">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Oliver-xuan" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -147,6 +147,106 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-门与墙算法的实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/29/%E9%97%A8%E4%B8%8E%E5%A2%99%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/">门与墙算法的实现</a>
+    </h1>
+  
+
+        
+        <a href="/2021/07/29/%E9%97%A8%E4%B8%8E%E5%A2%99%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2021-07-29T14:50:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li>建立基本数据以及辅助坐标</li>
+<li>先寻找门坐标，将其入队</li>
+<li>取出队头元素 A 进行解析</li>
+<li>分析 A 上下左右 block 是否可用 合法 A 是否未赋值</li>
+<li>将合法的 block 进行赋值（步数）</li>
+<li>将新的 block 入队</li>
+</ol>
+<h2 id="结束条件"><a href="#结束条件" class="headerlink" title="结束条件"></a>结束条件</h2><p>当取出的区域 上下左右都已经赋值 ｜｜ 为墙，为门 则无需处理，退出处理队列</p>
+<h2 id="本题的突破点"><a href="#本题的突破点" class="headerlink" title="本题的突破点:"></a>本题的突破点:</h2><ol>
+<li>理解队列先进先出的性质</li>
+<li>广度优先搜索的性质</li>
+<li>先找门，后赋值的思路</li>
+</ol>
+<p><em>ps：block 我的定义是 INF 即可用的房间</em></p>
+<p><strong>实现难点</strong></p>
+<ol>
+<li>如何寻找 block 的上下左右房间</li>
+<li>该房间的周围空间是否有用</li>
+<li>能否联想到新的 block 就当作是一个新门，再从新门找他的上下左右 block</li>
+<li>如何进行数据处理</li>
+<li>细节处理</li>
+</ol>
+<h2 id="象形理解"><a href="#象形理解" class="headerlink" title="象形理解"></a>象形理解</h2><p>把每一个门当作一个大的问题小孩（类似孩子王），队列就是记录未解决问题小孩的清单。<br>我们把每一个 INF 区域当作一个医生，安排医生用最小的距离去解决这些问题小孩。<br>我们先在房间里寻找大问题小孩，将他们全部记录在清单上。<br>我们开始分析他周围是否也有问题小孩（孩子王的小跟班）（上下左右检查）<br>如果有（该区域为空）且该问题其他医生没有解决（未赋值）<br>我们就指派该区域的医生去解决这个问题小孩，并且记录该问题小孩离孩子王有多远。（为 block 赋值）<br>如果周围的问题小孩已经有医生解决了，我们就不管。<br>将新的问题小孩记录在队列上，原先的孩子王的下线已经全盘供出，所以他从问题清单上划除。<br>继续解决清单上的新的问题小孩….<br>（可能有点不怎么容易理解。。。。我真的尽力了 源码 yyds ）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">public class Solution &#123;</span><br><span class="line">    //定义空房间的特征值</span><br><span class="line">    private static final int INF = 2147483647;</span><br><span class="line">    //定义门的特殊值</span><br><span class="line">    private static final int DOOR = 0;</span><br><span class="line">    //定义辅助坐标 以此来表示房间的上下左右</span><br><span class="line">    private static final List&lt;int[]&gt; DIRECTIONS = Arrays.asList(</span><br><span class="line">            new int[]&#123;1, 0&#125;,</span><br><span class="line">            new int[]&#123;-1, 0&#125;,</span><br><span class="line">            new int[]&#123;0, -1&#125;,</span><br><span class="line">            new int[]&#123;0, 1&#125;</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    public void wallsAndGates(int[][] rooms) &#123;</span><br><span class="line">        //记录房间的长宽</span><br><span class="line">        int m= rooms.length;</span><br><span class="line">        int n=rooms[0].length;</span><br><span class="line">        if(m==0)&#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        //创建队列</span><br><span class="line">        Queue&lt;int []&gt; queue=new LinkedList&lt;&gt;();</span><br><span class="line">        //遍历rooms 寻找所有的门</span><br><span class="line">        for (int row = 0; row &lt; m; row++) &#123;</span><br><span class="line">            for (int col = 0; col &lt; n; col++) &#123;</span><br><span class="line">                //当检测到该地区为门的时候 将门的坐标元素入队</span><br><span class="line">                if(rooms[row][col]==DOOR)&#123;</span><br><span class="line">                    queue.add(new int[]&#123;row,col&#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //核心区域 （当队列不为空的时候，继续执行）</span><br><span class="line">        while(!queue.isEmpty())&#123;</span><br><span class="line">            //取出队头的元素 也是最先入队的元素 （   d,c,b,a   =&gt; a)</span><br><span class="line">            int[] block = queue.poll();</span><br><span class="line">            //记录原生的行，列数据</span><br><span class="line">            int row=block[0];</span><br><span class="line">            int col=block[1];</span><br><span class="line">            //制造当前block的上下左右block 利用辅助坐标快速制作出新的坐标数据</span><br><span class="line">            for (int [] direction:</span><br><span class="line">                 DIRECTIONS) &#123;</span><br><span class="line">               int r=row+direction[0];</span><br><span class="line">               int c=col+direction[1];</span><br><span class="line">               //判断新的坐标是否合法 是否存在障碍物            ！！（重点！）是否之前已经被被赋值过！！</span><br><span class="line">                //如果已经被赋值 说明当前值就是该区域的最短路径，再次改变就是不准确值</span><br><span class="line">                // 因为是广度优先 所以当前值一定是最优值</span><br><span class="line">               if(r&lt;0 || c&lt;0 || r&gt;=rooms.length || c&gt;=rooms[0].length || rooms[r][c]!=INF)&#123;</span><br><span class="line">                   continue;</span><br><span class="line">               &#125;</span><br><span class="line">               //细节点  需要在前一个block的值上进行+1 否则步数全为1</span><br><span class="line">               rooms[r][c]=rooms[row][col]+1;</span><br><span class="line">               //如果都不是 则为全新的为赋值block 将其加入队列（列尾）</span><br><span class="line">                queue.add(new int[]&#123;r,c&#125;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>leetcode 链接 🔗：<br>链接：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/walls-and-gates/solution/guan-2fang-fa-xiang-xi-zhu-shi-by-zealou-25vd/">https://leetcode-cn.com/problems/walls-and-gates/solution/guan-2fang-fa-xiang-xi-zhu-shi-by-zealou-25vd/</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">leetcode</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/07/29/%E9%97%A8%E4%B8%8E%E5%A2%99%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-循环队列的实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -420,7 +520,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021 John Doe
+    		&copy; 2021 Oliverxuan
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -503,15 +603,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">规划</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">技术踩坑</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">leetcode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">规划</a>
               </li>
             
             <div class="clearfix"></div>
