@@ -215,7 +215,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-30 01:23:22" itemprop="dateModified" datetime="2021-07-30T01:23:22+08:00">2021-07-30</time>
+                <time title="修改时间：2021-07-30 23:16:58" itemprop="dateModified" datetime="2021-07-30T23:16:58+08:00">2021-07-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -223,7 +223,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Learning-problems/" itemprop="url" rel="index"><span itemprop="name">Learning problems</span></a>
+                  <a href="/categories/Problems/" itemprop="url" rel="index"><span itemprop="name">Problems</span></a>
                 </span>
             </span>
 
@@ -262,17 +262,14 @@
 <li>先找门，后赋值的思路</li>
 </ol>
 <p><em>ps：block 我的定义是 INF 即可用的房间</em></p>
-<p><strong>实现难点</strong></p>
-<ol>
-<li>如何寻找 block 的上下左右房间</li>
-<li>该房间的周围空间是否有用</li>
-<li>能否联想到新的 block 就当作是一个新门，再从新门找他的上下左右 block</li>
-<li>如何进行数据处理</li>
-<li>细节处理</li>
-</ol>
-<h2 id="象形理解"><a href="#象形理解" class="headerlink" title="象形理解"></a>象形理解</h2><p>把每一个门当作一个大的问题小孩（类似孩子王），队列就是记录未解决问题小孩的清单。<br>我们把每一个 INF 区域当作一个医生，安排医生用最小的距离去解决这些问题小孩。<br>我们先在房间里寻找大问题小孩，将他们全部记录在清单上。<br>我们开始分析他周围是否也有问题小孩（孩子王的小跟班）（上下左右检查）<br>如果有（该区域为空）且该问题其他医生没有解决（未赋值）<br>我们就指派该区域的医生去解决这个问题小孩，并且记录该问题小孩离孩子王有多远。（为 block 赋值）<br>如果周围的问题小孩已经有医生解决了，我们就不管。<br>将新的问题小孩记录在队列上，原先的孩子王的下线已经全盘供出，所以他从问题清单上划除。<br>继续解决清单上的新的问题小孩….<br>（可能有点不怎么容易理解。。。。我真的尽力了 源码 yyds ）</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="comment">//定义空房间的特征值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> INF = <span class="number">2147483647</span>;</span><br><span class="line">    <span class="comment">//定义门的特殊值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DOOR = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//定义辅助坐标 以此来表示房间的上下左右</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> List&lt;<span class="keyword">int</span>[]&gt; DIRECTIONS = Arrays.<span class="built_in">asList</span>(</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">0</span>&#125;,</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">-1</span>, <span class="number">0</span>&#125;,</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>, <span class="number">-1</span>&#125;,</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>, <span class="number">1</span>&#125;</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">wallsAndGates</span><span class="params">(<span class="keyword">int</span>[][] rooms)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//记录房间的长宽</span></span><br><span class="line">        <span class="keyword">int</span> m= rooms.length;</span><br><span class="line">        <span class="keyword">int</span> n=rooms[<span class="number">0</span>].length;</span><br><span class="line">        <span class="keyword">if</span>(m==<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//创建队列</span></span><br><span class="line">        Queue&lt;<span class="keyword">int</span> []&gt; queue=<span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="comment">//遍历rooms 寻找所有的门</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> row = <span class="number">0</span>; row &lt; m; row++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> col = <span class="number">0</span>; col &lt; n; col++) &#123;</span><br><span class="line">                <span class="comment">//当检测到该地区为门的时候 将门的坐标元素入队</span></span><br><span class="line">                <span class="keyword">if</span>(rooms[row][col]==DOOR)&#123;</span><br><span class="line">                    queue.<span class="built_in">add</span>(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;row,col&#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//核心区域 （当队列不为空的时候，继续执行）</span></span><br><span class="line">        <span class="keyword">while</span>(!queue.<span class="built_in">isEmpty</span>())&#123;</span><br><span class="line">            <span class="comment">//取出队头的元素 也是最先入队的元素 （   d,c,b,a   =&gt; a)</span></span><br><span class="line">            <span class="keyword">int</span>[] block = queue.<span class="built_in">poll</span>();</span><br><span class="line">            <span class="comment">//记录原生的行，列数据</span></span><br><span class="line">            <span class="keyword">int</span> row=block[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> col=block[<span class="number">1</span>];</span><br><span class="line">            <span class="comment">//制造当前block的上下左右block 利用辅助坐标快速制作出新的坐标数据</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> [] direction:</span><br><span class="line">                 DIRECTIONS) &#123;</span><br><span class="line">               <span class="keyword">int</span> r=row+direction[<span class="number">0</span>];</span><br><span class="line">               <span class="keyword">int</span> c=col+direction[<span class="number">1</span>];</span><br><span class="line">               <span class="comment">//判断新的坐标是否合法 是否存在障碍物            ！！（重点！）是否之前已经被被赋值过！！</span></span><br><span class="line">                <span class="comment">//如果已经被赋值 说明当前值就是该区域的最短路径，再次改变就是不准确值</span></span><br><span class="line">                <span class="comment">// 因为是广度优先 所以当前值一定是最优值</span></span><br><span class="line">               <span class="keyword">if</span>(r&lt;<span class="number">0</span> || c&lt;<span class="number">0</span> || r&gt;=rooms.length || c&gt;=rooms[<span class="number">0</span>].length || rooms[r][c]!=INF)&#123;</span><br><span class="line">                   <span class="keyword">continue</span>;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="comment">//细节点  需要在前一个block的值上进行+1 否则步数全为1</span></span><br><span class="line">               rooms[r][c]=rooms[row][col]+<span class="number">1</span>;</span><br><span class="line">               <span class="comment">//如果都不是 则为全新的为赋值block 将其加入队列（列尾）</span></span><br><span class="line">                queue.<span class="built_in">add</span>(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;r,c&#125;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/29/%E9%97%A8%E4%B8%8E%E5%A2%99%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -322,7 +319,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-30 01:23:31" itemprop="dateModified" datetime="2021-07-30T01:23:31+08:00">2021-07-30</time>
+                <time title="修改时间：2021-07-30 23:17:02" itemprop="dateModified" datetime="2021-07-30T23:17:02+08:00">2021-07-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -330,7 +327,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Learning-problems/" itemprop="url" rel="index"><span itemprop="name">Learning problems</span></a>
+                  <a href="/categories/Problems/" itemprop="url" rel="index"><span itemprop="name">Problems</span></a>
                 </span>
             </span>
 
@@ -363,16 +360,14 @@
 <li>如何设计循环队列中的两个指针</li>
 <li>细节处理</li>
 </ol>
-<p>循环队列原理<br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1yx411e7nb?from=search&amp;seid=13632348157331521482/">https://www.bilibili.com/video/BV1yx411e7nb?from=search&amp;seid=13632348157331521482/</a></p>
-<h3 id="实现难点："><a href="#实现难点：" class="headerlink" title="实现难点："></a>实现难点：</h3><ol>
-<li>为什么要在 eg：head（head+1）% size 取模？</li>
-<li>为什么 get tail 的时候不能直接返回？</li>
-<li>细节处理</li>
-</ol>
-<h3 id="实现代码："><a href="#实现代码：" class="headerlink" title="实现代码："></a>实现代码：</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCircularQueue</span> &#123;</span></span><br><span class="line">    <span class="comment">//构造原始数组</span></span><br><span class="line">    <span class="keyword">int</span>[] arr;</span><br><span class="line">    <span class="comment">//数组长度</span></span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">    <span class="comment">//头指针，记录循环列表的头部</span></span><br><span class="line">    <span class="keyword">int</span> head;</span><br><span class="line">    <span class="comment">//尾指针，记录循环列表的尾部</span></span><br><span class="line">    <span class="keyword">int</span> tail;</span><br><span class="line">    <span class="comment">//计数器，记录总共有多少个元素</span></span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造器，将原始的数组arr转化为实体，以及一些变量的初始化</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyCircularQueue</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        arr = <span class="keyword">new</span> <span class="keyword">int</span>[k];</span><br><span class="line">        size = k;</span><br><span class="line">        head = <span class="number">0</span>;</span><br><span class="line">        tail = <span class="number">0</span>;</span><br><span class="line">        count = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//入队操作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">enQueue</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//先判断队列是否已满。</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isFull</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[tail] = value;</span><br><span class="line">        <span class="comment">//关键点！此处的指针也应该跟着循环，不能说到了数组的size（最大长度）就一直无限延续</span></span><br><span class="line">        <span class="comment">//所以这里需要取模运算&quot;%&quot; 例：k=size=7  tail=7 tail=（7+1%7=1 所以下次tail</span></span><br><span class="line">        <span class="comment">//的位置就在下角标为 1 的位置 从而达到循环指针的目的 后面的head指针同理</span></span><br><span class="line">        tail = (tail + <span class="number">1</span>) % size;</span><br><span class="line">        count++;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//出队操作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">deQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//判断是否为空</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isEmpty</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        head = (head + <span class="number">1</span>) % size;</span><br><span class="line">        count--;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//取头元素</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Front</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isEmpty</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr[head];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Rear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isEmpty</span>())&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//此处需要注意tail的真实位置到底指向的是哪里。</span></span><br><span class="line">        <span class="comment">//注意数据的处理不能取负。</span></span><br><span class="line">        <span class="keyword">return</span> arr[(tail - <span class="number">1</span> + size) % size];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断空</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count==<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断满</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isFull</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size==count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>在对循环队列实现的时候，注意的细节点有很多，需要做到指针循环才能达到整体的循环目的。<br>总的来说还是难度中等。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/28/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -466,6 +461,14 @@
 </ol>
 <p><strong>再次打开就没有 hexo 的页面了</strong></p>
 <h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -515,7 +518,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-30 01:25:34" itemprop="dateModified" datetime="2021-07-30T01:25:34+08:00">2021-07-30</time>
+                <time title="修改时间：2021-07-30 23:18:55" itemprop="dateModified" datetime="2021-07-30T23:18:55+08:00">2021-07-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -533,7 +536,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>888</span>
+              <span>823</span>
             </span>
 
         </div>
@@ -545,8 +548,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>大三这一年真的是无比关键呀！想着明年的今天就是我实习的日子。试问自己能去自己想去的公司吗？别人“敢”收你吗？换作是我我是不敢。。。我当然不能和那些大牛比学历。但是我想，凭借我对计算机事业的热爱，我还是能做到的！</p>
-<h3 id="回顾自身："><a href="#回顾自身：" class="headerlink" title="回顾自身："></a>回顾自身：</h3><p>大一光顾着玩耍，等到大一暑假的时候突然感觉”玩的索然无味“玩的甚至有点空虚。觉得这不是自己想要的生活。于是放下了我喜欢的游戏。打开了哔哩哔哩，搜起了关于 Java 的教学视频，我还记着我第一次装 Jdk 第一次配置环境变量的时候的一脸懵逼。（这和我学的 C 不一样呀）好奇心促使我继续坚持学习了下去。就这样，我听着尚硅谷的宋红康老师的 Java 课程度过了第一个充实的暑假，也是在那个暑假，我渐渐地明白了，计算机的路，我才刚刚开始。等到了大二，我渐渐尝试着做一些简单的静态页面，跟着做一些简单的 JavaWeb 项目。当我第一次在我自己的数据库接收到前端页面发来的数据的时候，我真的无比激动！这真的是一件很有成就感的事情！<br>到了大二的下学期，在好朋友的指引下，我渐渐接触一些更深层次的东西，我学习了 CoderWhy 老师的 Vue，学完了 Vue 我也深刻体会到组件化开发的便利性》真的佩服我们的尤大佬！能开发出这么好的框架！我什么时候才能到达他这种能力呀！<br>大二这一年，是我学习进步最快的一年，我渐渐明白到了真正的差距到底有多大。所以我想在我大三这一年，有计划有目标地进行学习！争取在一年后的今天能取得互联网大厂的 offer！</p>
+          <p>大三这一年真的是无比关键.想着明年的今天就是我实习的日子.心里多少还是有些焦虑。</p>
+<h3 id="回顾自身："><a href="#回顾自身：" class="headerlink" title="回顾自身："></a>回顾自身：</h3><p>大一光顾着玩耍，等到大一暑假的时候突然感觉”玩的索然无味“玩的甚至有点空虚。觉得这不是自己想要的生活。于是放下了我喜欢的游戏。打开了哔哩哔哩，搜起了关于 Java 的教学视频，我还记着我第一次装 Jdk 第一次配置环境变量的时候的一脸懵逼。（这和我学的 C 不一样呀）好奇心促使我继续坚持学习了下去。就这样，我听着尚硅谷的宋红康老师的 Java 课程度过了第一个充实的暑假，也是在那个暑假，我渐渐地明白了，计算机的路，我才刚刚开始。等到了大二，我渐渐尝试着做一些简单的静态页面，跟着做一些简单的 JavaWeb 项目。当我第一次在我自己的数据库接收到前端页面发来的数据的时候，我真的无比激动！这真的是一件很有成就感的事情！<br>到了大二的下学期，在好朋友的指引下，我渐渐接触一些更深层次的东西，我学习了 CoderWhy 老师的 Vue，学完了 Vue 我也深刻体会到组件化开发的便利性。真的佩服我们的尤大佬！能开发出这么好的框架！我什么时候才能到达他这种能力呀！<br>大二这一年，是我学习进步最快的一年，我渐渐明白到了真正的差距到底有多大。所以我想在我大三这一年，有计划有目标地进行学习！争取在一年后的今天能取得互联网大厂的 offer！</p>
 <h3 id="大三规划："><a href="#大三规划：" class="headerlink" title="大三规划："></a>大三规划：</h3><h4 id="大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。"><a href="#大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。" class="headerlink" title="大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。"></a>大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。</h4><h4 id="具体目标，步骤"><a href="#具体目标，步骤" class="headerlink" title="具体目标，步骤:"></a>具体目标，步骤:</h4><ol>
 <li>复习巩固计算机原理，数据结构等计算机基础。（巩固基础）</li>
 <li>leetcode 坚持每天刷题。（巩固基础）</li>
@@ -556,6 +559,14 @@
 <li>多做项目，多参加比赛。提高自己的眼界，技术的多样性，学习别人的优点，改善自己的不足。（提高自己技术深度）</li>
 </ol>
 
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/25/%E5%85%B3%E4%BA%8E%E5%A4%A7%E4%B8%89%E4%B8%80%E5%B9%B4%E7%9A%84%E8%AE%A1%E5%88%92/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
