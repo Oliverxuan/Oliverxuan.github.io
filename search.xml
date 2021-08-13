@@ -1,54 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello,好久不见</title>
-    <url>/2021/08/11/Hello-%E5%A5%BD%E4%B9%85%E4%B8%8D%E8%A7%81/</url>
-    <content><![CDATA[<h2 id="最近都去干什么了？"><a href="#最近都去干什么了？" class="headerlink" title="最近都去干什么了？"></a>最近都去干什么了？</h2><p>距离上次更新我的博客已经过去了 10 多天了，在这段时间里我开始新的征程 =&gt; 准备 9 月份的 辽宁省大学生移动开发大赛</p>
-<p>我计划着开发一个护肤品测评网站，整个网站的架构为：<br>前端：Vue 全家桶，axios</p>
-<p>后端：Node.js，express</p>
-<p>数据库：Mysql</p>
-<h2 id="期间遇到的问题困难"><a href="#期间遇到的问题困难" class="headerlink" title="期间遇到的问题困难"></a>期间遇到的问题困难</h2><p>由于我之前没有涉及过后端的接口开发，所以我在这 10 天的时间里自学了一点 Node.js 的开发基础。顺便学习了 Express，Koa 框架的基本开发。</p>
-<p>到目前为止，我已成功地将写好的使用 Express 的 Js 程序用 Node.js 部署在我的云服务器上。</p>
-<p>在这其中我遇到了很多的困难，例如：</p>
-<ol>
-<li><p>在服务器上部署合适的 Node &amp; Mysql</p>
-</li>
-<li><p>如何在本地通过 ssh 连接远端服务器</p>
-</li>
-</ol>
-<ul>
-<li>ssh root@ip</li>
-</ul>
-<ol start="3">
-<li>如何在 vs code navicat-mysql ssh 连接远端数据</li>
-</ol>
-<ul>
-<li>vs code 通过远程资源管理器</li>
-<li>mysql 里设置可远端读写权限</li>
-<li>navicat 在建立连接时正确写入服务器中的数据库信息</li>
-<li>注意需要在服务器安全组里开放相应的端口</li>
-</ul>
-<ol start="4">
-<li><p>建立数据库，在 Vue 里通过 axios 连接远端数据库</p>
-</li>
-<li><p>处理接口数据</p>
-</li>
-<li><p>如何在服务器上一直运行 Node 项目</p>
-</li>
-</ol>
-<ul>
-<li>npm2 管理插件</li>
-</ul>
-<p>在此感谢前辈们在遇到困难时留下的宝贵经验，以至于我在后续开发时遇到问题都能及时解决</p>
-]]></content>
-      <categories>
-        <category>CodeLife</category>
-      </categories>
-      <tags>
-        <tag>规划</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>node.js 用户登陆初体验</title>
     <url>/2021/08/14/node-js-%E7%94%A8%E6%88%B7%E7%99%BB%E9%99%86%E5%88%9D%E4%BD%93%E9%AA%8C/</url>
     <content><![CDATA[<h2 id="实现目标"><a href="#实现目标" class="headerlink" title="实现目标"></a>实现目标</h2><p>写一个接口，实现从用户输入中获得数据</p>
@@ -185,6 +137,54 @@
       </categories>
       <tags>
         <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello,好久不见</title>
+    <url>/2021/08/11/Hello-%E5%A5%BD%E4%B9%85%E4%B8%8D%E8%A7%81/</url>
+    <content><![CDATA[<h2 id="最近都去干什么了？"><a href="#最近都去干什么了？" class="headerlink" title="最近都去干什么了？"></a>最近都去干什么了？</h2><p>距离上次更新我的博客已经过去了 10 多天了，在这段时间里我开始新的征程 =&gt; 准备 9 月份的 辽宁省大学生移动开发大赛</p>
+<p>我计划着开发一个护肤品测评网站，整个网站的架构为：<br>前端：Vue 全家桶，axios</p>
+<p>后端：Node.js，express</p>
+<p>数据库：Mysql</p>
+<h2 id="期间遇到的问题困难"><a href="#期间遇到的问题困难" class="headerlink" title="期间遇到的问题困难"></a>期间遇到的问题困难</h2><p>由于我之前没有涉及过后端的接口开发，所以我在这 10 天的时间里自学了一点 Node.js 的开发基础。顺便学习了 Express，Koa 框架的基本开发。</p>
+<p>到目前为止，我已成功地将写好的使用 Express 的 Js 程序用 Node.js 部署在我的云服务器上。</p>
+<p>在这其中我遇到了很多的困难，例如：</p>
+<ol>
+<li><p>在服务器上部署合适的 Node &amp; Mysql</p>
+</li>
+<li><p>如何在本地通过 ssh 连接远端服务器</p>
+</li>
+</ol>
+<ul>
+<li>ssh root@ip</li>
+</ul>
+<ol start="3">
+<li>如何在 vs code navicat-mysql ssh 连接远端数据</li>
+</ol>
+<ul>
+<li>vs code 通过远程资源管理器</li>
+<li>mysql 里设置可远端读写权限</li>
+<li>navicat 在建立连接时正确写入服务器中的数据库信息</li>
+<li>注意需要在服务器安全组里开放相应的端口</li>
+</ul>
+<ol start="4">
+<li><p>建立数据库，在 Vue 里通过 axios 连接远端数据库</p>
+</li>
+<li><p>处理接口数据</p>
+</li>
+<li><p>如何在服务器上一直运行 Node 项目</p>
+</li>
+</ol>
+<ul>
+<li>npm2 管理插件</li>
+</ul>
+<p>在此感谢前辈们在遇到困难时留下的宝贵经验，以至于我在后续开发时遇到问题都能及时解决</p>
+]]></content>
+      <categories>
+        <category>CodeLife</category>
+      </categories>
+      <tags>
+        <tag>规划</tag>
       </tags>
   </entry>
   <entry>
