@@ -20,15 +20,27 @@
     var CONFIG = {"hostname":"oliverxuan.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Oliver-xuan">
-<meta property="og:url" content="http://oliverxuan.github.io/categories/CodeLife/index.html">
+  <meta name="description" content="项目进度:最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式 接口功能：不多说了，直接上图！ 后端接口：  真的是完完整地做完了整个项目的后端接口。从中真的学会了很多！慢慢也熟悉了 Node.js + Koa 开发接口的开发逻辑。  Mysql：  从中也重新回忆起了很多的 sql 语句（真的好久不用生疏了！）比如：left">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mmjd项目的完成情况">
+<meta property="og:url" content="http://oliverxuan.github.io/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/index.html">
 <meta property="og:site_name" content="Oliver-xuan">
+<meta property="og:description" content="项目进度:最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式 接口功能：不多说了，直接上图！ 后端接口：  真的是完完整地做完了整个项目的后端接口。从中真的学会了很多！慢慢也熟悉了 Node.js + Koa 开发接口的开发逻辑。  Mysql：  从中也重新回忆起了很多的 sql 语句（真的好久不用生疏了！）比如：left">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://oliverxuan.github.io/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/user.png">
+<meta property="og:image" content="http://oliverxuan.github.io/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/end.png">
+<meta property="og:image" content="http://oliverxuan.github.io/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql1.png">
+<meta property="og:image" content="http://oliverxuan.github.io/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql2.png">
+<meta property="og:image" content="http://oliverxuan.github.io/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql3.png">
+<meta property="og:image" content="http://oliverxuan.github.io/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/font1.png">
+<meta property="article:published_time" content="2021-08-24T17:24:58.000Z">
+<meta property="article:modified_time" content="2021-08-24T17:43:34.300Z">
 <meta property="article:author" content="Oliverxuan">
+<meta property="article:tag" content="项目">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://oliverxuan.github.io/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/user.png">
 
-<link rel="canonical" href="http://oliverxuan.github.io/categories/CodeLife/">
+<link rel="canonical" href="http://oliverxuan.github.io/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/">
 
 
 <script id="page-configurations">
@@ -36,12 +48,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>分类: CodeLife | Oliver-xuan</title>
+  <title>mmjd项目的完成情况 | Oliver-xuan</title>
   
 
 
@@ -178,91 +190,122 @@
         <div class="content-wrap">
           
 
-          <div class="content category">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">CodeLife
-          <small>分类</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/2.jpeg">
+      <meta itemprop="name" content="Oliverxuan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oliver-xuan">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mmjd项目的完成情况
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-08-25 01:24:58 / 修改时间：01:43:34" itemprop="dateCreated datePublished" datetime="2021-08-25T01:24:58+08:00">2021-08-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CodeLife/" itemprop="url" rel="index"><span itemprop="name">CodeLife</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>471</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2021</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-08-25T01:24:58+08:00"
-              content="2021-08-25">
-          08-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/" itemprop="url">
-            <span itemprop="name">mmjd项目的完成情况</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-08-11T14:04:48+08:00"
-              content="2021-08-11">
-          08-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/08/11/Hello-%E5%A5%BD%E4%B9%85%E4%B8%8D%E8%A7%81/" itemprop="url">
-            <span itemprop="name">Hello,好久不见</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-25T22:39:56+08:00"
-              content="2021-07-25">
-          07-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/25/%E5%85%B3%E4%BA%8E%E5%A4%A7%E4%B8%89%E4%B8%80%E5%B9%B4%E7%9A%84%E8%AE%A1%E5%88%92/" itemprop="url">
-            <span itemprop="name">关于大三一年的计划</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
+        <h2 id="项目进度"><a href="#项目进度" class="headerlink" title="项目进度:"></a>项目进度:</h2><p>最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式</p>
+<h2 id="接口功能："><a href="#接口功能：" class="headerlink" title="接口功能："></a>接口功能：</h2><h3 id="不多说了，直接上图！"><a href="#不多说了，直接上图！" class="headerlink" title="不多说了，直接上图！"></a>不多说了，直接上图！</h3><ol>
+<li>后端接口：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/user.png" alt="接口功能图"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/end.png" alt="接口功能图"></li>
+</ol>
+<p>真的是完完整地做完了整个项目的后端接口。从中真的学会了很多！慢慢也熟悉了 Node.js + Koa 开发接口的开发逻辑。</p>
+<ol start="2">
+<li>Mysql：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql1.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql2.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql3.png" alt="mysql"></li>
+</ol>
+<p>从中也重新回忆起了很多的 sql 语句（真的好久不用生疏了！）比如：left join ，json_object….</p>
+<h2 id="前端界面："><a href="#前端界面：" class="headerlink" title="前端界面："></a>前端界面：</h2><p><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/font1.png" alt="font"><br>现在的前端界面真的奇丑无比，等着这两天我调好了我们再看！</p>
+<h2 id="技术栈："><a href="#技术栈：" class="headerlink" title="技术栈："></a>技术栈：</h2><ol>
+<li>前端：Html JavaScript CSS Vue Vuex VueRouter axios Webpack node.js Bootstrap</li>
+<li>后端：node.js Koa mysql</li>
+<li>数据库: mysql</li>
+</ol>
+<h2 id="收获："><a href="#收获：" class="headerlink" title="收获："></a>收获：</h2><p>通过这次完完整整地独自开发前后端的项目，很多东西真的就是要亲自来才能深刻体会！<br>希望自己以后能参与或创造更多的项目！</p>
+<h2 id="开源地址"><a href="#开源地址" class="headerlink" title="开源地址:"></a>开源地址:</h2><ol>
+<li>前端：<br><a target="_blank" rel="noopener" href="https://github.com/Oliverxuan/mmjd">https://github.com/Oliverxuan/mmjd</a></li>
+<li>后端：<br><a target="_blank" rel="noopener" href="https://github.com/Oliverxuan/MMJD-node">https://github.com/Oliverxuan/MMJD-node</a></li>
+</ol>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag"># 项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/16/%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B7%E5%B9%B6%E9%AA%8C%E8%AF%81%E5%90%88%E6%B3%95%E6%80%A7/" rel="prev" title="创建用户并验证合法性">
+      <i class="fa fa-chevron-left"></i> 创建用户并验证合法性
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
@@ -315,6 +358,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E8%BF%9B%E5%BA%A6"><span class="nav-number">1.</span> <span class="nav-text">项目进度:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E5%8A%9F%E8%83%BD%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">接口功能：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%A4%9A%E8%AF%B4%E4%BA%86%EF%BC%8C%E7%9B%B4%E6%8E%A5%E4%B8%8A%E5%9B%BE%EF%BC%81"><span class="nav-number">2.1.</span> <span class="nav-text">不多说了，直接上图！</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E7%95%8C%E9%9D%A2%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">前端界面：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF%E6%A0%88%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">技术栈：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B6%E8%8E%B7%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">收获：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E6%BA%90%E5%9C%B0%E5%9D%80"><span class="nav-number">6.</span> <span class="nav-text">开源地址:</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

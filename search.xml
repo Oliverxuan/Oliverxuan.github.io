@@ -386,4 +386,35 @@
         <tag>node.js</tag>
       </tags>
   </entry>
+  <entry>
+    <title>mmjd项目的完成情况</title>
+    <url>/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/</url>
+    <content><![CDATA[<h2 id="项目进度"><a href="#项目进度" class="headerlink" title="项目进度:"></a>项目进度:</h2><p>最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式</p>
+<h2 id="接口功能："><a href="#接口功能：" class="headerlink" title="接口功能："></a>接口功能：</h2><h3 id="不多说了，直接上图！"><a href="#不多说了，直接上图！" class="headerlink" title="不多说了，直接上图！"></a>不多说了，直接上图！</h3><ol>
+<li>后端接口：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/user.png" alt="接口功能图"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/end.png" alt="接口功能图"></li>
+</ol>
+<p>真的是完完整地做完了整个项目的后端接口。从中真的学会了很多！慢慢也熟悉了 Node.js + Koa 开发接口的开发逻辑。</p>
+<ol start="2">
+<li>Mysql：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql1.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql2.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql3.png" alt="mysql"></li>
+</ol>
+<p>从中也重新回忆起了很多的 sql 语句（真的好久不用生疏了！）比如：left join ，json_object….</p>
+<h2 id="前端界面："><a href="#前端界面：" class="headerlink" title="前端界面："></a>前端界面：</h2><p><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/font1.png" alt="font"><br>现在的前端界面真的奇丑无比，等着这两天我调好了我们再看！</p>
+<h2 id="技术栈："><a href="#技术栈：" class="headerlink" title="技术栈："></a>技术栈：</h2><ol>
+<li>前端：Html JavaScript CSS Vue Vuex VueRouter axios Webpack node.js Bootstrap</li>
+<li>后端：node.js Koa mysql</li>
+<li>数据库: mysql</li>
+</ol>
+<h2 id="收获："><a href="#收获：" class="headerlink" title="收获："></a>收获：</h2><p>通过这次完完整整地独自开发前后端的项目，很多东西真的就是要亲自来才能深刻体会！<br>希望自己以后能参与或创造更多的项目！</p>
+<h2 id="开源地址"><a href="#开源地址" class="headerlink" title="开源地址:"></a>开源地址:</h2><ol>
+<li>前端：<br><a href="https://github.com/Oliverxuan/mmjd">https://github.com/Oliverxuan/mmjd</a></li>
+<li>后端：<br><a href="https://github.com/Oliverxuan/MMJD-node">https://github.com/Oliverxuan/MMJD-node</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>CodeLife</category>
+      </categories>
+      <tags>
+        <tag>项目</tag>
+      </tags>
+  </entry>
 </search>
