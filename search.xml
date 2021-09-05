@@ -512,4 +512,15 @@
         <tag>vue</tag>
       </tags>
   </entry>
+  <entry>
+    <title>浅谈js闭包</title>
+    <url>/2021/09/05/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>底层逻辑</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
 </search>
