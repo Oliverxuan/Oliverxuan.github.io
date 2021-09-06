@@ -86,6 +86,30 @@
       </tags>
   </entry>
   <entry>
+    <title>hexo s 时4000端口被占用问题</title>
+    <url>/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>hexo s 启动的时候遇到了 4000 端口无法创建使用的问题。<br>具体打开 localhost：4000 发现 4000 端口下 hexo 依然在运行！</p>
+<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>(mac 环境):</p>
+<ol>
+<li>sudo lsof -i tcp:4000<br><strong>查询当前端口的进程</strong></li>
+<li>报错：</li>
+</ol>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">COMMAND</span>   PID USER   FD   TYPE             DEVICE SIZE/<span class="literal">OFF</span> NODE NAME</span><br><span class="line"><span class="attribute">node</span>    <span class="number">19087</span> root   <span class="number">23</span>u  IPv<span class="number">6</span> <span class="number">0</span>xe<span class="number">0</span>d<span class="number">367</span>ae<span class="number">3505</span>eeb<span class="number">3</span>      <span class="number">0</span>t<span class="number">0</span>  TCP *:terabase (LISTEN)</span><br></pre></td></tr></table></figure>
+
+<p>发现进程 19087</p>
+<ol start="3">
+<li>sudo kill 19087</li>
+</ol>
+<p><strong>再次打开就没有 hexo 的页面了</strong></p>
+<h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>]]></content>
+      <categories>
+        <category>Obstacle</category>
+      </categories>
+      <tags>
+        <tag>技术踩坑</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>axios拦截</title>
     <url>/2021/08/30/axios%E6%8B%A6%E6%88%AA/</url>
     <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>实现在 axios 每次请求/响应时，对请求/响应进行相关的处理。我们把这种处理方式称之为拦截。</p>
@@ -127,30 +151,6 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo s 时4000端口被占用问题</title>
-    <url>/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>hexo s 启动的时候遇到了 4000 端口无法创建使用的问题。<br>具体打开 localhost：4000 发现 4000 端口下 hexo 依然在运行！</p>
-<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>(mac 环境):</p>
-<ol>
-<li>sudo lsof -i tcp:4000<br><strong>查询当前端口的进程</strong></li>
-<li>报错：</li>
-</ol>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">COMMAND</span>   PID USER   FD   TYPE             DEVICE SIZE/<span class="literal">OFF</span> NODE NAME</span><br><span class="line"><span class="attribute">node</span>    <span class="number">19087</span> root   <span class="number">23</span>u  IPv<span class="number">6</span> <span class="number">0</span>xe<span class="number">0</span>d<span class="number">367</span>ae<span class="number">3505</span>eeb<span class="number">3</span>      <span class="number">0</span>t<span class="number">0</span>  TCP *:terabase (LISTEN)</span><br></pre></td></tr></table></figure>
-
-<p>发现进程 19087</p>
-<ol start="3">
-<li>sudo kill 19087</li>
-</ol>
-<p><strong>再次打开就没有 hexo 的页面了</strong></p>
-<h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>]]></content>
-      <categories>
-        <category>Obstacle</category>
-      </categories>
-      <tags>
-        <tag>技术踩坑</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>js常用数组高阶函数</title>
     <url>/2021/09/06/js%E5%B8%B8%E7%94%A8%E6%95%B0%E7%BB%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<p>js 中有很多高阶函数，能在日常的代码编写工作中提高效率。下面列举一些常用 js 的数组高阶函数</p>
@@ -174,36 +174,11 @@
 
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>js 中很多高阶函数，我们还需继续探索。慢慢感受 js 的魅力！</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>mmjd项目的完成情况</title>
-    <url>/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/</url>
-    <content><![CDATA[<h2 id="项目进度"><a href="#项目进度" class="headerlink" title="项目进度:"></a>项目进度:</h2><p>最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式</p>
-<h2 id="接口功能："><a href="#接口功能：" class="headerlink" title="接口功能："></a>接口功能：</h2><h3 id="不多说了，直接上图！"><a href="#不多说了，直接上图！" class="headerlink" title="不多说了，直接上图！"></a>不多说了，直接上图！</h3><ol>
-<li>后端接口：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/user.png" alt="接口功能图"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/end.png" alt="接口功能图"></li>
-</ol>
-<p>真的是完完整地做完了整个项目的后端接口。从中真的学会了很多！慢慢也熟悉了 Node.js + Koa 开发接口的开发逻辑。</p>
-<ol start="2">
-<li>Mysql：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql1.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql2.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql3.png" alt="mysql"></li>
-</ol>
-<p>从中也重新回忆起了很多的 sql 语句（真的好久不用生疏了！）比如：left join ，json_object….</p>
-<h2 id="前端界面："><a href="#前端界面：" class="headerlink" title="前端界面："></a>前端界面：</h2><p><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/font1.png" alt="font"><br>现在的前端界面真的奇丑无比，等着这两天我调好了我们再看！</p>
-<h2 id="技术栈："><a href="#技术栈：" class="headerlink" title="技术栈："></a>技术栈：</h2><ol>
-<li>前端：Html JavaScript CSS Vue Vuex VueRouter axios Webpack node.js Bootstrap</li>
-<li>后端：node.js Koa mysql</li>
-<li>数据库: mysql</li>
-</ol>
-<h2 id="收获："><a href="#收获：" class="headerlink" title="收获："></a>收获：</h2><p>通过这次完完整整地独自开发前后端的项目，很多东西真的就是要亲自来才能深刻体会！<br>希望自己以后能参与或创造更多的项目！</p>
-<h2 id="开源地址"><a href="#开源地址" class="headerlink" title="开源地址:"></a>开源地址:</h2><ol>
-<li>前端：<br><a href="https://github.com/Oliverxuan/mmjd">https://github.com/Oliverxuan/mmjd</a></li>
-<li>后端：<br><a href="https://github.com/Oliverxuan/MMJD-node">https://github.com/Oliverxuan/MMJD-node</a></li>
-</ol>
-]]></content>
       <categories>
-        <category>CodeLife</category>
+        <category>technology</category>
       </categories>
       <tags>
-        <tag>项目</tag>
+        <tag>JavaScript</tag>
       </tags>
   </entry>
   <entry>
@@ -306,6 +281,37 @@
       </categories>
       <tags>
         <tag>规划</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mmjd项目的完成情况</title>
+    <url>/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/</url>
+    <content><![CDATA[<h2 id="项目进度"><a href="#项目进度" class="headerlink" title="项目进度:"></a>项目进度:</h2><p>最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式</p>
+<h2 id="接口功能："><a href="#接口功能：" class="headerlink" title="接口功能："></a>接口功能：</h2><h3 id="不多说了，直接上图！"><a href="#不多说了，直接上图！" class="headerlink" title="不多说了，直接上图！"></a>不多说了，直接上图！</h3><ol>
+<li>后端接口：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/user.png" alt="接口功能图"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/end.png" alt="接口功能图"></li>
+</ol>
+<p>真的是完完整地做完了整个项目的后端接口。从中真的学会了很多！慢慢也熟悉了 Node.js + Koa 开发接口的开发逻辑。</p>
+<ol start="2">
+<li>Mysql：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql1.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql2.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql3.png" alt="mysql"></li>
+</ol>
+<p>从中也重新回忆起了很多的 sql 语句（真的好久不用生疏了！）比如：left join ，json_object….</p>
+<h2 id="前端界面："><a href="#前端界面：" class="headerlink" title="前端界面："></a>前端界面：</h2><p><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/font1.png" alt="font"><br>现在的前端界面真的奇丑无比，等着这两天我调好了我们再看！</p>
+<h2 id="技术栈："><a href="#技术栈：" class="headerlink" title="技术栈："></a>技术栈：</h2><ol>
+<li>前端：Html JavaScript CSS Vue Vuex VueRouter axios Webpack node.js Bootstrap</li>
+<li>后端：node.js Koa mysql</li>
+<li>数据库: mysql</li>
+</ol>
+<h2 id="收获："><a href="#收获：" class="headerlink" title="收获："></a>收获：</h2><p>通过这次完完整整地独自开发前后端的项目，很多东西真的就是要亲自来才能深刻体会！<br>希望自己以后能参与或创造更多的项目！</p>
+<h2 id="开源地址"><a href="#开源地址" class="headerlink" title="开源地址:"></a>开源地址:</h2><ol>
+<li>前端：<br><a href="https://github.com/Oliverxuan/mmjd">https://github.com/Oliverxuan/mmjd</a></li>
+<li>后端：<br><a href="https://github.com/Oliverxuan/MMJD-node">https://github.com/Oliverxuan/MMJD-node</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>CodeLife</category>
+      </categories>
+      <tags>
+        <tag>项目</tag>
       </tags>
   </entry>
   <entry>
@@ -500,44 +506,6 @@
       </tags>
   </entry>
   <entry>
-    <title>门与墙算法的实现</title>
-    <url>/2021/07/29/%E9%97%A8%E4%B8%8E%E5%A2%99%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>你被给定一个  m × n  的二维网格 rooms ，网格中有以下三种可能的初始化值：-1  表示墙或是障碍物 0  表示一扇门<br>INF  无限表示一个空的房间。然后，我们用  231 - 1 = 2147483647  代表  INF。你可以认为通往门的距离总是小于  2147483647  的。<br>你要给每个空房间位上填上该房间到   最近门的距离 ，如果无法到达门，则填  INF  即可。</p>
-<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/walls-and-gates">https://leetcode-cn.com/problems/walls-and-gates</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
-<li>建立基本数据以及辅助坐标</li>
-<li>先寻找门坐标，将其入队</li>
-<li>取出队头元素 A 进行解析</li>
-<li>分析 A 上下左右 block 是否可用 合法 A 是否未赋值</li>
-<li>将合法的 block 进行赋值（步数）</li>
-<li>将新的 block 入队</li>
-</ol>
-<h2 id="结束条件"><a href="#结束条件" class="headerlink" title="结束条件"></a>结束条件</h2><p>当取出的区域 上下左右都已经赋值 ｜｜ 为墙，为门 则无需处理，退出处理队列</p>
-<h2 id="本题的突破点"><a href="#本题的突破点" class="headerlink" title="本题的突破点:"></a>本题的突破点:</h2><ol>
-<li>理解队列先进先出的性质</li>
-<li>广度优先搜索的性质</li>
-<li>先找门，后赋值的思路</li>
-</ol>
-<p><em>ps：block 我的定义是 INF 即可用的房间</em></p>
-<p><strong>实现难点</strong></p>
-<ol>
-<li>如何寻找 block 的上下左右房间</li>
-<li>该房间的周围空间是否有用</li>
-<li>能否联想到新的 block 就当作是一个新门，再从新门找他的上下左右 block</li>
-<li>如何进行数据处理</li>
-<li>细节处理</li>
-</ol>
-<h2 id="象形理解"><a href="#象形理解" class="headerlink" title="象形理解"></a>象形理解</h2><p>把每一个门当作一个大的问题小孩（类似孩子王），队列就是记录未解决问题小孩的清单。<br>我们把每一个 INF 区域当作一个医生，安排医生用最小的距离去解决这些问题小孩。<br>我们先在房间里寻找大问题小孩，将他们全部记录在清单上。<br>我们开始分析他周围是否也有问题小孩（孩子王的小跟班）（上下左右检查）<br>如果有（该区域为空）且该问题其他医生没有解决（未赋值）<br>我们就指派该区域的医生去解决这个问题小孩，并且记录该问题小孩离孩子王有多远。（为 block 赋值）<br>如果周围的问题小孩已经有医生解决了，我们就不管。<br>将新的问题小孩记录在队列上，原先的孩子王的下线已经全盘供出，所以他从问题清单上划除。<br>继续解决清单上的新的问题小孩….<br>（可能有点不怎么容易理解。。。。我真的尽力了 源码 yyds ）</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="comment">//定义空房间的特征值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> INF = <span class="number">2147483647</span>;</span><br><span class="line">    <span class="comment">//定义门的特殊值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DOOR = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//定义辅助坐标 以此来表示房间的上下左右</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> List&lt;<span class="keyword">int</span>[]&gt; DIRECTIONS = Arrays.<span class="built_in">asList</span>(</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">0</span>&#125;,</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">-1</span>, <span class="number">0</span>&#125;,</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>, <span class="number">-1</span>&#125;,</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>, <span class="number">1</span>&#125;</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">wallsAndGates</span><span class="params">(<span class="keyword">int</span>[][] rooms)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//记录房间的长宽</span></span><br><span class="line">        <span class="keyword">int</span> m= rooms.length;</span><br><span class="line">        <span class="keyword">int</span> n=rooms[<span class="number">0</span>].length;</span><br><span class="line">        <span class="keyword">if</span>(m==<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//创建队列</span></span><br><span class="line">        Queue&lt;<span class="keyword">int</span> []&gt; queue=<span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="comment">//遍历rooms 寻找所有的门</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> row = <span class="number">0</span>; row &lt; m; row++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> col = <span class="number">0</span>; col &lt; n; col++) &#123;</span><br><span class="line">                <span class="comment">//当检测到该地区为门的时候 将门的坐标元素入队</span></span><br><span class="line">                <span class="keyword">if</span>(rooms[row][col]==DOOR)&#123;</span><br><span class="line">                    queue.<span class="built_in">add</span>(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;row,col&#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//核心区域 （当队列不为空的时候，继续执行）</span></span><br><span class="line">        <span class="keyword">while</span>(!queue.<span class="built_in">isEmpty</span>())&#123;</span><br><span class="line">            <span class="comment">//取出队头的元素 也是最先入队的元素 （   d,c,b,a   =&gt; a)</span></span><br><span class="line">            <span class="keyword">int</span>[] block = queue.<span class="built_in">poll</span>();</span><br><span class="line">            <span class="comment">//记录原生的行，列数据</span></span><br><span class="line">            <span class="keyword">int</span> row=block[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> col=block[<span class="number">1</span>];</span><br><span class="line">            <span class="comment">//制造当前block的上下左右block 利用辅助坐标快速制作出新的坐标数据</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> [] direction:</span><br><span class="line">                 DIRECTIONS) &#123;</span><br><span class="line">               <span class="keyword">int</span> r=row+direction[<span class="number">0</span>];</span><br><span class="line">               <span class="keyword">int</span> c=col+direction[<span class="number">1</span>];</span><br><span class="line">               <span class="comment">//判断新的坐标是否合法 是否存在障碍物            ！！（重点！）是否之前已经被被赋值过！！</span></span><br><span class="line">                <span class="comment">//如果已经被赋值 说明当前值就是该区域的最短路径，再次改变就是不准确值</span></span><br><span class="line">                <span class="comment">// 因为是广度优先 所以当前值一定是最优值</span></span><br><span class="line">               <span class="keyword">if</span>(r&lt;<span class="number">0</span> || c&lt;<span class="number">0</span> || r&gt;=rooms.length || c&gt;=rooms[<span class="number">0</span>].length || rooms[r][c]!=INF)&#123;</span><br><span class="line">                   <span class="keyword">continue</span>;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="comment">//细节点  需要在前一个block的值上进行+1 否则步数全为1</span></span><br><span class="line">               rooms[r][c]=rooms[row][col]+<span class="number">1</span>;</span><br><span class="line">               <span class="comment">//如果都不是 则为全新的为赋值block 将其加入队列（列尾）</span></span><br><span class="line">                queue.<span class="built_in">add</span>(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;r,c&#125;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Problems</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>浅谈js闭包</title>
     <url>/2021/09/05/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/</url>
     <content><![CDATA[<p>最近在学习 Javascript 高级语法，研究到了一些底层逻辑，有了很多的心得体会。赶紧记录下来！</p>
@@ -621,5 +589,70 @@
       <tags>
         <tag>JavaScript</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>门与墙算法的实现</title>
+    <url>/2021/07/29/%E9%97%A8%E4%B8%8E%E5%A2%99%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>你被给定一个  m × n  的二维网格 rooms ，网格中有以下三种可能的初始化值：-1  表示墙或是障碍物 0  表示一扇门<br>INF  无限表示一个空的房间。然后，我们用  231 - 1 = 2147483647  代表  INF。你可以认为通往门的距离总是小于  2147483647  的。<br>你要给每个空房间位上填上该房间到   最近门的距离 ，如果无法到达门，则填  INF  即可。</p>
+<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/walls-and-gates">https://leetcode-cn.com/problems/walls-and-gates</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li>建立基本数据以及辅助坐标</li>
+<li>先寻找门坐标，将其入队</li>
+<li>取出队头元素 A 进行解析</li>
+<li>分析 A 上下左右 block 是否可用 合法 A 是否未赋值</li>
+<li>将合法的 block 进行赋值（步数）</li>
+<li>将新的 block 入队</li>
+</ol>
+<h2 id="结束条件"><a href="#结束条件" class="headerlink" title="结束条件"></a>结束条件</h2><p>当取出的区域 上下左右都已经赋值 ｜｜ 为墙，为门 则无需处理，退出处理队列</p>
+<h2 id="本题的突破点"><a href="#本题的突破点" class="headerlink" title="本题的突破点:"></a>本题的突破点:</h2><ol>
+<li>理解队列先进先出的性质</li>
+<li>广度优先搜索的性质</li>
+<li>先找门，后赋值的思路</li>
+</ol>
+<p><em>ps：block 我的定义是 INF 即可用的房间</em></p>
+<p><strong>实现难点</strong></p>
+<ol>
+<li>如何寻找 block 的上下左右房间</li>
+<li>该房间的周围空间是否有用</li>
+<li>能否联想到新的 block 就当作是一个新门，再从新门找他的上下左右 block</li>
+<li>如何进行数据处理</li>
+<li>细节处理</li>
+</ol>
+<h2 id="象形理解"><a href="#象形理解" class="headerlink" title="象形理解"></a>象形理解</h2><p>把每一个门当作一个大的问题小孩（类似孩子王），队列就是记录未解决问题小孩的清单。<br>我们把每一个 INF 区域当作一个医生，安排医生用最小的距离去解决这些问题小孩。<br>我们先在房间里寻找大问题小孩，将他们全部记录在清单上。<br>我们开始分析他周围是否也有问题小孩（孩子王的小跟班）（上下左右检查）<br>如果有（该区域为空）且该问题其他医生没有解决（未赋值）<br>我们就指派该区域的医生去解决这个问题小孩，并且记录该问题小孩离孩子王有多远。（为 block 赋值）<br>如果周围的问题小孩已经有医生解决了，我们就不管。<br>将新的问题小孩记录在队列上，原先的孩子王的下线已经全盘供出，所以他从问题清单上划除。<br>继续解决清单上的新的问题小孩….<br>（可能有点不怎么容易理解。。。。我真的尽力了 源码 yyds ）</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="comment">//定义空房间的特征值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> INF = <span class="number">2147483647</span>;</span><br><span class="line">    <span class="comment">//定义门的特殊值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DOOR = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//定义辅助坐标 以此来表示房间的上下左右</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> List&lt;<span class="keyword">int</span>[]&gt; DIRECTIONS = Arrays.<span class="built_in">asList</span>(</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">0</span>&#125;,</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">-1</span>, <span class="number">0</span>&#125;,</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>, <span class="number">-1</span>&#125;,</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>, <span class="number">1</span>&#125;</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">wallsAndGates</span><span class="params">(<span class="keyword">int</span>[][] rooms)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//记录房间的长宽</span></span><br><span class="line">        <span class="keyword">int</span> m= rooms.length;</span><br><span class="line">        <span class="keyword">int</span> n=rooms[<span class="number">0</span>].length;</span><br><span class="line">        <span class="keyword">if</span>(m==<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//创建队列</span></span><br><span class="line">        Queue&lt;<span class="keyword">int</span> []&gt; queue=<span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="comment">//遍历rooms 寻找所有的门</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> row = <span class="number">0</span>; row &lt; m; row++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> col = <span class="number">0</span>; col &lt; n; col++) &#123;</span><br><span class="line">                <span class="comment">//当检测到该地区为门的时候 将门的坐标元素入队</span></span><br><span class="line">                <span class="keyword">if</span>(rooms[row][col]==DOOR)&#123;</span><br><span class="line">                    queue.<span class="built_in">add</span>(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;row,col&#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//核心区域 （当队列不为空的时候，继续执行）</span></span><br><span class="line">        <span class="keyword">while</span>(!queue.<span class="built_in">isEmpty</span>())&#123;</span><br><span class="line">            <span class="comment">//取出队头的元素 也是最先入队的元素 （   d,c,b,a   =&gt; a)</span></span><br><span class="line">            <span class="keyword">int</span>[] block = queue.<span class="built_in">poll</span>();</span><br><span class="line">            <span class="comment">//记录原生的行，列数据</span></span><br><span class="line">            <span class="keyword">int</span> row=block[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> col=block[<span class="number">1</span>];</span><br><span class="line">            <span class="comment">//制造当前block的上下左右block 利用辅助坐标快速制作出新的坐标数据</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> [] direction:</span><br><span class="line">                 DIRECTIONS) &#123;</span><br><span class="line">               <span class="keyword">int</span> r=row+direction[<span class="number">0</span>];</span><br><span class="line">               <span class="keyword">int</span> c=col+direction[<span class="number">1</span>];</span><br><span class="line">               <span class="comment">//判断新的坐标是否合法 是否存在障碍物            ！！（重点！）是否之前已经被被赋值过！！</span></span><br><span class="line">                <span class="comment">//如果已经被赋值 说明当前值就是该区域的最短路径，再次改变就是不准确值</span></span><br><span class="line">                <span class="comment">// 因为是广度优先 所以当前值一定是最优值</span></span><br><span class="line">               <span class="keyword">if</span>(r&lt;<span class="number">0</span> || c&lt;<span class="number">0</span> || r&gt;=rooms.length || c&gt;=rooms[<span class="number">0</span>].length || rooms[r][c]!=INF)&#123;</span><br><span class="line">                   <span class="keyword">continue</span>;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="comment">//细节点  需要在前一个block的值上进行+1 否则步数全为1</span></span><br><span class="line">               rooms[r][c]=rooms[row][col]+<span class="number">1</span>;</span><br><span class="line">               <span class="comment">//如果都不是 则为全新的为赋值block 将其加入队列（列尾）</span></span><br><span class="line">                queue.<span class="built_in">add</span>(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;r,c&#125;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Problems</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2021/09/06/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<p>js中有很多高阶函数，能在日常的代码编写工作中提高效率。下面列举一些常用js的数组高阶函数</p>
+<h2 id="FOO数组"><a href="#FOO数组" class="headerlink" title="FOO数组"></a>FOO数组</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> nums = [<span class="number">10</span>, <span class="number">5</span>, <span class="number">11</span>, <span class="number">100</span>, <span class="number">55</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="filter-过滤"><a href="#filter-过滤" class="headerlink" title="filter: 过滤"></a>filter: 过滤</h3><p>返回布尔类型  可以传递三个值 item 当前的的元素，index 当前数组下标， arr 当前整个数组</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//数组取偶操作</span></span><br><span class="line"><span class="keyword">var</span> numbers = nums.filter(<span class="function">(<span class="params">item, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item % <span class="number">2</span> == <span class="number">0</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(numbers)</span><br></pre></td></tr></table></figure>
+
+<h3 id="map-映射"><a href="#map-映射" class="headerlink" title="map: 映射"></a>map: 映射</h3><p>对所有的item进行操作</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//对每个item进行*10操作</span></span><br><span class="line"><span class="keyword">var</span> nums2 = nums.map(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item * <span class="number">10</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(nums2)</span><br></pre></td></tr></table></figure>
+
+<h3 id="forEach-迭代"><a href="#forEach-迭代" class="headerlink" title="forEach: 迭代"></a>forEach: 迭代</h3><p>无返回值</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//遍历数组，无返回值！ </span></span><br><span class="line">nums.forEach(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line"> <span class="built_in">console</span>.log(item)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="find-findIndex-查找"><a href="#find-findIndex-查找" class="headerlink" title="find/findIndex :查找"></a>find/findIndex :查找</h3><p>查找item/返还该item/itemIndex</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> item = nums.find(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item == <span class="number">11</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(item)</span><br></pre></td></tr></table></figure>
+
+<h3 id="reduce-累加"><a href="#reduce-累加" class="headerlink" title="reduce :累加"></a>reduce :累加</h3><p>preValue 前数据;</p>
+<p> 0:基础数据</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//数组累加操作</span></span><br><span class="line"><span class="keyword">var</span> total = nums.reduce(<span class="function">(<span class="params">preValue, item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> preValue + item</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"><span class="built_in">console</span>.log(total)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>js中很多高阶函数，我们还需继续探索。慢慢感受js的魅力！</p>
+]]></content>
   </entry>
 </search>

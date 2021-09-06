@@ -1,0 +1,38 @@
+<p>js中有很多高阶函数，能在日常的代码编写工作中提高效率。下面列举一些常用js的数组高阶函数</p>
+<h2 id="FOO数组"><a href="#FOO数组" class="headerlink" title="FOO数组"></a>FOO数组</h2><pre><code class="js">var nums = [10, 5, 11, 100, 55]
+</code></pre>
+<h3 id="filter-过滤"><a href="#filter-过滤" class="headerlink" title="filter: 过滤"></a>filter: 过滤</h3><p>返回布尔类型  可以传递三个值 item 当前的的元素，index 当前数组下标， arr 当前整个数组</p>
+<pre><code class="js">//数组取偶操作
+var numbers = nums.filter((item, index, arr) =&gt; {
+  return item % 2 == 0
+})
+console.log(numbers)
+</code></pre>
+<h3 id="map-映射"><a href="#map-映射" class="headerlink" title="map: 映射"></a>map: 映射</h3><p>对所有的item进行操作</p>
+<pre><code class="js">//对每个item进行*10操作
+var nums2 = nums.map((item) =&gt; {
+  return item * 10
+})
+console.log(nums2)
+</code></pre>
+<h3 id="forEach-迭代"><a href="#forEach-迭代" class="headerlink" title="forEach: 迭代"></a>forEach: 迭代</h3><p>无返回值</p>
+<pre><code class="js">//遍历数组，无返回值！ 
+nums.forEach((item) =&gt; {
+ console.log(item)
+})
+</code></pre>
+<h3 id="find-findIndex-查找"><a href="#find-findIndex-查找" class="headerlink" title="find/findIndex :查找"></a>find/findIndex :查找</h3><p>查找item/返还该item/itemIndex</p>
+<pre><code class="js">var item = nums.find((item) =&gt; {
+  return item == 11
+})
+console.log(item)
+</code></pre>
+<h3 id="reduce-累加"><a href="#reduce-累加" class="headerlink" title="reduce :累加"></a>reduce :累加</h3><p>preValue 前数据;</p>
+<p> 0:基础数据</p>
+<pre><code class="js">//数组累加操作
+var total = nums.reduce((preValue, item) =&gt; {
+  return preValue + item
+}, 0)
+console.log(total)
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>js中很多高阶函数，我们还需继续探索。慢慢感受js的魅力！</p>
