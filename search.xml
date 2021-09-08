@@ -1,43 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Better-scroll 中无法滚动问题</title>
-    <url>/2021/08/11/Better-scroll-%E4%B8%AD%E6%97%A0%E6%B3%95%E6%BB%9A%E5%8A%A8%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在昨天我在使用 Vue 开发前端页面的时候，我遇到了在使用 better-scroll 实现页面滚动的时候无法滚动<br>经过排查，问题出在与 better-scroll 的滚动原理与实际高度之间产生矛盾（图片异步加载问题）</p>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>在之前的 GoodsList 组件中，有一个加载接口图片的操作</p>
-<figure class="highlight handlebars"><table><tr><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-item&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">:src</span>=<span class="string">&quot;goodsItem.img&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>  /&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-info&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.name</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;price&quot;</span>&gt;</span>RMB:</span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.price</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br></pre></td></tr></table></figure>
-
-<p>由于 better-scroll 在计算 wrapper content 高度的时候是在一开始就会计算好 从而达到滚动的目的</p>
-<p>但是 Goods list 会加载网路图片，存在一个异步问题<br>加载完后，实际的高度会远超于之前 better-scroll 计算的高度</p>
-<p>从而导致 better-scroll 之间计算无效了，最终无法滚动</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><figure class="highlight handlebars"><table><tr><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-item&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">:src</span>=<span class="string">&quot;goodsItem.img&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> @<span class="attr">load</span>=<span class="string">&quot;imageload&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-info&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.name</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;price&quot;</span>&gt;</span>RMB:</span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.price</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>在原代码 “&lt; img &gt;”标签处新增 @load=”imageload“ 监听事件</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">    <span class="built_in">imageload</span>() &#123;</span><br><span class="line">      this.$bus.$<span class="built_in">emit</span>(<span class="string">&quot;itemImageLoad&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-
-<p>随后在方法里将此事件发射到事件总线里面</p>
-<p>注意，需要在 main.js 里注册 事件总线</p>
-<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&quot;./router&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&quot;./store&quot;</span>;</span><br><span class="line"></span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span>;</span><br><span class="line">Vue.prototype.$bus = <span class="keyword">new</span> Vue();</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  router,</span><br><span class="line">  store,</span><br><span class="line">  render: h =&gt; h(App)</span><br><span class="line">&#125;).$mount(<span class="string">&quot;<span class="subst">#app</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>将事件传入事件总线后 需要在 better-scroll 滚动页面里面监听事件</p>
-<figure class="highlight coffeescript"><table><tr><td class="code"><pre><span class="line">mounted() &#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$<span class="literal">on</span>(<span class="string">&quot;itemImageLoad&quot;</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.$refs.scroll.scroll.refresh();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
-
-<p>提前设置 better-scroll 中的 refs 从而方便操作</p>
-<p>最后监听到图片加载后 调用 scroll 的 refresh（）函数达到重新计算高度的目的</p>
-<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><p>由于之前的频繁发出事件 image load 导致 实际上会 refresh 很多次</p>
-<p>此处就需要 dbounce 防抖函数来处理 ：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn,delay</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> handle;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">clearTimeout</span>(handle)</span><br><span class="line">         handle=<span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">             fn()</span><br><span class="line">         &#125;,delay)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
-
-<p>从而达到性能优化的目的</p>
-]]></content>
-      <categories>
-        <category>Obstacle</category>
-      </categories>
-      <tags>
-        <tag>vue</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello,好久不见</title>
     <url>/2021/08/11/Hello-%E5%A5%BD%E4%B9%85%E4%B8%8D%E8%A7%81/</url>
     <content><![CDATA[<h2 id="最近都去干什么了？"><a href="#最近都去干什么了？" class="headerlink" title="最近都去干什么了？"></a>最近都去干什么了？</h2><p>距离上次更新我的博客已经过去了 10 多天了，在这段时间里我开始新的征程 =&gt; 准备 9 月份的 辽宁省大学生移动开发大赛</p>
@@ -86,44 +49,40 @@
       </tags>
   </entry>
   <entry>
-    <title>axios拦截</title>
-    <url>/2021/08/30/axios%E6%8B%A6%E6%88%AA/</url>
-    <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>实现在 axios 每次请求/响应时，对请求/响应进行相关的处理。我们把这种处理方式称之为拦截。</p>
-<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><ol>
-<li>request.js 文件的封装</li>
-</ol>
-<h4 id="首先我们要将-axios-主要的请求封装在-request-js-文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。"><a href="#首先我们要将-axios-主要的请求封装在-request-js-文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。" class="headerlink" title="首先我们要将 axios 主要的请求封装在 request.js 文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。"></a>首先我们要将 axios 主要的请求封装在 request.js 文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。</h4><figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="comment">//将axios插件导入</span></span><br><span class="line"><span class="keyword">import</span> axios from <span class="string">&quot;axios&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建axios方法，并将该方法导出</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> request(<span class="keyword">config</span>) &#123;</span><br><span class="line">  <span class="comment">// 1.创建axios的实例</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">instance</span> = axios<span class="variable">.create</span>(&#123;</span><br><span class="line">    baseURL: <span class="string">&quot;*******&quot;</span>,</span><br><span class="line">    timeout: <span class="number">5000</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// 2.设立请求/响应拦截</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3.发送真正的网络请求</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">instance</span>(<span class="keyword">config</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    <title>Better-scroll 中无法滚动问题</title>
+    <url>/2021/08/11/Better-scroll-%E4%B8%AD%E6%97%A0%E6%B3%95%E6%BB%9A%E5%8A%A8%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在昨天我在使用 Vue 开发前端页面的时候，我遇到了在使用 better-scroll 实现页面滚动的时候无法滚动<br>经过排查，问题出在与 better-scroll 的滚动原理与实际高度之间产生矛盾（图片异步加载问题）</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>在之前的 GoodsList 组件中，有一个加载接口图片的操作</p>
+<figure class="highlight handlebars"><table><tr><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-item&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">:src</span>=<span class="string">&quot;goodsItem.img&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>  /&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-info&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.name</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;price&quot;</span>&gt;</span>RMB:</span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.price</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>axios 拦截器</li>
-</ol>
-<ul>
-<li>请求拦截</li>
-</ul>
-<p>可以在任何的请求上进行修饰，改变。此处我以添加 Authorization：Token 的方法为例：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用axios的请求拦截方法</span></span><br><span class="line">instance.interceptors.request.use(</span><br><span class="line">  <span class="comment">//对参数进行处理</span></span><br><span class="line">    <span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//具体操作</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">localStorage</span>.getItem(<span class="string">&quot;Authorization&quot;</span>)) &#123;</span><br><span class="line">        config.headers.Authorization = <span class="built_in">localStorage</span>.getItem(<span class="string">&quot;Authorization&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//最后注意需要返回修饰后的参数</span></span><br><span class="line">      <span class="keyword">return</span> config;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//如果请求是错误的，我们将异常抛出</span></span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error);</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br></pre></td></tr></table></figure>
+<p>由于 better-scroll 在计算 wrapper content 高度的时候是在一开始就会计算好 从而达到滚动的目的</p>
+<p>但是 Goods list 会加载网路图片，存在一个异步问题<br>加载完后，实际的高度会远超于之前 better-scroll 计算的高度</p>
+<p>从而导致 better-scroll 之间计算无效了，最终无法滚动</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><figure class="highlight handlebars"><table><tr><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-item&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">:src</span>=<span class="string">&quot;goodsItem.img&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> @<span class="attr">load</span>=<span class="string">&quot;imageload&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-info&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.name</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;price&quot;</span>&gt;</span>RMB:</span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.price</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>响应拦截</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//axios响应拦截方法</span></span><br><span class="line">instance.interceptors.response.use(</span><br><span class="line">    <span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//获取响应参数，并返回</span></span><br><span class="line">      <span class="keyword">return</span> res.data;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//如果返还错误，提取相关的Status响应码，进行错误提示</span></span><br><span class="line">      <span class="keyword">const</span> &#123; response &#125; = err;</span><br><span class="line">      <span class="keyword">if</span> ((response.status = <span class="number">401</span>)) &#123;</span><br><span class="line">        <span class="built_in">localStorage</span>.removeItem(<span class="string">&quot;Authorization&quot;</span>);</span><br><span class="line">        <span class="built_in">localStorage</span>.removeItem(<span class="string">&quot;userName&quot;</span>);</span><br><span class="line">        <span class="built_in">localStorage</span>.removeItem(<span class="string">&quot;userId&quot;</span>);</span><br><span class="line">        alert(<span class="string">&quot;请登陆后再使用哦～&quot;</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(err);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在原代码 “&lt; img &gt;”标签处新增 @load=”imageload“ 监听事件</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">    <span class="built_in">imageload</span>() &#123;</span><br><span class="line">      this.$bus.$<span class="built_in">emit</span>(<span class="string">&quot;itemImageLoad&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 
-<ol start="3">
-<li>后续调用</li>
-</ol>
-<p>如需对接后端接口，仅需要创建相关 js 文件，并写入具体请求方法。</p>
-<ul>
-<li>user.js</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入我们之前封装好的request文件</span></span><br><span class="line"><span class="keyword">import</span> &#123; request &#125; <span class="keyword">from</span> <span class="string">&quot;./request&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//写具体的对接接口的方法</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">GetUser</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> request(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&quot;/users/name&quot;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//传参类：</span></span><br><span class="line"><span class="comment">//将需要的参数写在方法内</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">ChangeUserSkin</span>(<span class="params">flag, <span class="keyword">type</span>, fix</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> request(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&quot;/users/skintest&quot;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">    <span class="comment">//将所需的数据创建好。</span></span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">      <span class="attr">flag</span>: flag,</span><br><span class="line">      <span class="attr">type</span>: <span class="keyword">type</span>,</span><br><span class="line">      <span class="attr">fix</span>: fix</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>随后在方法里将此事件发射到事件总线里面</p>
+<p>注意，需要在 main.js 里注册 事件总线</p>
+<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&quot;./router&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&quot;./store&quot;</span>;</span><br><span class="line"></span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span>;</span><br><span class="line">Vue.prototype.$bus = <span class="keyword">new</span> Vue();</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  router,</span><br><span class="line">  store,</span><br><span class="line">  render: h =&gt; h(App)</span><br><span class="line">&#125;).$mount(<span class="string">&quot;<span class="subst">#app</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
 
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>axios 在日常的 vue 开发中是使用频率很高的组件，用来进行前后端数据交互工作。整体上并不难。需要我们熟练掌握相关的方法，逻辑。其中也需要注意代码的规范，体现封装性。</p>
+<p>将事件传入事件总线后 需要在 better-scroll 滚动页面里面监听事件</p>
+<figure class="highlight coffeescript"><table><tr><td class="code"><pre><span class="line">mounted() &#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$<span class="literal">on</span>(<span class="string">&quot;itemImageLoad&quot;</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.$refs.scroll.scroll.refresh();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>提前设置 better-scroll 中的 refs 从而方便操作</p>
+<p>最后监听到图片加载后 调用 scroll 的 refresh（）函数达到重新计算高度的目的</p>
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><p>由于之前的频繁发出事件 image load 导致 实际上会 refresh 很多次</p>
+<p>此处就需要 dbounce 防抖函数来处理 ：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn,delay</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> handle;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">clearTimeout</span>(handle)</span><br><span class="line">         handle=<span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">             fn()</span><br><span class="line">         &#125;,delay)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从而达到性能优化的目的</p>
 ]]></content>
       <categories>
-        <category>technology</category>
+        <category>Obstacle</category>
       </categories>
       <tags>
-        <tag>axios</tag>
+        <tag>vue</tag>
       </tags>
   </entry>
   <entry>
@@ -139,7 +98,7 @@
 </ul>
 <h2 id="this-指向什么呢？"><a href="#this-指向什么呢？" class="headerlink" title="this 指向什么呢？"></a>this 指向什么呢？</h2><ul>
 <li><p>在全局的情况下，this 指向 window</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">this</span>) <span class="comment">//window</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;Oliver&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name)</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">this</span>) <span class="comment">//window</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;Oliver&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name)</span><br></pre></td></tr></table></figure></li>
 <li><p>但是，开发中很少直接在全局作用于下去使用 this，通常都是在<strong>函数中使用</strong>。</p>
 <ol>
 <li><p>所有的函数在被调用时，都会创建一个执行上下文：</p>
@@ -259,32 +218,8 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo s 时4000端口被占用问题</title>
-    <url>/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>hexo s 启动的时候遇到了 4000 端口无法创建使用的问题。<br>具体打开 localhost：4000 发现 4000 端口下 hexo 依然在运行！</p>
-<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>(mac 环境):</p>
-<ol>
-<li>sudo lsof -i tcp:4000<br><strong>查询当前端口的进程</strong></li>
-<li>报错：</li>
-</ol>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">COMMAND</span>   PID USER   FD   TYPE             DEVICE SIZE/<span class="literal">OFF</span> NODE NAME</span><br><span class="line"><span class="attribute">node</span>    <span class="number">19087</span> root   <span class="number">23</span>u  IPv<span class="number">6</span> <span class="number">0</span>xe<span class="number">0</span>d<span class="number">367</span>ae<span class="number">3505</span>eeb<span class="number">3</span>      <span class="number">0</span>t<span class="number">0</span>  TCP *:terabase (LISTEN)</span><br></pre></td></tr></table></figure>
-
-<p>发现进程 19087</p>
-<ol start="3">
-<li>sudo kill 19087</li>
-</ol>
-<p><strong>再次打开就没有 hexo 的页面了</strong></p>
-<h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>]]></content>
-      <categories>
-        <category>Obstacle</category>
-      </categories>
-      <tags>
-        <tag>技术踩坑</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Js常用数组高阶函数</title>
-    <url>/2021/09/06/js%E5%B8%B8%E7%94%A8%E6%95%B0%E7%BB%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/</url>
+    <title>js常用数组高阶函数</title>
+    <url>/2021/09/06/Js%E4%B8%AD%E7%9A%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<p>js 中有很多高阶函数，能在日常的代码编写工作中提高效率。下面列举一些常用 js 的数组高阶函数</p>
 <h2 id="FOO-数组"><a href="#FOO-数组" class="headerlink" title="FOO 数组"></a>FOO 数组</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> nums = [<span class="number">10</span>, <span class="number">5</span>, <span class="number">11</span>, <span class="number">100</span>, <span class="number">55</span>]</span><br></pre></td></tr></table></figure>
 
@@ -311,6 +246,71 @@
       </categories>
       <tags>
         <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo s 时4000端口被占用问题</title>
+    <url>/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>hexo s 启动的时候遇到了 4000 端口无法创建使用的问题。<br>具体打开 localhost：4000 发现 4000 端口下 hexo 依然在运行！</p>
+<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>(mac 环境):</p>
+<ol>
+<li>sudo lsof -i tcp:4000<br><strong>查询当前端口的进程</strong></li>
+<li>报错：</li>
+</ol>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">COMMAND</span>   PID USER   FD   TYPE             DEVICE SIZE/<span class="literal">OFF</span> NODE NAME</span><br><span class="line"><span class="attribute">node</span>    <span class="number">19087</span> root   <span class="number">23</span>u  IPv<span class="number">6</span> <span class="number">0</span>xe<span class="number">0</span>d<span class="number">367</span>ae<span class="number">3505</span>eeb<span class="number">3</span>      <span class="number">0</span>t<span class="number">0</span>  TCP *:terabase (LISTEN)</span><br></pre></td></tr></table></figure>
+
+<p>发现进程 19087</p>
+<ol start="3">
+<li>sudo kill 19087</li>
+</ol>
+<p><strong>再次打开就没有 hexo 的页面了</strong></p>
+<h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>]]></content>
+      <categories>
+        <category>Obstacle</category>
+      </categories>
+      <tags>
+        <tag>技术踩坑</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>axios拦截</title>
+    <url>/2021/08/30/axios%E6%8B%A6%E6%88%AA/</url>
+    <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>实现在 axios 每次请求/响应时，对请求/响应进行相关的处理。我们把这种处理方式称之为拦截。</p>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><ol>
+<li>request.js 文件的封装</li>
+</ol>
+<h4 id="首先我们要将-axios-主要的请求封装在-request-js-文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。"><a href="#首先我们要将-axios-主要的请求封装在-request-js-文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。" class="headerlink" title="首先我们要将 axios 主要的请求封装在 request.js 文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。"></a>首先我们要将 axios 主要的请求封装在 request.js 文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。</h4><figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="comment">//将axios插件导入</span></span><br><span class="line"><span class="keyword">import</span> axios from <span class="string">&quot;axios&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建axios方法，并将该方法导出</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> request(<span class="keyword">config</span>) &#123;</span><br><span class="line">  <span class="comment">// 1.创建axios的实例</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">instance</span> = axios<span class="variable">.create</span>(&#123;</span><br><span class="line">    baseURL: <span class="string">&quot;*******&quot;</span>,</span><br><span class="line">    timeout: <span class="number">5000</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// 2.设立请求/响应拦截</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3.发送真正的网络请求</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">instance</span>(<span class="keyword">config</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>axios 拦截器</li>
+</ol>
+<ul>
+<li>请求拦截</li>
+</ul>
+<p>可以在任何的请求上进行修饰，改变。此处我以添加 Authorization：Token 的方法为例：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用axios的请求拦截方法</span></span><br><span class="line">instance.interceptors.request.use(</span><br><span class="line">  <span class="comment">//对参数进行处理</span></span><br><span class="line">    <span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//具体操作</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">localStorage</span>.getItem(<span class="string">&quot;Authorization&quot;</span>)) &#123;</span><br><span class="line">        config.headers.Authorization = <span class="built_in">localStorage</span>.getItem(<span class="string">&quot;Authorization&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//最后注意需要返回修饰后的参数</span></span><br><span class="line">      <span class="keyword">return</span> config;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//如果请求是错误的，我们将异常抛出</span></span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error);</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>响应拦截</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//axios响应拦截方法</span></span><br><span class="line">instance.interceptors.response.use(</span><br><span class="line">    <span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//获取响应参数，并返回</span></span><br><span class="line">      <span class="keyword">return</span> res.data;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//如果返还错误，提取相关的Status响应码，进行错误提示</span></span><br><span class="line">      <span class="keyword">const</span> &#123; response &#125; = err;</span><br><span class="line">      <span class="keyword">if</span> ((response.status = <span class="number">401</span>)) &#123;</span><br><span class="line">        <span class="built_in">localStorage</span>.removeItem(<span class="string">&quot;Authorization&quot;</span>);</span><br><span class="line">        <span class="built_in">localStorage</span>.removeItem(<span class="string">&quot;userName&quot;</span>);</span><br><span class="line">        <span class="built_in">localStorage</span>.removeItem(<span class="string">&quot;userId&quot;</span>);</span><br><span class="line">        alert(<span class="string">&quot;请登陆后再使用哦～&quot;</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(err);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>后续调用</li>
+</ol>
+<p>如需对接后端接口，仅需要创建相关 js 文件，并写入具体请求方法。</p>
+<ul>
+<li>user.js</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入我们之前封装好的request文件</span></span><br><span class="line"><span class="keyword">import</span> &#123; request &#125; <span class="keyword">from</span> <span class="string">&quot;./request&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//写具体的对接接口的方法</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">GetUser</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> request(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&quot;/users/name&quot;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//传参类：</span></span><br><span class="line"><span class="comment">//将需要的参数写在方法内</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">ChangeUserSkin</span>(<span class="params">flag, <span class="keyword">type</span>, fix</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> request(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&quot;/users/skintest&quot;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">    <span class="comment">//将所需的数据创建好。</span></span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">      <span class="attr">flag</span>: flag,</span><br><span class="line">      <span class="attr">type</span>: <span class="keyword">type</span>,</span><br><span class="line">      <span class="attr">fix</span>: fix</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>axios 在日常的 vue 开发中是使用频率很高的组件，用来进行前后端数据交互工作。整体上并不难。需要我们熟练掌握相关的方法，逻辑。其中也需要注意代码的规范，体现封装性。</p>
+]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>axios</tag>
       </tags>
   </entry>
   <entry>
@@ -342,6 +342,23 @@
       </categories>
       <tags>
         <tag>项目</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue表单提交时自动刷新</title>
+    <url>/2021/08/31/vue%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4%E6%97%B6%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0/</url>
+    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在之前 mmjd 的项目中，我设计了一个登陆的界面。发现当第一次提交的时候，会默认刷新一次。导致用户提交的表单是空的。从而报错。</p>
+<p>这直接导致了很不好的用户体验。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>vue 中使用表单 form 默认提交行为是刷新一下，在这儿我们使用事件修饰符 prevent 来阻止 form 表单的默认行为</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&lt;input <span class="attribute">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attribute">value</span>=<span class="string">&quot;提交&quot;</span> @click.<span class="attribute">prevent</span>=<span class="string">&#x27;had&#x27;</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个点似曾相识，在以前学习的时候老师好像提到过。自己没注意到细节上的东西。反向说明了自己对 vue 的一些细节，和项目经验不足。需要继续提高！</p>
+]]></content>
+      <categories>
+        <category>Obstacle</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
       </tags>
   </entry>
   <entry>
@@ -409,20 +426,24 @@
       </tags>
   </entry>
   <entry>
-    <title>vue表单提交时自动刷新</title>
-    <url>/2021/08/31/vue%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4%E6%97%B6%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0/</url>
-    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在之前 mmjd 的项目中，我设计了一个登陆的界面。发现当第一次提交的时候，会默认刷新一次。导致用户提交的表单是空的。从而报错。</p>
-<p>这直接导致了很不好的用户体验。</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>vue 中使用表单 form 默认提交行为是刷新一下，在这儿我们使用事件修饰符 prevent 来阻止 form 表单的默认行为</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&lt;input <span class="attribute">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attribute">value</span>=<span class="string">&quot;提交&quot;</span> @click.<span class="attribute">prevent</span>=<span class="string">&#x27;had&#x27;</span>&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个点似曾相识，在以前学习的时候老师好像提到过。自己没注意到细节上的东西。反向说明了自己对 vue 的一些细节，和项目经验不足。需要继续提高！</p>
+    <title>关于大三一年的计划</title>
+    <url>/2021/07/25/%E5%85%B3%E4%BA%8E%E5%A4%A7%E4%B8%89%E4%B8%80%E5%B9%B4%E7%9A%84%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<p>大三这一年真的是无比关键.想着明年的今天就是我实习的日子.心里多少还是有些焦虑。</p>
+<h3 id="回顾自身："><a href="#回顾自身：" class="headerlink" title="回顾自身："></a>回顾自身：</h3><p>大一光顾着玩耍，等到大一暑假的时候突然感觉”玩的索然无味“玩的甚至有点空虚。觉得这不是自己想要的生活。于是放下了我喜欢的游戏。打开了哔哩哔哩，搜起了关于 Java 的教学视频，我还记着我第一次装 Jdk 第一次配置环境变量的时候的一脸懵逼。（这和我学的 C 不一样呀）好奇心促使我继续坚持学习了下去。就这样，我听着尚硅谷的宋红康老师的 Java 课程度过了第一个充实的暑假，也是在那个暑假，我渐渐地明白了，计算机的路，我才刚刚开始。等到了大二，我渐渐尝试着做一些简单的静态页面，跟着做一些简单的 JavaWeb 项目。当我第一次在我自己的数据库接收到前端页面发来的数据的时候，我真的无比激动！这真的是一件很有成就感的事情！<br>到了大二的下学期，在好朋友的指引下，我渐渐接触一些更深层次的东西，我学习了 CoderWhy 老师的 Vue，学完了 Vue 我也深刻体会到组件化开发的便利性。真的佩服我们的尤大佬！能开发出这么好的框架！我什么时候才能到达他这种能力呀！<br>大二这一年，是我学习进步最快的一年，我渐渐明白到了真正的差距到底有多大。所以我想在我大三这一年，有计划有目标地进行学习！争取在一年后的今天能取得互联网大厂的 offer！</p>
+<h3 id="大三规划："><a href="#大三规划：" class="headerlink" title="大三规划："></a>大三规划：</h3><h4 id="大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。"><a href="#大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。" class="headerlink" title="大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。"></a>大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。</h4><h4 id="具体目标，步骤"><a href="#具体目标，步骤" class="headerlink" title="具体目标，步骤:"></a>具体目标，步骤:</h4><ol>
+<li>复习巩固计算机原理，数据结构等计算机基础。（巩固基础）</li>
+<li>leetcode 坚持每天刷题。（巩固基础）</li>
+<li>学习 Node.js 以达到能够做出前后端分离的全栈完整项目。（完善自己的技术面）</li>
+<li>学习 uniapp 或 flutter 以达到跨平台，多处运用的目的。（完善自己的技术面）</li>
+<li>深入研究 Javascript，Vue 的底层逻辑，以及源码。以达到一定的技术深度。（提高自己技术深度）</li>
+<li>多做项目，多参加比赛。提高自己的眼界，技术的多样性，学习别人的优点，改善自己的不足。（提高自己技术深度）</li>
+</ol>
 ]]></content>
       <categories>
-        <category>Obstacle</category>
+        <category>CodeLife</category>
       </categories>
       <tags>
-        <tag>vue</tag>
+        <tag>规划</tag>
       </tags>
   </entry>
   <entry>
@@ -549,6 +570,37 @@
       </tags>
   </entry>
   <entry>
+    <title>循环队列的实现</title>
+    <url>/2021/07/28/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>设计你的循环队列实现。 循环队列是一种线性数据结构，其操作表现基于 FIFO（先进先出）原则并且队尾被连接在队首之后以形成一个循环。它也被称为“环形缓冲器”。</p>
+<p>循环队列的一个好处是我们可以利用这个队列之前用过的空间。在一个普通队列里，一旦一个队列满了，我们就不能插入下一个元素，即使在队列前面仍有空间。但是使用循环队列，我们能使用这些空间去存储新的值。</p>
+<p>你的实现应该支持如下操作：</p>
+<p>MyCircularQueue(k): 构造器，设置队列长度为 k 。<br>Front: 从队首获取元素。如果队列为空，返回 -1 。<br>Rear: 获取队尾元素。如果队列为空，返回 -1 。<br>enQueue(value): 向循环队列插入一个元素。如果成功插入则返回真。<br>deQueue(): 从循环队列中删除一个元素。如果成功删除则返回真。<br>isEmpty(): 检查循环队列是否为空。<br>isFull(): 检查循环队列是否已满。</p>
+<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/design-circular-queue">https://leetcode-cn.com/problems/design-circular-queue</a></p>
+<h3 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h3><p>MyCircularQueue circularQueue = new MyCircularQueue(3); // 设置长度为 3<br>circularQueue.enQueue(1);  // 返回 true<br>circularQueue.enQueue(2);  // 返回 true<br>circularQueue.enQueue(3);  // 返回 true<br>circularQueue.enQueue(4);  // 返回 false，队列已满<br>circularQueue.Rear();  // 返回 3<br>circularQueue.isFull();  // 返回 true<br>circularQueue.deQueue();  // 返回 true<br>circularQueue.enQueue(4);  // 返回 true<br>circularQueue.Rear();  // 返回 4</p>
+<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><ol>
+<li>首先要明白循环队列的原理</li>
+<li>如何设计循环队列中的两个指针</li>
+<li>细节处理</li>
+</ol>
+<p>循环队列原理<br><a href="https://www.bilibili.com/video/BV1yx411e7nb?from=search&amp;seid=13632348157331521482/">https://www.bilibili.com/video/BV1yx411e7nb?from=search&amp;seid=13632348157331521482/</a></p>
+<h3 id="实现难点："><a href="#实现难点：" class="headerlink" title="实现难点："></a>实现难点：</h3><ol>
+<li>为什么要在 eg：head（head+1）% size 取模？</li>
+<li>为什么 get tail 的时候不能直接返回？</li>
+<li>细节处理</li>
+</ol>
+<h3 id="实现代码："><a href="#实现代码：" class="headerlink" title="实现代码："></a>实现代码：</h3><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCircularQueue</span> &#123;</span></span><br><span class="line">    <span class="comment">//构造原始数组</span></span><br><span class="line">    <span class="keyword">int</span>[] arr;</span><br><span class="line">    <span class="comment">//数组长度</span></span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">    <span class="comment">//头指针，记录循环列表的头部</span></span><br><span class="line">    <span class="keyword">int</span> head;</span><br><span class="line">    <span class="comment">//尾指针，记录循环列表的尾部</span></span><br><span class="line">    <span class="keyword">int</span> tail;</span><br><span class="line">    <span class="comment">//计数器，记录总共有多少个元素</span></span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造器，将原始的数组arr转化为实体，以及一些变量的初始化</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyCircularQueue</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        arr = <span class="keyword">new</span> <span class="keyword">int</span>[k];</span><br><span class="line">        size = k;</span><br><span class="line">        head = <span class="number">0</span>;</span><br><span class="line">        tail = <span class="number">0</span>;</span><br><span class="line">        count = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//入队操作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">enQueue</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//先判断队列是否已满。</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isFull</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[tail] = value;</span><br><span class="line">        <span class="comment">//关键点！此处的指针也应该跟着循环，不能说到了数组的size（最大长度）就一直无限延续</span></span><br><span class="line">        <span class="comment">//所以这里需要取模运算&quot;%&quot; 例：k=size=7  tail=7 tail=（7+1%7=1 所以下次tail</span></span><br><span class="line">        <span class="comment">//的位置就在下角标为 1 的位置 从而达到循环指针的目的 后面的head指针同理</span></span><br><span class="line">        tail = (tail + <span class="number">1</span>) % size;</span><br><span class="line">        count++;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//出队操作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">deQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//判断是否为空</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isEmpty</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        head = (head + <span class="number">1</span>) % size;</span><br><span class="line">        count--;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//取头元素</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Front</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isEmpty</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr[head];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Rear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isEmpty</span>())&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//此处需要注意tail的真实位置到底指向的是哪里。</span></span><br><span class="line">        <span class="comment">//注意数据的处理不能取负。</span></span><br><span class="line">        <span class="keyword">return</span> arr[(tail - <span class="number">1</span> + size) % size];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断空</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count==<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断满</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isFull</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size==count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>在对循环队列实现的时候，注意的细节点有很多，需要做到指针循环才能达到整体的循环目的。<br>总的来说还是难度中等。</p>
+]]></content>
+      <categories>
+        <category>Problems</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>浅谈js闭包</title>
     <url>/2021/09/05/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/</url>
     <content><![CDATA[<p>最近在学习 Javascript 高级语法，研究到了一些底层逻辑，有了很多的心得体会。赶紧记录下来！</p>
@@ -634,58 +686,6 @@
       </tags>
   </entry>
   <entry>
-    <title>循环队列的实现</title>
-    <url>/2021/07/28/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>设计你的循环队列实现。 循环队列是一种线性数据结构，其操作表现基于 FIFO（先进先出）原则并且队尾被连接在队首之后以形成一个循环。它也被称为“环形缓冲器”。</p>
-<p>循环队列的一个好处是我们可以利用这个队列之前用过的空间。在一个普通队列里，一旦一个队列满了，我们就不能插入下一个元素，即使在队列前面仍有空间。但是使用循环队列，我们能使用这些空间去存储新的值。</p>
-<p>你的实现应该支持如下操作：</p>
-<p>MyCircularQueue(k): 构造器，设置队列长度为 k 。<br>Front: 从队首获取元素。如果队列为空，返回 -1 。<br>Rear: 获取队尾元素。如果队列为空，返回 -1 。<br>enQueue(value): 向循环队列插入一个元素。如果成功插入则返回真。<br>deQueue(): 从循环队列中删除一个元素。如果成功删除则返回真。<br>isEmpty(): 检查循环队列是否为空。<br>isFull(): 检查循环队列是否已满。</p>
-<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/design-circular-queue">https://leetcode-cn.com/problems/design-circular-queue</a></p>
-<h3 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h3><p>MyCircularQueue circularQueue = new MyCircularQueue(3); // 设置长度为 3<br>circularQueue.enQueue(1);  // 返回 true<br>circularQueue.enQueue(2);  // 返回 true<br>circularQueue.enQueue(3);  // 返回 true<br>circularQueue.enQueue(4);  // 返回 false，队列已满<br>circularQueue.Rear();  // 返回 3<br>circularQueue.isFull();  // 返回 true<br>circularQueue.deQueue();  // 返回 true<br>circularQueue.enQueue(4);  // 返回 true<br>circularQueue.Rear();  // 返回 4</p>
-<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><ol>
-<li>首先要明白循环队列的原理</li>
-<li>如何设计循环队列中的两个指针</li>
-<li>细节处理</li>
-</ol>
-<p>循环队列原理<br><a href="https://www.bilibili.com/video/BV1yx411e7nb?from=search&amp;seid=13632348157331521482/">https://www.bilibili.com/video/BV1yx411e7nb?from=search&amp;seid=13632348157331521482/</a></p>
-<h3 id="实现难点："><a href="#实现难点：" class="headerlink" title="实现难点："></a>实现难点：</h3><ol>
-<li>为什么要在 eg：head（head+1）% size 取模？</li>
-<li>为什么 get tail 的时候不能直接返回？</li>
-<li>细节处理</li>
-</ol>
-<h3 id="实现代码："><a href="#实现代码：" class="headerlink" title="实现代码："></a>实现代码：</h3><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCircularQueue</span> &#123;</span></span><br><span class="line">    <span class="comment">//构造原始数组</span></span><br><span class="line">    <span class="keyword">int</span>[] arr;</span><br><span class="line">    <span class="comment">//数组长度</span></span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">    <span class="comment">//头指针，记录循环列表的头部</span></span><br><span class="line">    <span class="keyword">int</span> head;</span><br><span class="line">    <span class="comment">//尾指针，记录循环列表的尾部</span></span><br><span class="line">    <span class="keyword">int</span> tail;</span><br><span class="line">    <span class="comment">//计数器，记录总共有多少个元素</span></span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造器，将原始的数组arr转化为实体，以及一些变量的初始化</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyCircularQueue</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        arr = <span class="keyword">new</span> <span class="keyword">int</span>[k];</span><br><span class="line">        size = k;</span><br><span class="line">        head = <span class="number">0</span>;</span><br><span class="line">        tail = <span class="number">0</span>;</span><br><span class="line">        count = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//入队操作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">enQueue</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//先判断队列是否已满。</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isFull</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[tail] = value;</span><br><span class="line">        <span class="comment">//关键点！此处的指针也应该跟着循环，不能说到了数组的size（最大长度）就一直无限延续</span></span><br><span class="line">        <span class="comment">//所以这里需要取模运算&quot;%&quot; 例：k=size=7  tail=7 tail=（7+1%7=1 所以下次tail</span></span><br><span class="line">        <span class="comment">//的位置就在下角标为 1 的位置 从而达到循环指针的目的 后面的head指针同理</span></span><br><span class="line">        tail = (tail + <span class="number">1</span>) % size;</span><br><span class="line">        count++;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//出队操作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">deQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//判断是否为空</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isEmpty</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        head = (head + <span class="number">1</span>) % size;</span><br><span class="line">        count--;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//取头元素</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Front</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isEmpty</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr[head];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Rear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isEmpty</span>())&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//此处需要注意tail的真实位置到底指向的是哪里。</span></span><br><span class="line">        <span class="comment">//注意数据的处理不能取负。</span></span><br><span class="line">        <span class="keyword">return</span> arr[(tail - <span class="number">1</span> + size) % size];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断空</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count==<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断满</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isFull</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size==count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>在对循环队列实现的时候，注意的细节点有很多，需要做到指针循环才能达到整体的循环目的。<br>总的来说还是难度中等。</p>
-]]></content>
-      <categories>
-        <category>Problems</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于大三一年的计划</title>
-    <url>/2021/07/25/%E5%85%B3%E4%BA%8E%E5%A4%A7%E4%B8%89%E4%B8%80%E5%B9%B4%E7%9A%84%E8%AE%A1%E5%88%92/</url>
-    <content><![CDATA[<p>大三这一年真的是无比关键.想着明年的今天就是我实习的日子.心里多少还是有些焦虑。</p>
-<h3 id="回顾自身："><a href="#回顾自身：" class="headerlink" title="回顾自身："></a>回顾自身：</h3><p>大一光顾着玩耍，等到大一暑假的时候突然感觉”玩的索然无味“玩的甚至有点空虚。觉得这不是自己想要的生活。于是放下了我喜欢的游戏。打开了哔哩哔哩，搜起了关于 Java 的教学视频，我还记着我第一次装 Jdk 第一次配置环境变量的时候的一脸懵逼。（这和我学的 C 不一样呀）好奇心促使我继续坚持学习了下去。就这样，我听着尚硅谷的宋红康老师的 Java 课程度过了第一个充实的暑假，也是在那个暑假，我渐渐地明白了，计算机的路，我才刚刚开始。等到了大二，我渐渐尝试着做一些简单的静态页面，跟着做一些简单的 JavaWeb 项目。当我第一次在我自己的数据库接收到前端页面发来的数据的时候，我真的无比激动！这真的是一件很有成就感的事情！<br>到了大二的下学期，在好朋友的指引下，我渐渐接触一些更深层次的东西，我学习了 CoderWhy 老师的 Vue，学完了 Vue 我也深刻体会到组件化开发的便利性。真的佩服我们的尤大佬！能开发出这么好的框架！我什么时候才能到达他这种能力呀！<br>大二这一年，是我学习进步最快的一年，我渐渐明白到了真正的差距到底有多大。所以我想在我大三这一年，有计划有目标地进行学习！争取在一年后的今天能取得互联网大厂的 offer！</p>
-<h3 id="大三规划："><a href="#大三规划：" class="headerlink" title="大三规划："></a>大三规划：</h3><h4 id="大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。"><a href="#大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。" class="headerlink" title="大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。"></a>大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。</h4><h4 id="具体目标，步骤"><a href="#具体目标，步骤" class="headerlink" title="具体目标，步骤:"></a>具体目标，步骤:</h4><ol>
-<li>复习巩固计算机原理，数据结构等计算机基础。（巩固基础）</li>
-<li>leetcode 坚持每天刷题。（巩固基础）</li>
-<li>学习 Node.js 以达到能够做出前后端分离的全栈完整项目。（完善自己的技术面）</li>
-<li>学习 uniapp 或 flutter 以达到跨平台，多处运用的目的。（完善自己的技术面）</li>
-<li>深入研究 Javascript，Vue 的底层逻辑，以及源码。以达到一定的技术深度。（提高自己技术深度）</li>
-<li>多做项目，多参加比赛。提高自己的眼界，技术的多样性，学习别人的优点，改善自己的不足。（提高自己技术深度）</li>
-</ol>
-]]></content>
-      <categories>
-        <category>CodeLife</category>
-      </categories>
-      <tags>
-        <tag>规划</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>通过node如何创建一个接口</title>
     <url>/2021/08/31/%E9%80%9A%E8%BF%87node%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8E%A5%E5%8F%A3/</url>
     <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>通过 node.js 环境与 Koa 框架，编写一个接口</p>
@@ -759,44 +759,5 @@
       <tags>
         <tag>leetcode</tag>
       </tags>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2021/09/06/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<p>js中有很多高阶函数，能在日常的代码编写工作中提高效率。下面列举一些常用js的数组高阶函数</p>
-<h2 id="FOO数组"><a href="#FOO数组" class="headerlink" title="FOO数组"></a>FOO数组</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> nums = [<span class="number">10</span>, <span class="number">5</span>, <span class="number">11</span>, <span class="number">100</span>, <span class="number">55</span>]</span><br></pre></td></tr></table></figure>
-
-<h3 id="filter-过滤"><a href="#filter-过滤" class="headerlink" title="filter: 过滤"></a>filter: 过滤</h3><p>返回布尔类型  可以传递三个值 item 当前的的元素，index 当前数组下标， arr 当前整个数组</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//数组取偶操作</span></span><br><span class="line"><span class="keyword">var</span> numbers = nums.filter(<span class="function">(<span class="params">item, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item % <span class="number">2</span> == <span class="number">0</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(numbers)</span><br></pre></td></tr></table></figure>
-
-<h3 id="map-映射"><a href="#map-映射" class="headerlink" title="map: 映射"></a>map: 映射</h3><p>对所有的item进行操作</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//对每个item进行*10操作</span></span><br><span class="line"><span class="keyword">var</span> nums2 = nums.map(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item * <span class="number">10</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(nums2)</span><br></pre></td></tr></table></figure>
-
-<h3 id="forEach-迭代"><a href="#forEach-迭代" class="headerlink" title="forEach: 迭代"></a>forEach: 迭代</h3><p>无返回值</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//遍历数组，无返回值！ </span></span><br><span class="line">nums.forEach(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line"> <span class="built_in">console</span>.log(item)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h3 id="find-findIndex-查找"><a href="#find-findIndex-查找" class="headerlink" title="find/findIndex :查找"></a>find/findIndex :查找</h3><p>查找item/返还该item/itemIndex</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> item = nums.find(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item == <span class="number">11</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(item)</span><br></pre></td></tr></table></figure>
-
-<h3 id="reduce-累加"><a href="#reduce-累加" class="headerlink" title="reduce :累加"></a>reduce :累加</h3><p>preValue 前数据;</p>
-<p> 0:基础数据</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//数组累加操作</span></span><br><span class="line"><span class="keyword">var</span> total = nums.reduce(<span class="function">(<span class="params">preValue, item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> preValue + item</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"><span class="built_in">console</span>.log(total)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>js中很多高阶函数，我们还需继续探索。慢慢感受js的魅力！</p>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2021/09/07/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF/</url>
-    <content><![CDATA[<h4 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h4><p>评委老师好，我是面面俱到项目组的组长，下面由我来讲解该项目的主要功能。</p>
-<p>《面面俱到》是一个提供面向市场销售的护肤产品个性化测评平台。《面面俱到》着重于用户的产品体验，对人群进行肤质分类（油皮，混油皮，敏感肌…）。针对不同的人群提供不同的皮肤护理方案。在此系统的帮助下用户可以快速找到适合自己的护肤品。  </p>
-<h4 id="开发技术"><a href="#开发技术" class="headerlink" title="开发技术"></a>开发技术</h4><p>前端：Html5 CSS JavaScript Bootstrap  Vue Vuex VueRouter Axios Webpack Node.js  </p>
-<p>后端：Node.js Koa Mysql </p>
-<p>我们已将项目部署在云端服务器121.5.114.161上，可在线体验相关功能。</p>
-<h4 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h4><p>项目由：首页，测评，种草，我的，四大模块组成。分别实现：用户登录，肤质测评，商品测评，商品种草，护肤品推荐，查询个人信息，查询评论信息等功能。其中涉及用户个性化服务的模块需要登录才能使用。那么下面由我来讲解项目的主要功能：</p>
-<h4 id="项目功能"><a href="#项目功能" class="headerlink" title="项目功能"></a>项目功能</h4><p>登陆 肤质测评 个人信息 护肤品大全 护肤品推荐 商品页面 商品种草 评论 展示评论 种草</p>
-]]></content>
   </entry>
 </search>
