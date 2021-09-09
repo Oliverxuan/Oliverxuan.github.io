@@ -88,8 +88,8 @@
   <entry>
     <title>Js中的This指向</title>
     <url>/2021/09/08/Js%E4%B8%AD%E7%9A%84This%E6%8C%87%E5%90%91/</url>
-    <content><![CDATA[<h1 id="Js-中什么是-This？"><a href="#Js-中什么是-This？" class="headerlink" title="Js 中什么是 This？"></a>Js 中什么是 This？</h1><h2 id="为什么需要-this"><a href="#为什么需要-this" class="headerlink" title="为什么需要 this?"></a>为什么需要 this?</h2><p>学过 Java 的都明白，this 出现于类的调用中，我们常常可以用 this.的方式调用类的属性，方法。</p>
-<p>但是 Js，this 的用法可比 Java 中更灵活。</p>
+    <content><![CDATA[<h1 id="Js-中什么是-This？"><a href="#Js-中什么是-This？" class="headerlink" title="Js 中什么是 This？"></a>Js 中什么是 This？</h1><h2 id="为什么需要-this"><a href="#为什么需要-this" class="headerlink" title="为什么需要 this?"></a>为什么需要 this?</h2><p>在 Java 中 this 常用在关于类的操作中，我们常常可以用 this.的方式调用类的属性，方法。</p>
+<p>相对于 Java。 Js 中的 this 用法可比 Java 中更灵活。</p>
 <p>正也是因为灵活，让 Js 中的 this 常常让人摸不清头脑。</p>
 <p>在 Js 中我们可以通过 this 方法，在不同的情况下，拿到不同的对象。有可能是全局对象(window)，也有可能是一个 Obj 对象,或者我们可以直接给我们的 this 指定绑定上一个对象。</p>
 <h2 id="this-指向什么呢？"><a href="#this-指向什么呢？" class="headerlink" title="this 指向什么呢？"></a>this 指向什么呢？</h2><ul>
@@ -258,6 +258,39 @@
       </tags>
   </entry>
   <entry>
+    <title>Js中的this练习题</title>
+    <url>/2021/09/09/Js%E4%B8%AD%E7%9A%84this%E7%BB%83%E4%B9%A0%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="习题："><a href="#习题：" class="headerlink" title="习题："></a>习题：</h1><h2 id="练习题-1"><a href="#练习题-1" class="headerlink" title="练习题 1:"></a>练习题 1:</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person&#x27;</span>,</span><br><span class="line">  <span class="attr">sayName</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> sss = person.sayName</span><br><span class="line">  sss()</span><br><span class="line">  person.sayName()</span><br><span class="line">  person.sayName()</span><br><span class="line">  ;(b = person.sayName)()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="练习题-2"><a href="#练习题-2" class="headerlink" title="练习题 2:"></a>练习题 2:</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person1&#x27;</span>,</span><br><span class="line">  <span class="attr">foo1</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo2</span>: <span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="built_in">this</span>.name),</span><br><span class="line">  <span class="attr">foo3</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo4</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person2 = &#123; <span class="attr">name</span>: <span class="string">&#x27;person2&#x27;</span> &#125;</span><br><span class="line"></span><br><span class="line">person1.foo1()</span><br><span class="line">person1.foo1.call(person2)</span><br><span class="line"></span><br><span class="line">person1.foo2()</span><br><span class="line">person1.foo2.call(person2)</span><br><span class="line"></span><br><span class="line">person1.foo3()()</span><br><span class="line">person1.foo3.call(person2)()</span><br><span class="line">person1.foo3().call(person2)</span><br><span class="line"></span><br><span class="line">person1.foo4()()</span><br><span class="line">person1.foo4.call(person2)()</span><br><span class="line">person1.foo4().call(person2)</span><br></pre></td></tr></table></figure>
+
+<h2 id="练习题-3"><a href="#练习题-3" class="headerlink" title="练习题 3:"></a>练习题 3:</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">  ;(<span class="built_in">this</span>.foo1 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">  &#125;),</span><br><span class="line">    (<span class="built_in">this</span>.foo2 = <span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)),</span><br><span class="line">    (<span class="built_in">this</span>.foo3 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;),</span><br><span class="line">    (<span class="built_in">this</span>.foo4 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">person1.foo1()</span><br><span class="line">person1.foo1.call(person2)</span><br><span class="line"></span><br><span class="line">person1.foo2()</span><br><span class="line">person1.foo2.call(person2)</span><br><span class="line"></span><br><span class="line">person1.foo3()()</span><br><span class="line">person1.foo3.call(person2)()</span><br><span class="line">person1.foo3().call(person2)</span><br><span class="line"></span><br><span class="line">person1.foo4()()</span><br><span class="line">person1.foo4.call(person2)()</span><br><span class="line">person1.foo4().call(person2)</span><br></pre></td></tr></table></figure>
+
+<h2 id="练习题-4"><a href="#练习题-4" class="headerlink" title="练习题 4:"></a>练习题 4:</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">  <span class="built_in">this</span>.obj = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">    <span class="attr">foo1</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">foo2</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">person1.obj.foo1()()</span><br><span class="line">person1.obj.foo1.call(person2)()</span><br><span class="line">person1.obj.foo1().call(person2)</span><br><span class="line"></span><br><span class="line">person1.obj.foo2()()</span><br><span class="line">person1.obj.foo2.call(person2)()</span><br><span class="line">person1.obj.foo2().call(person2)</span><br><span class="line"></span><br><span class="line"><span class="comment">//上层作用域的理解</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">  <span class="attr">foo</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 上层作用域是全局</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="习题题解："><a href="#习题题解：" class="headerlink" title="习题题解："></a>习题题解：</h1><h2 id="练习题-1-1"><a href="#练习题-1-1" class="headerlink" title="练习题 1:"></a>练习题 1:</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person&#x27;</span>,</span><br><span class="line">  <span class="attr">sayName</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> sss = person.sayName</span><br><span class="line">  sss() <span class="comment">//window 默认绑定，独立函数调用</span></span><br><span class="line"></span><br><span class="line">  person.sayName() <span class="comment">//person 隐式绑定，通过person调用sayName（）</span></span><br><span class="line"></span><br><span class="line">  person.sayName() <span class="comment">//person 隐式绑定，通过person调用sayName（），</span></span><br><span class="line">  <span class="comment">//实质上（）没有用，本身就是一个整体，只是用来混淆视听。</span></span><br><span class="line">  ;(b = person.sayName)() <span class="comment">//window 默认绑定，独立函数调用，b接收了sayName（）后被独立调用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="练习题-2-1"><a href="#练习题-2-1" class="headerlink" title="练习题 2:"></a>练习题 2:</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;person1&#x27;</span>,</span><br><span class="line">  <span class="attr">foo1</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo2</span>: <span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="built_in">this</span>.name),</span><br><span class="line">  <span class="attr">foo3</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">foo4</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person2 = &#123; <span class="attr">name</span>: <span class="string">&#x27;person2&#x27;</span> &#125;</span><br><span class="line"></span><br><span class="line">person1.foo1() <span class="comment">//person1 隐式绑定，通过person1来调用函数</span></span><br><span class="line"></span><br><span class="line">person1.foo1.call(person2) <span class="comment">//person2 显式绑定，首先拿到了foo1的函数体，再通过call方法调用，																												//其中指定绑定了this为person2</span></span><br><span class="line"></span><br><span class="line">person1.foo2() <span class="comment">//window  默认绑定，由于foo2是箭头函数，箭头函数不接受this对象，向上层寻找，上层是对象。</span></span><br><span class="line"><span class="comment">//由于对象没有this指定，则它的this就指向了全局</span></span><br><span class="line"></span><br><span class="line">person1.foo2.call(person2) <span class="comment">//window  默认绑定，拿到foo2后通过call（）调用，但是箭头函数不接受this对象，故为window</span></span><br><span class="line"></span><br><span class="line">person1.foo3()() <span class="comment">//window  独立函数调用，通过person1拿到foo3函数体后，函数再执行。相当于是函数的独立调用</span></span><br><span class="line"></span><br><span class="line">person1.foo3.call(person2)() <span class="comment">//person2 首先拿到了foo3函数，通过call我们拿到了return 的函数 再执行，相当于独立调用。</span></span><br><span class="line"></span><br><span class="line">person1.foo3().call(person2) <span class="comment">//person2 显式绑定，通过foo3（）拿到了return函数，再通过call绑定了this运行。</span></span><br><span class="line"></span><br><span class="line">person1.foo4()() <span class="comment">//person1 隐式绑定，首先foo4（）拿到了箭头函数，（）再执行，箭头函数中没有this指定</span></span><br><span class="line"><span class="comment">//向上查找，由于上层为foo4（）foo4是由person1 调用执行的，故为隐式绑定</span></span><br><span class="line"></span><br><span class="line">person1.foo4.call(person2)() <span class="comment">//person2 首先拿到了foo4 对其进行call绑定，foo4的作用域中this指向了person2</span></span><br><span class="line"><span class="comment">//然后箭头函数向上查找，foo4的this以及变成了person2</span></span><br><span class="line"></span><br><span class="line">person1.foo4().call(person2) <span class="comment">//person1 首先拿到了箭头函数，由于箭头函数不传值，直接调用，向上查找foo4的作用域</span></span><br><span class="line"><span class="comment">//中this的指向，为person1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="练习题-3-1"><a href="#练习题-3-1" class="headerlink" title="练习题 3:"></a>练习题 3:</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">  ;(<span class="built_in">this</span>.foo1 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">  &#125;),</span><br><span class="line">    (<span class="built_in">this</span>.foo2 = <span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)),</span><br><span class="line">    (<span class="built_in">this</span>.foo3 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;),</span><br><span class="line">    (<span class="built_in">this</span>.foo4 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">person1.foo1() <span class="comment">//perosn1</span></span><br><span class="line">person1.foo1.call(person2) <span class="comment">//perosn2 显式绑定</span></span><br><span class="line"></span><br><span class="line">person1.foo2() <span class="comment">//person1 上级作用域中this指向的是person1</span></span><br><span class="line">person1.foo2.call(person2) <span class="comment">//person1 call并不会改变箭头函数的this指向，上级作用域中this指向的是person1</span></span><br><span class="line"></span><br><span class="line">person1.foo3()() <span class="comment">//window  独立函数调用</span></span><br><span class="line">person1.foo3.call(person2)() <span class="comment">//window  独立函数调用</span></span><br><span class="line">person1.foo3().call(person2) <span class="comment">//person2 显示绑定</span></span><br><span class="line"></span><br><span class="line">person1.foo4()() <span class="comment">//perosn1 隐式绑定，拿到了箭头函数，再（），箭头函数向上查找，上级作用域this为perosn1</span></span><br><span class="line">person1.foo4.call(person2)() <span class="comment">//perosn2 首先改变了foo4的this为perosn2，当箭头函数找的时候上级作用域已改变</span></span><br><span class="line">person1.foo4().call(person2) <span class="comment">//perosn1 call无法改变箭头函数的this绑定值，箭头函数向上查找，为perosn1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="练习题-4-1"><a href="#练习题-4-1" class="headerlink" title="练习题 4:"></a>练习题 4:</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;window&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">  <span class="built_in">this</span>.obj = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">    <span class="attr">foo1</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">foo2</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">&#x27;person1&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person(<span class="string">&#x27;person2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">person1.obj.foo1()() <span class="comment">//window  独立函数调用</span></span><br><span class="line">person1.obj.foo1.call(person2)() <span class="comment">//window  独立函数调用</span></span><br><span class="line">person1.obj.foo1().call(person2) <span class="comment">//perosn2 显示绑定了person2</span></span><br><span class="line"></span><br><span class="line">person1.obj.foo2()() <span class="comment">//obj，首先，我们foo2（），拿到了箭头函数，箭头函数向上查找，foo2是通过obj进行调用的</span></span><br><span class="line"><span class="comment">//所以foo2的作用域中this为obj</span></span><br><span class="line"></span><br><span class="line">person1.obj.foo2.call(person2)() <span class="comment">//perosn2 foo2的this通过call改变了，所以，箭头函数向上查找this时时person2</span></span><br><span class="line">person1.obj.foo2().call(person2) <span class="comment">//obj call无法改变箭头函数的this</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//上层作用域的理解</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">  <span class="attr">foo</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 上层作用域是全局</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>首先感谢 coderwhy 老师提供的练习题与讲解，本文中的题解为个人理解，仅供参考。</p>
+<ol>
+<li>关于箭头函数，不要忘记向上查找的规则</li>
+<li>关于最后的（）要分析好是否为函数的独立调用</li>
+<li>箭头函数向上查找的时候需要判断上层作用域到底是哪一个</li>
+</ol>
+]]></content>
+      <categories>
+        <category>练习题</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Js常用数组高阶函数</title>
     <url>/2021/09/06/Js%E4%B8%AD%E7%9A%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<p>js 中有很多高阶函数，能在日常的代码编写工作中提高效率。下面列举一些常用 js 的数组高阶函数</p>
@@ -330,6 +363,30 @@
       </tags>
   </entry>
   <entry>
+    <title>hexo s 时4000端口被占用问题</title>
+    <url>/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>hexo s 启动的时候遇到了 4000 端口无法创建使用的问题。<br>具体打开 localhost：4000 发现 4000 端口下 hexo 依然在运行！</p>
+<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>(mac 环境):</p>
+<ol>
+<li>sudo lsof -i tcp:4000<br><strong>查询当前端口的进程</strong></li>
+<li>报错：</li>
+</ol>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">COMMAND</span>   PID USER   FD   TYPE             DEVICE SIZE/<span class="literal">OFF</span> NODE NAME</span><br><span class="line"><span class="attribute">node</span>    <span class="number">19087</span> root   <span class="number">23</span>u  IPv<span class="number">6</span> <span class="number">0</span>xe<span class="number">0</span>d<span class="number">367</span>ae<span class="number">3505</span>eeb<span class="number">3</span>      <span class="number">0</span>t<span class="number">0</span>  TCP *:terabase (LISTEN)</span><br></pre></td></tr></table></figure>
+
+<p>发现进程 19087</p>
+<ol start="3">
+<li>sudo kill 19087</li>
+</ol>
+<p><strong>再次打开就没有 hexo 的页面了</strong></p>
+<h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>]]></content>
+      <categories>
+        <category>Obstacle</category>
+      </categories>
+      <tags>
+        <tag>技术踩坑</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>mmjd项目的完成情况</title>
     <url>/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/</url>
     <content><![CDATA[<h2 id="项目进度"><a href="#项目进度" class="headerlink" title="项目进度:"></a>项目进度:</h2><p>最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式</p>
@@ -358,30 +415,6 @@
       </categories>
       <tags>
         <tag>项目</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo s 时4000端口被占用问题</title>
-    <url>/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>hexo s 启动的时候遇到了 4000 端口无法创建使用的问题。<br>具体打开 localhost：4000 发现 4000 端口下 hexo 依然在运行！</p>
-<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>(mac 环境):</p>
-<ol>
-<li>sudo lsof -i tcp:4000<br><strong>查询当前端口的进程</strong></li>
-<li>报错：</li>
-</ol>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">COMMAND</span>   PID USER   FD   TYPE             DEVICE SIZE/<span class="literal">OFF</span> NODE NAME</span><br><span class="line"><span class="attribute">node</span>    <span class="number">19087</span> root   <span class="number">23</span>u  IPv<span class="number">6</span> <span class="number">0</span>xe<span class="number">0</span>d<span class="number">367</span>ae<span class="number">3505</span>eeb<span class="number">3</span>      <span class="number">0</span>t<span class="number">0</span>  TCP *:terabase (LISTEN)</span><br></pre></td></tr></table></figure>
-
-<p>发现进程 19087</p>
-<ol start="3">
-<li>sudo kill 19087</li>
-</ol>
-<p><strong>再次打开就没有 hexo 的页面了</strong></p>
-<h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>]]></content>
-      <categories>
-        <category>Obstacle</category>
-      </categories>
-      <tags>
-        <tag>技术踩坑</tag>
       </tags>
   </entry>
   <entry>
@@ -463,6 +496,27 @@
       </categories>
       <tags>
         <tag>vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于大三一年的计划</title>
+    <url>/2021/07/25/%E5%85%B3%E4%BA%8E%E5%A4%A7%E4%B8%89%E4%B8%80%E5%B9%B4%E7%9A%84%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<p>大三这一年真的是无比关键.想着明年的今天就是我实习的日子.心里多少还是有些焦虑。</p>
+<h3 id="回顾自身："><a href="#回顾自身：" class="headerlink" title="回顾自身："></a>回顾自身：</h3><p>大一光顾着玩耍，等到大一暑假的时候突然感觉”玩的索然无味“玩的甚至有点空虚。觉得这不是自己想要的生活。于是放下了我喜欢的游戏。打开了哔哩哔哩，搜起了关于 Java 的教学视频，我还记着我第一次装 Jdk 第一次配置环境变量的时候的一脸懵逼。（这和我学的 C 不一样呀）好奇心促使我继续坚持学习了下去。就这样，我听着尚硅谷的宋红康老师的 Java 课程度过了第一个充实的暑假，也是在那个暑假，我渐渐地明白了，计算机的路，我才刚刚开始。等到了大二，我渐渐尝试着做一些简单的静态页面，跟着做一些简单的 JavaWeb 项目。当我第一次在我自己的数据库接收到前端页面发来的数据的时候，我真的无比激动！这真的是一件很有成就感的事情！<br>到了大二的下学期，在好朋友的指引下，我渐渐接触一些更深层次的东西，我学习了 CoderWhy 老师的 Vue，学完了 Vue 我也深刻体会到组件化开发的便利性。真的佩服我们的尤大佬！能开发出这么好的框架！我什么时候才能到达他这种能力呀！<br>大二这一年，是我学习进步最快的一年，我渐渐明白到了真正的差距到底有多大。所以我想在我大三这一年，有计划有目标地进行学习！争取在一年后的今天能取得互联网大厂的 offer！</p>
+<h3 id="大三规划："><a href="#大三规划：" class="headerlink" title="大三规划："></a>大三规划：</h3><h4 id="大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。"><a href="#大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。" class="headerlink" title="大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。"></a>大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。</h4><h4 id="具体目标，步骤"><a href="#具体目标，步骤" class="headerlink" title="具体目标，步骤:"></a>具体目标，步骤:</h4><ol>
+<li>复习巩固计算机原理，数据结构等计算机基础。（巩固基础）</li>
+<li>leetcode 坚持每天刷题。（巩固基础）</li>
+<li>学习 Node.js 以达到能够做出前后端分离的全栈完整项目。（完善自己的技术面）</li>
+<li>学习 uniapp 或 flutter 以达到跨平台，多处运用的目的。（完善自己的技术面）</li>
+<li>深入研究 Javascript，Vue 的底层逻辑，以及源码。以达到一定的技术深度。（提高自己技术深度）</li>
+<li>多做项目，多参加比赛。提高自己的眼界，技术的多样性，学习别人的优点，改善自己的不足。（提高自己技术深度）</li>
+</ol>
+]]></content>
+      <categories>
+        <category>CodeLife</category>
+      </categories>
+      <tags>
+        <tag>规划</tag>
       </tags>
   </entry>
   <entry>
@@ -569,27 +623,6 @@
       </categories>
       <tags>
         <tag>node.js</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于大三一年的计划</title>
-    <url>/2021/07/25/%E5%85%B3%E4%BA%8E%E5%A4%A7%E4%B8%89%E4%B8%80%E5%B9%B4%E7%9A%84%E8%AE%A1%E5%88%92/</url>
-    <content><![CDATA[<p>大三这一年真的是无比关键.想着明年的今天就是我实习的日子.心里多少还是有些焦虑。</p>
-<h3 id="回顾自身："><a href="#回顾自身：" class="headerlink" title="回顾自身："></a>回顾自身：</h3><p>大一光顾着玩耍，等到大一暑假的时候突然感觉”玩的索然无味“玩的甚至有点空虚。觉得这不是自己想要的生活。于是放下了我喜欢的游戏。打开了哔哩哔哩，搜起了关于 Java 的教学视频，我还记着我第一次装 Jdk 第一次配置环境变量的时候的一脸懵逼。（这和我学的 C 不一样呀）好奇心促使我继续坚持学习了下去。就这样，我听着尚硅谷的宋红康老师的 Java 课程度过了第一个充实的暑假，也是在那个暑假，我渐渐地明白了，计算机的路，我才刚刚开始。等到了大二，我渐渐尝试着做一些简单的静态页面，跟着做一些简单的 JavaWeb 项目。当我第一次在我自己的数据库接收到前端页面发来的数据的时候，我真的无比激动！这真的是一件很有成就感的事情！<br>到了大二的下学期，在好朋友的指引下，我渐渐接触一些更深层次的东西，我学习了 CoderWhy 老师的 Vue，学完了 Vue 我也深刻体会到组件化开发的便利性。真的佩服我们的尤大佬！能开发出这么好的框架！我什么时候才能到达他这种能力呀！<br>大二这一年，是我学习进步最快的一年，我渐渐明白到了真正的差距到底有多大。所以我想在我大三这一年，有计划有目标地进行学习！争取在一年后的今天能取得互联网大厂的 offer！</p>
-<h3 id="大三规划："><a href="#大三规划：" class="headerlink" title="大三规划："></a>大三规划：</h3><h4 id="大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。"><a href="#大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。" class="headerlink" title="大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。"></a>大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。</h4><h4 id="具体目标，步骤"><a href="#具体目标，步骤" class="headerlink" title="具体目标，步骤:"></a>具体目标，步骤:</h4><ol>
-<li>复习巩固计算机原理，数据结构等计算机基础。（巩固基础）</li>
-<li>leetcode 坚持每天刷题。（巩固基础）</li>
-<li>学习 Node.js 以达到能够做出前后端分离的全栈完整项目。（完善自己的技术面）</li>
-<li>学习 uniapp 或 flutter 以达到跨平台，多处运用的目的。（完善自己的技术面）</li>
-<li>深入研究 Javascript，Vue 的底层逻辑，以及源码。以达到一定的技术深度。（提高自己技术深度）</li>
-<li>多做项目，多参加比赛。提高自己的眼界，技术的多样性，学习别人的优点，改善自己的不足。（提高自己技术深度）</li>
-</ol>
-]]></content>
-      <categories>
-        <category>CodeLife</category>
-      </categories>
-      <tags>
-        <tag>规划</tag>
       </tags>
   </entry>
   <entry>
