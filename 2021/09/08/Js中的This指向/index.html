@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"oliverxuan.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Js 中什么是 This？为什么需要 this?在常见的编程语言中，几乎都有 this 这个关键字（Objective-C 中使用的是 self），但是 JavaScript 中的 this 和常见的面向对象语 言中的 this 不太一样：  常见面向对象的编程语言中，比如 Java、C++、Swift、Dart 等等一系列语言中，this 通常只会出现在类的方法中。 1.也就是你需要有一个类，类">
+  <meta name="description" content="Js 中什么是 This？为什么需要 this?学过 Java 的都明白，this 出现于类的调用中，我们常常可以用 this.的方式调用类的属性，方法。 但是 Js，this 的用法可比 Java 中更灵活。 正也是因为灵活，让 Js 中的 this 常常让人摸不清头脑。 在 Js 中我们可以通过 this 方法，在不同的情况下，拿到不同的对象。有可能是全局对象(window)，也有可能是一个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Js中的This指向">
 <meta property="og:url" content="http://oliverxuan.github.io/2021/09/08/Js%E4%B8%AD%E7%9A%84This%E6%8C%87%E5%90%91/index.html">
 <meta property="og:site_name" content="Oliver-xuan">
-<meta property="og:description" content="Js 中什么是 This？为什么需要 this?在常见的编程语言中，几乎都有 this 这个关键字（Objective-C 中使用的是 self），但是 JavaScript 中的 this 和常见的面向对象语 言中的 this 不太一样：  常见面向对象的编程语言中，比如 Java、C++、Swift、Dart 等等一系列语言中，this 通常只会出现在类的方法中。 1.也就是你需要有一个类，类">
+<meta property="og:description" content="Js 中什么是 This？为什么需要 this?学过 Java 的都明白，this 出现于类的调用中，我们常常可以用 this.的方式调用类的属性，方法。 但是 Js，this 的用法可比 Java 中更灵活。 正也是因为灵活，让 Js 中的 this 常常让人摸不清头脑。 在 Js 中我们可以通过 this 方法，在不同的情况下，拿到不同的对象。有可能是全局对象(window)，也有可能是一个">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-09-08T03:02:23.000Z">
-<meta property="article:modified_time" content="2021-09-08T15:09:35.872Z">
+<meta property="article:modified_time" content="2021-09-09T03:45:21.669Z">
 <meta property="article:author" content="Oliverxuan">
 <meta property="article:tag" content="JavaScript">
 <meta name="twitter:card" content="summary">
@@ -212,10 +212,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-09-08 11:02:23 / 修改时间：23:09:35" itemprop="dateCreated datePublished" datetime="2021-09-08T11:02:23+08:00">2021-09-08</time>
+              <time title="创建时间：2021-09-08 11:02:23" itemprop="dateCreated datePublished" datetime="2021-09-08T11:02:23+08:00">2021-09-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-09 11:45:21" itemprop="dateModified" datetime="2021-09-09T11:45:21+08:00">2021-09-09</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -239,7 +245,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6k</span>
+              <span>6.1k</span>
             </span>
 
         </div>
@@ -251,18 +257,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Js-中什么是-This？"><a href="#Js-中什么是-This？" class="headerlink" title="Js 中什么是 This？"></a>Js 中什么是 This？</h1><h2 id="为什么需要-this"><a href="#为什么需要-this" class="headerlink" title="为什么需要 this?"></a>为什么需要 this?</h2><p>在常见的编程语言中，几乎都有 this 这个关键字（Objective-C 中使用的是 self），但是 JavaScript 中的 this 和常见的面向对象语</p>
-<p>言中的 this 不太一样：</p>
-<ul>
-<li><p>常见面向对象的编程语言中，比如 Java、C++、Swift、Dart 等等一系列语言中，this 通常只会出现在类的方法中。</p>
-<p>1.也就是你需要有一个类，类中的方法（特别是实例方法）中，this 代表的是当前调用对象。</p>
-<p>2.但是 JavaScript 中的 this 更加灵活，无论是它出现的位置还是它代表的含义。</p>
-</li>
-</ul>
+        <h1 id="Js-中什么是-This？"><a href="#Js-中什么是-This？" class="headerlink" title="Js 中什么是 This？"></a>Js 中什么是 This？</h1><h2 id="为什么需要-this"><a href="#为什么需要-this" class="headerlink" title="为什么需要 this?"></a>为什么需要 this?</h2><p>学过 Java 的都明白，this 出现于类的调用中，我们常常可以用 this.的方式调用类的属性，方法。</p>
+<p>但是 Js，this 的用法可比 Java 中更灵活。</p>
+<p>正也是因为灵活，让 Js 中的 this 常常让人摸不清头脑。</p>
+<p>在 Js 中我们可以通过 this 方法，在不同的情况下，拿到不同的对象。有可能是全局对象(window)，也有可能是一个 Obj 对象,或者我们可以直接给我们的 this 指定绑定上一个对象。</p>
 <h2 id="this-指向什么呢？"><a href="#this-指向什么呢？" class="headerlink" title="this 指向什么呢？"></a>this 指向什么呢？</h2><ul>
-<li><p>在全局的情况下，this 指向 window</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">this</span>) <span class="comment">//window</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;Oliver&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name)</span><br></pre></td></tr></table></figure></li>
-<li><p>但是，开发中很少直接在全局作用于下去使用 this，通常都是在<strong>函数中使用</strong>。</p>
+<li><p>在<strong>全局</strong>的情况下，this 指向 window</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">this</span>) <span class="comment">//window</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;Oliver&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">this</span>.name) <span class="comment">//oliver</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name) <span class="comment">//oliver</span></span><br></pre></td></tr></table></figure></li>
+<li><p>但是，开发中很少直接在全局作用域下去使用 this，通常都是在<strong>函数中使用</strong>。</p>
 <ol>
 <li><p>所有的函数在被调用时，都会创建一个执行上下文：</p>
 </li>
@@ -275,29 +277,32 @@
 </ul>
 <p>我们先来看一个让人困惑的问题：</p>
 <p>定义一个函数，我们采用三种不同的方式对它进行调用，它产生了<strong>三种不同</strong>的结果</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo() <span class="comment">//window</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">  <span class="attr">foo</span>: foo,</span><br><span class="line">&#125;</span><br><span class="line">obj.foo() <span class="comment">//obj对象</span></span><br><span class="line"></span><br><span class="line">foo.apply(<span class="string">&#x27;abc&#x27;</span>) <span class="comment">//abc</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo() <span class="comment">//window  默认绑定</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">  <span class="attr">foo</span>: foo,</span><br><span class="line">&#125;</span><br><span class="line">obj.foo() <span class="comment">//obj对象  隐式绑定</span></span><br><span class="line"></span><br><span class="line">foo.apply(<span class="string">&#x27;abc&#x27;</span>) <span class="comment">//abc  显式绑定</span></span><br></pre></td></tr></table></figure>
 
 <p>这个的案例可以给我们什么样的启示呢？</p>
 <ol>
 <li><p>函数在调用时，JavaScript 会默认给 this 绑定一个值；</p>
 </li>
-<li><p>this 的绑定和定义的位置（编写的位置）没有关系；</p>
+<li><p>this 的绑定和<strong>定义</strong>的位置（编写的位置）没有关系；</p>
 </li>
-<li><p>this 的绑定和调用方式以及调用的位置有关系；</p>
+<li><p>this 的绑定和<strong>调用方式</strong>以及<strong>调用的位置</strong>有关系；</p>
 </li>
-<li><p>this 是在运行时被绑定的；</p>
+<li><p>this 是在<strong>运行时被绑定</strong>的；</p>
 </li>
 </ol>
-<h3 id="重要结论："><a href="#重要结论：" class="headerlink" title="重要结论："></a>重要结论：</h3><p><strong><em>this 的指向，和它所处的位置无关和调用位置有关！</em></strong></p>
+<h3 id="重要结论："><a href="#重要结论：" class="headerlink" title="重要结论："></a>重要结论：</h3><ol>
+<li><strong><em>this 的指向，和它所处的位置无关和调用位置有关！</em></strong></li>
+<li><strong>this 在被调用运行的时候，才会给他 this 绑定一个值</strong>！</li>
+</ol>
 <h3 id="this-绑定规则："><a href="#this-绑定规则：" class="headerlink" title="this 绑定规则："></a>this 绑定规则：</h3><h4 id="绑定一：默认绑定"><a href="#绑定一：默认绑定" class="headerlink" title="绑定一：默认绑定"></a>绑定一：默认绑定</h4><h4 id="绑定二：隐式绑定"><a href="#绑定二：隐式绑定" class="headerlink" title="绑定二：隐式绑定"></a>绑定二：隐式绑定</h4><h4 id="绑定三：显示绑定"><a href="#绑定三：显示绑定" class="headerlink" title="绑定三：显示绑定"></a>绑定三：显示绑定</h4><h4 id="绑定四：new-绑定"><a href="#绑定四：new-绑定" class="headerlink" title="绑定四：new 绑定"></a>绑定四：new 绑定</h4><h2 id="规则一：默认绑定"><a href="#规则一：默认绑定" class="headerlink" title="规则一：默认绑定"></a><strong>规则一：默认绑定</strong></h2><h3 id="什么情况下使用默认绑定呢？"><a href="#什么情况下使用默认绑定呢？" class="headerlink" title="什么情况下使用默认绑定呢？"></a>什么情况下使用默认绑定呢？</h3><p><strong>独立的</strong>函数调用</p>
 <p>我们可以理解成<strong>函数没有被绑定到某个对象上进行调用</strong></p>
 <p><em>下面是一些默认绑定演示：</em></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. window</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br><span class="line"></span><br><span class="line"><span class="comment">//2.  window</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">  foo1()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo3</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">  foo2()</span><br><span class="line">&#125;</span><br><span class="line">foo3()</span><br><span class="line"></span><br><span class="line"><span class="comment">//3. window</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">  <span class="attr">foo</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> bar = obj.foo</span><br><span class="line">bar()</span><br><span class="line"></span><br><span class="line"><span class="comment">//5. window</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fn = foo()</span><br><span class="line">fn()</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. window</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br><span class="line"></span><br><span class="line"><span class="comment">//2.  window</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">  foo1()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo3</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">  foo2()</span><br><span class="line">&#125;</span><br><span class="line">foo3()</span><br><span class="line"></span><br><span class="line"><span class="comment">//3. window</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">  <span class="attr">foo</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> bar = obj.foo <span class="comment">//将该对象中的方法传递给了bar  那么其实bar就是一个单独调用</span></span><br><span class="line">bar()</span><br><span class="line"></span><br><span class="line"><span class="comment">//5. window</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fn = foo() <span class="comment">//实质上就是在调用bar 然后将bar传递给了fn</span></span><br><span class="line">fn()</span><br></pre></td></tr></table></figure>
 
 <p><strong>默认绑定，独立函数调用</strong></p>
 <h2 id="规则二：隐式绑定"><a href="#规则二：隐式绑定" class="headerlink" title="规则二：隐式绑定"></a>规则二：隐式绑定</h2><p>另外一种比较常见的调用方式是<strong>通过某个对象进行调用</strong>的：</p>
 <p>也就是它的调用位置中，是<strong>通过某个对象发起的函数调用。</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">19</span>,</span><br><span class="line">  <span class="attr">fn</span>: foo,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用对象调用的方式来执行函数。</span></span><br><span class="line">obj.fn()</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">19</span>,</span><br><span class="line">  <span class="attr">fn</span>: foo,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用对象调用的方式来执行函数。</span></span><br><span class="line">obj.fn() <span class="comment">//在对象里，将foo函数传递给了fn 实质上就是通过obj在调用</span></span><br></pre></td></tr></table></figure>
 
 <p>隐式绑定有前提条件：</p>
 <ol>
@@ -412,6 +417,7 @@
 </ol>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>JS 中的 this 十分灵活，需要结合各种情况进行分析。但是万变不离其宗。掌握特性，方可以一眼看穿真相！</p>
 <p>JS 的优点是灵活，缺点也是灵活。想要真正掌握 JS 中的晦涩语法。还需要继续修炼内功</p>
+<p>感谢 coderwhy 老师的课程以及公众号，能够让我细节地，全面地学习 JS</p>
 
     </div>
 
@@ -575,7 +581,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">11.1k</span> 字
+      博客全站共： <span class="post-count">11.2k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
