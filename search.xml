@@ -396,6 +396,113 @@
       </tags>
   </entry>
   <entry>
+    <title>Js纯函数及函数柯里化</title>
+    <url>/2021/09/14/Js%E7%BA%AF%E5%87%BD%E6%95%B0%E5%8F%8A%E5%87%BD%E6%95%B0%E6%9F%AF%E9%87%8C%E5%8C%96/</url>
+    <content><![CDATA[<p>在函数式编程中，有一个非常重要的概念：纯函数。</p>
+<p>那究竟什么是纯函数呢？</p>
+<h1 id="纯函数"><a href="#纯函数" class="headerlink" title="纯函数"></a>纯函数</h1><h2 id="纯函数的定义"><a href="#纯函数的定义" class="headerlink" title="纯函数的定义"></a>纯函数的定义</h2><ul>
+<li>维基百科：<ol>
+<li>此函数在<strong>相同的输入值</strong>时需<strong>产生相同的输出</strong>。</li>
+<li>函数的<strong>输出和输入值以外的其他隐藏信息或状态无关</strong>，也和<strong>I/O 设备产生的外部输出</strong>无关。</li>
+<li>该函数<strong>不能有语义上可观察的函数副作用</strong>，诸如<strong>“触发事件”</strong>，<strong>使输出设备输出，或更改输出值以外物件的内容</strong>等。</li>
+</ol>
+</li>
+</ul>
+<p>维基百科的解释很严谨，但是未免有些晦涩。</p>
+<ul>
+<li>我的理解：<ol>
+<li>一个函数，有确定的输入，一定会产生确定的输出。</li>
+<li>我们在执行函数的时候，不会对外界产生任何的副作用。</li>
+</ol>
+</li>
+</ul>
+<h2 id="副作用"><a href="#副作用" class="headerlink" title="副作用"></a>副作用</h2><p><strong><em>副作用：比如改变了函数外的变量，造成全局变量被篡改。</em></strong></p>
+<p>eg：slice 与 splice 的比较</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">// slice函数是一个纯函数：</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. slice只要给它传入一个start/end, 那么对于同一个数组来说, 它会给我们返回确定的值</span></span><br><span class="line"><span class="comment">// 2. slice函数本身它是不会修改原来的数组</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// slice -&gt; this</span></span><br><span class="line"><span class="comment">// slice函数本身就是一个纯函数</span></span><br><span class="line"><span class="comment">// var new numbers1 =  numbers.slice(0, 3)</span></span><br><span class="line"><span class="comment">// console.log(numbers1)</span></span><br><span class="line"><span class="comment">// console.log( numbers)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// splice函数不是一个纯函数：</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// splice在执行时, 有修改掉调用的数组对象本身, 修改的这个操作就是产生的副作用</span></span><br><span class="line"><span class="keyword">var</span> numbers2 = numbers.splice(<span class="number">2</span>)</span><br><span class="line"><span class="built_in">console</span>.log(numbers2)</span><br><span class="line"><span class="built_in">console</span>.log(numbers)</span><br></pre></td></tr></table></figure>
+
+<p>纯函数的理解很简单，只需要关注好重点就可以了。</p>
+<h1 id="函数的柯里化"><a href="#函数的柯里化" class="headerlink" title="函数的柯里化"></a>函数的柯里化</h1><h2 id="函数柯里化"><a href="#函数柯里化" class="headerlink" title="函数柯里化"></a>函数柯里化</h2><p>用我自己的话简单来说：就是把一件事情进行拆分。</p>
+<p>可以把这个过程看成造车：</p>
+<p>函数柯里化就是自动化的流水线，流水线的工人各司其职共同造一台车。</p>
+<p>普通函数则是一个工人去造一台车。</p>
+<p>这样函数柯里化的优点就很明显了：当某个环节的工人出现问题的时候，我们可以快速找到该员工，进行批评教育。</p>
+<p>但是如果是普通函数，那么我们则需要从一个人的身上慢慢找问题。整个工作也都停了。</p>
+<h3 id="函数演示"><a href="#函数演示" class="headerlink" title="函数演示"></a>函数演示</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//原函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Psum</span>(<span class="params">x, y, z</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x + y + z</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//函数柯里化以后</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">y</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">z</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> x + y + z</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这么一看貌似柯里化真的就是自找麻烦一样，但是如果这里不是简单的相加操作呢？</p>
+<p>在真实的开发环境里，可能我们这的一个相加操作就是几十行业务代码。如果把它全部放在一个函数里，维护成本，可阅读性真的就太差了。</p>
+<h2 id="单一职责"><a href="#单一职责" class="headerlink" title="单一职责"></a>单一职责</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">x, y, z</span>) </span>&#123;</span><br><span class="line">  x = x + <span class="number">2</span></span><br><span class="line">  y = y * <span class="number">2</span></span><br><span class="line">  z = z * z</span><br><span class="line">  <span class="keyword">return</span> x + y + z</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(add(<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">  x = x + <span class="number">2</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">y</span>) </span>&#123;</span><br><span class="line">    y = y * <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">z</span>) </span>&#123;</span><br><span class="line">      z = z * z</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> x + y + z</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(sum(<span class="number">10</span>)(<span class="number">20</span>)(<span class="number">30</span>))</span><br></pre></td></tr></table></figure>
+
+<p>从这段代码中，我们可以看出 在 sum 函数中，每一个函数都是各司其职，专注干好自己的事情。等所有都处理好了。再统一返回。</p>
+<h2 id="逻辑复用"><a href="#逻辑复用" class="headerlink" title="逻辑复用"></a>逻辑复用</h2><p>假如我们需要设计一个函数，实现传入两个参数，第一个为指定基础数字 X，另一个是与 X 相加的数字。</p>
+<p>我们很快可以用传统方法写出：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">m, n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> m + n</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 假如在程序中,我们经常需要把5和另外一个数字进行相加</span></span><br><span class="line"><span class="built_in">console</span>.log(sum(<span class="number">5</span>, <span class="number">10</span>))</span><br><span class="line"><span class="built_in">console</span>.log(sum(<span class="number">5</span>, <span class="number">14</span>))</span><br><span class="line"><span class="built_in">console</span>.log(sum(<span class="number">5</span>, <span class="number">1100</span>))</span><br><span class="line"><span class="built_in">console</span>.log(sum(<span class="number">5</span>, <span class="number">555</span>))</span><br></pre></td></tr></table></figure>
+
+<p>但是未免有点繁琐</p>
+<p>所以我们在此引出，函数柯里化，逻辑复用</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//创建一个makeAdder函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeAdder</span>(<span class="params">count</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//在此时如果只传入了一个参数，那么我们目前只确定了 return function中的count 但是</span></span><br><span class="line">  <span class="comment">//num的值我们还未确定。</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> count + num</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//传入count值，创造makeAdder5的函数</span></span><br><span class="line"><span class="keyword">var</span> adder5 = makeAdder(<span class="number">5</span>)</span><br><span class="line">adder5(<span class="number">10</span>)</span><br><span class="line">adder5(<span class="number">14</span>)</span><br><span class="line">adder5(<span class="number">1100</span>)</span><br><span class="line">adder5(<span class="number">555</span>)</span><br></pre></td></tr></table></figure>
+
+<p>从这里开始，我们就可以慢慢体会函数柯里化的好处了！</p>
+<h1 id="手写柯里化函数"><a href="#手写柯里化函数" class="headerlink" title="手写柯里化函数"></a>手写柯里化函数</h1><p>首先 我们可以从最外层，最浅显的入手</p>
+<ul>
+<li>传入一个函数，返回一个函数</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myCurrying</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">curried</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> curried</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>接收参数</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myCurrying</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">curried</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//判断args接收的参数是否已经足够   fn.length是函数fn里接受的参数个数</span></span><br><span class="line">    <span class="keyword">if</span> (args.length &gt;= fn.length) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> curried</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>情况一： fn（）直调</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myCurrying</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">curried</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (args.length &gt;= fn.length) &#123;</span><br><span class="line">      <span class="comment">//在此处如果直接使用fn（）调用，如果之后是使用call的方式调用新函数，则fn可能并不是之前的fn。而是被call指定了其他的this</span></span><br><span class="line">      fn(...args)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> curried</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>apply /call 调用</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myCurrying</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">curried</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (args.length &gt;= fn.length) &#123;</span><br><span class="line">      <span class="comment">//此处直接显示绑定this，该this为curried对象</span></span><br><span class="line">      <span class="keyword">return</span> fn.apply(<span class="built_in">this</span>, args)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> curried</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>没有传入足够参数时，执行 else</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myCurrying</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">curried</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (args.length &gt;= fn.length) &#123;</span><br><span class="line">      <span class="keyword">return</span> fn.apply(<span class="built_in">this</span>, args)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">//递归思想 curried2接收剩余参数</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">curried2</span>(<span class="params">...args2</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//再次调用curried 传入this=&gt;curried 解构拼接两个参数</span></span><br><span class="line">        <span class="keyword">return</span> curried.apply(<span class="built_in">this</span>, [...args, ...args2])</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//返回curried2方法 为下次接收参数做准备</span></span><br><span class="line">      <span class="keyword">return</span> curried2</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//返回新函数</span></span><br><span class="line">  <span class="keyword">return</span> curried</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过这次学习，深刻理解了纯函数，函数的柯里化。也自己尝试着实现了函数的柯里化。希望能在后续的开发学习中能及时运用这些方法。</p>
+]]></content>
+      <categories>
+        <category>底层逻辑</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo s 时4000端口被占用问题</title>
+    <url>/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>hexo s 启动的时候遇到了 4000 端口无法创建使用的问题。<br>具体打开 localhost：4000 发现 4000 端口下 hexo 依然在运行！</p>
+<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>(mac 环境):</p>
+<ol>
+<li>sudo lsof -i tcp:4000<br><strong>查询当前端口的进程</strong></li>
+<li>报错：</li>
+</ol>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">COMMAND</span>   PID USER   FD   TYPE             DEVICE SIZE/<span class="literal">OFF</span> NODE NAME</span><br><span class="line"><span class="attribute">node</span>    <span class="number">19087</span> root   <span class="number">23</span>u  IPv<span class="number">6</span> <span class="number">0</span>xe<span class="number">0</span>d<span class="number">367</span>ae<span class="number">3505</span>eeb<span class="number">3</span>      <span class="number">0</span>t<span class="number">0</span>  TCP *:terabase (LISTEN)</span><br></pre></td></tr></table></figure>
+
+<p>发现进程 19087</p>
+<ol start="3">
+<li>sudo kill 19087</li>
+</ol>
+<p><strong>再次打开就没有 hexo 的页面了</strong></p>
+<h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>]]></content>
+      <categories>
+        <category>Obstacle</category>
+      </categories>
+      <tags>
+        <tag>技术踩坑</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>axios拦截</title>
     <url>/2021/08/30/axios%E6%8B%A6%E6%88%AA/</url>
     <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>实现在 axios 每次请求/响应时，对请求/响应进行相关的处理。我们把这种处理方式称之为拦截。</p>
@@ -434,61 +541,6 @@
       </categories>
       <tags>
         <tag>axios</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo s 时4000端口被占用问题</title>
-    <url>/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>hexo s 启动的时候遇到了 4000 端口无法创建使用的问题。<br>具体打开 localhost：4000 发现 4000 端口下 hexo 依然在运行！</p>
-<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>(mac 环境):</p>
-<ol>
-<li>sudo lsof -i tcp:4000<br><strong>查询当前端口的进程</strong></li>
-<li>报错：</li>
-</ol>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">COMMAND</span>   PID USER   FD   TYPE             DEVICE SIZE/<span class="literal">OFF</span> NODE NAME</span><br><span class="line"><span class="attribute">node</span>    <span class="number">19087</span> root   <span class="number">23</span>u  IPv<span class="number">6</span> <span class="number">0</span>xe<span class="number">0</span>d<span class="number">367</span>ae<span class="number">3505</span>eeb<span class="number">3</span>      <span class="number">0</span>t<span class="number">0</span>  TCP *:terabase (LISTEN)</span><br></pre></td></tr></table></figure>
-
-<p>发现进程 19087</p>
-<ol start="3">
-<li>sudo kill 19087</li>
-</ol>
-<p><strong>再次打开就没有 hexo 的页面了</strong></p>
-<h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>]]></content>
-      <categories>
-        <category>Obstacle</category>
-      </categories>
-      <tags>
-        <tag>技术踩坑</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mmjd项目的完成情况</title>
-    <url>/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/</url>
-    <content><![CDATA[<h2 id="项目进度"><a href="#项目进度" class="headerlink" title="项目进度:"></a>项目进度:</h2><p>最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式</p>
-<h2 id="接口功能："><a href="#接口功能：" class="headerlink" title="接口功能："></a>接口功能：</h2><h3 id="不多说了，直接上图！"><a href="#不多说了，直接上图！" class="headerlink" title="不多说了，直接上图！"></a>不多说了，直接上图！</h3><ol>
-<li>后端接口：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/user.png" alt="接口功能图"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/end.png" alt="接口功能图"></li>
-</ol>
-<p>真的是完完整地做完了整个项目的后端接口。从中真的学会了很多！慢慢也熟悉了 Node.js + Koa 开发接口的开发逻辑。</p>
-<ol start="2">
-<li>Mysql：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql1.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql2.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql3.png" alt="mysql"></li>
-</ol>
-<p>从中也重新回忆起了很多的 sql 语句（真的好久不用生疏了！）比如：left join ，json_object….</p>
-<h2 id="前端界面："><a href="#前端界面：" class="headerlink" title="前端界面："></a>前端界面：</h2><p><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/font1.png" alt="font"><br>现在的前端界面真的奇丑无比，等着这两天我调好了我们再看！</p>
-<h2 id="技术栈："><a href="#技术栈：" class="headerlink" title="技术栈："></a>技术栈：</h2><ol>
-<li>前端：Html JavaScript CSS Vue Vuex VueRouter axios Webpack node.js Bootstrap</li>
-<li>后端：node.js Koa mysql</li>
-<li>数据库: mysql</li>
-</ol>
-<h2 id="收获："><a href="#收获：" class="headerlink" title="收获："></a>收获：</h2><p>通过这次完完整整地独自开发前后端的项目，很多东西真的就是要亲自来才能深刻体会！<br>希望自己以后能参与或创造更多的项目！</p>
-<h2 id="开源地址"><a href="#开源地址" class="headerlink" title="开源地址:"></a>开源地址:</h2><ol>
-<li>前端：<br><a href="https://github.com/Oliverxuan/mmjd">https://github.com/Oliverxuan/mmjd</a></li>
-<li>后端：<br><a href="https://github.com/Oliverxuan/MMJD-node">https://github.com/Oliverxuan/MMJD-node</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>CodeLife</category>
-      </categories>
-      <tags>
-        <tag>项目</tag>
       </tags>
   </entry>
   <entry>
@@ -570,6 +622,37 @@
       </categories>
       <tags>
         <tag>vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mmjd项目的完成情况</title>
+    <url>/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/</url>
+    <content><![CDATA[<h2 id="项目进度"><a href="#项目进度" class="headerlink" title="项目进度:"></a>项目进度:</h2><p>最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式</p>
+<h2 id="接口功能："><a href="#接口功能：" class="headerlink" title="接口功能："></a>接口功能：</h2><h3 id="不多说了，直接上图！"><a href="#不多说了，直接上图！" class="headerlink" title="不多说了，直接上图！"></a>不多说了，直接上图！</h3><ol>
+<li>后端接口：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/user.png" alt="接口功能图"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/end.png" alt="接口功能图"></li>
+</ol>
+<p>真的是完完整地做完了整个项目的后端接口。从中真的学会了很多！慢慢也熟悉了 Node.js + Koa 开发接口的开发逻辑。</p>
+<ol start="2">
+<li>Mysql：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql1.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql2.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql3.png" alt="mysql"></li>
+</ol>
+<p>从中也重新回忆起了很多的 sql 语句（真的好久不用生疏了！）比如：left join ，json_object….</p>
+<h2 id="前端界面："><a href="#前端界面：" class="headerlink" title="前端界面："></a>前端界面：</h2><p><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/font1.png" alt="font"><br>现在的前端界面真的奇丑无比，等着这两天我调好了我们再看！</p>
+<h2 id="技术栈："><a href="#技术栈：" class="headerlink" title="技术栈："></a>技术栈：</h2><ol>
+<li>前端：Html JavaScript CSS Vue Vuex VueRouter axios Webpack node.js Bootstrap</li>
+<li>后端：node.js Koa mysql</li>
+<li>数据库: mysql</li>
+</ol>
+<h2 id="收获："><a href="#收获：" class="headerlink" title="收获："></a>收获：</h2><p>通过这次完完整整地独自开发前后端的项目，很多东西真的就是要亲自来才能深刻体会！<br>希望自己以后能参与或创造更多的项目！</p>
+<h2 id="开源地址"><a href="#开源地址" class="headerlink" title="开源地址:"></a>开源地址:</h2><ol>
+<li>前端：<br><a href="https://github.com/Oliverxuan/mmjd">https://github.com/Oliverxuan/mmjd</a></li>
+<li>后端：<br><a href="https://github.com/Oliverxuan/MMJD-node">https://github.com/Oliverxuan/MMJD-node</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>CodeLife</category>
+      </categories>
+      <tags>
+        <tag>项目</tag>
       </tags>
   </entry>
   <entry>
@@ -833,6 +916,43 @@
       </tags>
   </entry>
   <entry>
+    <title>通过node如何创建一个接口</title>
+    <url>/2021/08/31/%E9%80%9A%E8%BF%87node%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8E%A5%E5%8F%A3/</url>
+    <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>通过 node.js 环境与 Koa 框架，编写一个接口</p>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><ul>
+<li>app 文件夹</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;!-- index.js --&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入Koa框架</span></span><br><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">&#x27;koa-bodyparser&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> errorHandler = <span class="built_in">require</span>(<span class="string">&#x27;./error-handle&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="built_in">require</span>(<span class="string">&#x27;../router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//新建Koa实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</span><br><span class="line"></span><br><span class="line">app.use(bodyParser())</span><br><span class="line">useRoutes(app)</span><br><span class="line">app.on(<span class="string">&#x27;error&#x27;</span>, errorHandler)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = app</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>main.js 文件</li>
+</ul>
+<p>main.js 文件一般是程序的主要入口</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入之前创建的app实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="built_in">require</span>(<span class="string">&#x27;./app&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入数据库相关配置</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;./app/database&#x27;</span>)</span><br><span class="line"><span class="comment">//导入相关配置</span></span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">&#x27;./app/config&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建启动服务器</span></span><br><span class="line">app.listen(config.APP_PORT, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`服务器在<span class="subst">$&#123;config.APP_PORT&#125;</span>端口已启动`</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>router 文件夹<br>index.js 文件 主要用来配置 router（路由）相关信息</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入fs插件</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建useRoutes</span></span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="function">(<span class="params">app</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">//自动生成router相关配置</span></span><br><span class="line">  fs.readdirSync(__dirname).forEach(<span class="function">(<span class="params">file</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (file === <span class="string">&#x27;index.js&#x27;</span>) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">const</span> router = <span class="built_in">require</span>(<span class="string">`./<span class="subst">$&#123;file&#125;</span>`</span>)</span><br><span class="line">    app.use(router.routes())</span><br><span class="line">    app.use(router.allowedMethods())</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = useRoutes</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>img.router.js 具体的路由文件</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入koa路由</span></span><br><span class="line"><span class="keyword">const</span> Router = <span class="built_in">require</span>(<span class="string">&#x27;koa-router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//制定接口的路径</span></span><br><span class="line"><span class="keyword">const</span> imgRouter = <span class="keyword">new</span> Router(&#123; <span class="attr">prefix</span>: <span class="string">&#x27;/mmjd&#x27;</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入相关方法/中间件</span></span><br><span class="line"><span class="keyword">const</span> &#123; getImgs,personType,personImgs &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../controller/img.controller&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> &#123; verifyAuth &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../middleware/auth.middleware&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//注册接口，并标明请求方法</span></span><br><span class="line">imgRouter.get(<span class="string">&#x27;/&#x27;</span>, getImgs)</span><br><span class="line">imgRouter.post(<span class="string">&#x27;/personimg&#x27;</span>,verifyAuth,personType,personImgs)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = imgRouter</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>其次就是在 middleware 或者 controller，service 中写具体操作了</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其中还是有很多细节的东西没有掌握好，此点需要以后继续深入研究！</p>
+]]></content>
+      <categories>
+        <category>technology</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>门与墙算法的实现</title>
     <url>/2021/07/29/%E9%97%A8%E4%B8%8E%E5%A2%99%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>你被给定一个  m × n  的二维网格 rooms ，网格中有以下三种可能的初始化值：-1  表示墙或是障碍物 0  表示一扇门<br>INF  无限表示一个空的房间。然后，我们用  231 - 1 = 2147483647  代表  INF。你可以认为通往门的距离总是小于  2147483647  的。<br>你要给每个空房间位上填上该房间到   最近门的距离 ，如果无法到达门，则填  INF  即可。</p>
@@ -868,43 +988,6 @@
       </categories>
       <tags>
         <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>通过node如何创建一个接口</title>
-    <url>/2021/08/31/%E9%80%9A%E8%BF%87node%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8E%A5%E5%8F%A3/</url>
-    <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>通过 node.js 环境与 Koa 框架，编写一个接口</p>
-<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><ul>
-<li>app 文件夹</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;!-- index.js --&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入Koa框架</span></span><br><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">&#x27;koa-bodyparser&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> errorHandler = <span class="built_in">require</span>(<span class="string">&#x27;./error-handle&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="built_in">require</span>(<span class="string">&#x27;../router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//新建Koa实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</span><br><span class="line"></span><br><span class="line">app.use(bodyParser())</span><br><span class="line">useRoutes(app)</span><br><span class="line">app.on(<span class="string">&#x27;error&#x27;</span>, errorHandler)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = app</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>main.js 文件</li>
-</ul>
-<p>main.js 文件一般是程序的主要入口</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入之前创建的app实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="built_in">require</span>(<span class="string">&#x27;./app&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入数据库相关配置</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;./app/database&#x27;</span>)</span><br><span class="line"><span class="comment">//导入相关配置</span></span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">&#x27;./app/config&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建启动服务器</span></span><br><span class="line">app.listen(config.APP_PORT, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`服务器在<span class="subst">$&#123;config.APP_PORT&#125;</span>端口已启动`</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>router 文件夹<br>index.js 文件 主要用来配置 router（路由）相关信息</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入fs插件</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建useRoutes</span></span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="function">(<span class="params">app</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">//自动生成router相关配置</span></span><br><span class="line">  fs.readdirSync(__dirname).forEach(<span class="function">(<span class="params">file</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (file === <span class="string">&#x27;index.js&#x27;</span>) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">const</span> router = <span class="built_in">require</span>(<span class="string">`./<span class="subst">$&#123;file&#125;</span>`</span>)</span><br><span class="line">    app.use(router.routes())</span><br><span class="line">    app.use(router.allowedMethods())</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = useRoutes</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>img.router.js 具体的路由文件</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入koa路由</span></span><br><span class="line"><span class="keyword">const</span> Router = <span class="built_in">require</span>(<span class="string">&#x27;koa-router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//制定接口的路径</span></span><br><span class="line"><span class="keyword">const</span> imgRouter = <span class="keyword">new</span> Router(&#123; <span class="attr">prefix</span>: <span class="string">&#x27;/mmjd&#x27;</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入相关方法/中间件</span></span><br><span class="line"><span class="keyword">const</span> &#123; getImgs,personType,personImgs &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../controller/img.controller&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> &#123; verifyAuth &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../middleware/auth.middleware&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//注册接口，并标明请求方法</span></span><br><span class="line">imgRouter.get(<span class="string">&#x27;/&#x27;</span>, getImgs)</span><br><span class="line">imgRouter.post(<span class="string">&#x27;/personimg&#x27;</span>,verifyAuth,personType,personImgs)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = imgRouter</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>其次就是在 middleware 或者 controller，service 中写具体操作了</li>
-</ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其中还是有很多细节的东西没有掌握好，此点需要以后继续深入研究！</p>
-]]></content>
-      <categories>
-        <category>technology</category>
-      </categories>
-      <tags>
-        <tag>node.js</tag>
       </tags>
   </entry>
 </search>
