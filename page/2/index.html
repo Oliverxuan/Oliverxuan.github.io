@@ -184,6 +184,107 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/08/30/axios%E6%8B%A6%E6%88%AA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/2.jpeg">
+      <meta itemprop="name" content="Oliverxuan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oliver-xuan">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/08/30/axios%E6%8B%A6%E6%88%AA/" class="post-title-link" itemprop="url">axios拦截</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-30 17:17:04" itemprop="dateCreated datePublished" datetime="2021-08-30T17:17:04+08:00">2021-08-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-15 14:46:39" itemprop="dateModified" datetime="2021-09-15T14:46:39+08:00">2021-09-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0/" itemprop="url" rel="index"><span itemprop="name">技术实现</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.9k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>实现在 axios 每次请求/响应时，对请求/响应进行相关的处理。我们把这种处理方式称之为拦截。</p>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><ol>
+<li>request.js 文件的封装</li>
+</ol>
+<h4 id="首先我们要将-axios-主要的请求封装在-request-js-文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。"><a href="#首先我们要将-axios-主要的请求封装在-request-js-文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。" class="headerlink" title="首先我们要将 axios 主要的请求封装在 request.js 文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。"></a>首先我们要将 axios 主要的请求封装在 request.js 文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。</h4><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将axios插件导入</span></span><br><span class="line"><span class="keyword">import</span> axios from <span class="string">&quot;axios&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建axios方法，并将该方法导出</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> request(<span class="keyword">config</span>) &#123;</span><br><span class="line">  <span class="comment">// 1.创建axios的实例</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">instance</span> = axios<span class="variable">.create</span>(&#123;</span><br><span class="line">    baseURL: <span class="string">&quot;*******&quot;</span>,</span><br><span class="line">    timeout: <span class="number">5000</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// 2.设立请求/响应拦截</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3.发送真正的网络请求</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">instance</span>(<span class="keyword">config</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>axios 拦截器</li>
+</ol>
+<ul>
+<li>请求拦截</li>
+</ul>
+<p>可以在任何的请求上进行修饰，改变。此处我以添加 Authorization：Token 的方法为例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用axios的请求拦截方法</span></span><br><span class="line">instance.interceptors.request.use(</span><br><span class="line">  <span class="comment">//对参数进行处理</span></span><br><span class="line">    <span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//具体操作</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">localStorage</span>.getItem(<span class="string">&quot;Authorization&quot;</span>)) &#123;</span><br><span class="line">        config.headers.Authorization = <span class="built_in">localStorage</span>.getItem(<span class="string">&quot;Authorization&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//最后注意需要返回修饰后的参数</span></span><br><span class="line">      <span class="keyword">return</span> config;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//如果请求是错误的，我们将异常抛出</span></span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error);</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/30/axios%E6%8B%A6%E6%88%AA/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1059,108 +1160,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/07/25/%E5%85%B3%E4%BA%8E%E5%A4%A7%E4%B8%89%E4%B8%80%E5%B9%B4%E7%9A%84%E8%AE%A1%E5%88%92/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/2.jpeg">
-      <meta itemprop="name" content="Oliverxuan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Oliver-xuan">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/25/%E5%85%B3%E4%BA%8E%E5%A4%A7%E4%B8%89%E4%B8%80%E5%B9%B4%E7%9A%84%E8%AE%A1%E5%88%92/" class="post-title-link" itemprop="url">关于大三一年的计划</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-07-25 22:39:56" itemprop="dateCreated datePublished" datetime="2021-07-25T22:39:56+08:00">2021-07-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-30 23:18:55" itemprop="dateModified" datetime="2021-07-30T23:18:55+08:00">2021-07-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CodeLife/" itemprop="url" rel="index"><span itemprop="name">CodeLife</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>823</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>大三这一年真的是无比关键.想着明年的今天就是我实习的日子.心里多少还是有些焦虑。</p>
-<h3 id="回顾自身："><a href="#回顾自身：" class="headerlink" title="回顾自身："></a>回顾自身：</h3><p>大一光顾着玩耍，等到大一暑假的时候突然感觉”玩的索然无味“玩的甚至有点空虚。觉得这不是自己想要的生活。于是放下了我喜欢的游戏。打开了哔哩哔哩，搜起了关于 Java 的教学视频，我还记着我第一次装 Jdk 第一次配置环境变量的时候的一脸懵逼。（这和我学的 C 不一样呀）好奇心促使我继续坚持学习了下去。就这样，我听着尚硅谷的宋红康老师的 Java 课程度过了第一个充实的暑假，也是在那个暑假，我渐渐地明白了，计算机的路，我才刚刚开始。等到了大二，我渐渐尝试着做一些简单的静态页面，跟着做一些简单的 JavaWeb 项目。当我第一次在我自己的数据库接收到前端页面发来的数据的时候，我真的无比激动！这真的是一件很有成就感的事情！<br>到了大二的下学期，在好朋友的指引下，我渐渐接触一些更深层次的东西，我学习了 CoderWhy 老师的 Vue，学完了 Vue 我也深刻体会到组件化开发的便利性。真的佩服我们的尤大佬！能开发出这么好的框架！我什么时候才能到达他这种能力呀！<br>大二这一年，是我学习进步最快的一年，我渐渐明白到了真正的差距到底有多大。所以我想在我大三这一年，有计划有目标地进行学习！争取在一年后的今天能取得互联网大厂的 offer！</p>
-<h3 id="大三规划："><a href="#大三规划：" class="headerlink" title="大三规划："></a>大三规划：</h3><h4 id="大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。"><a href="#大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。" class="headerlink" title="大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。"></a>大方向：扎实内功，基础。深入底层逻辑，原理。追求技术深度。多总结，多学习。</h4><h4 id="具体目标，步骤"><a href="#具体目标，步骤" class="headerlink" title="具体目标，步骤:"></a>具体目标，步骤:</h4><ol>
-<li>复习巩固计算机原理，数据结构等计算机基础。（巩固基础）</li>
-<li>leetcode 坚持每天刷题。（巩固基础）</li>
-<li>学习 Node.js 以达到能够做出前后端分离的全栈完整项目。（完善自己的技术面）</li>
-<li>学习 uniapp 或 flutter 以达到跨平台，多处运用的目的。（完善自己的技术面）</li>
-<li>深入研究 Javascript，Vue 的底层逻辑，以及源码。以达到一定的技术深度。（提高自己技术深度）</li>
-<li>多做项目，多参加比赛。提高自己的眼界，技术的多样性，学习别人的优点，改善自己的不足。（提高自己技术深度）</li>
-</ol>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/25/%E5%85%B3%E4%BA%8E%E5%A4%A7%E4%B8%89%E4%B8%80%E5%B9%B4%E7%9A%84%E8%AE%A1%E5%88%92/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1228,7 +1231,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1277,7 +1280,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">44k</span>
+    <span title="站点总字数">46k</span>
 </div>
 <!-- 新增访客统计代码 -->
 
@@ -1295,7 +1298,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">16k</span> 字
+      博客全站共： <span class="post-count">17k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

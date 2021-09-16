@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.useso.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oliverxuan.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在 JavaScript 中，我们常常在非严格模式&#x2F;松散模式下进行编译。Js 会将一些语法的错误保持静默，像是睁一只眼闭一只眼。在严格模式下，这些错误就会被 Js 揪出来。 JS 语法补充with 语句12345678910111213141516var obj &#x3D; &amp;#123;  age: 1,  mes: &amp;#x27;like&amp;#x27;,&amp;#125;function foo() &amp;#123;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Js中的严格模式">
+<meta property="og:url" content="http://oliverxuan.github.io/2021/09/16/Js%E4%B8%AD%E7%9A%84%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Oliver-xuan">
+<meta property="og:description" content="在 JavaScript 中，我们常常在非严格模式&#x2F;松散模式下进行编译。Js 会将一些语法的错误保持静默，像是睁一只眼闭一只眼。在严格模式下，这些错误就会被 Js 揪出来。 JS 语法补充with 语句12345678910111213141516var obj &#x3D; &amp;#123;  age: 1,  mes: &amp;#x27;like&amp;#x27;,&amp;#125;function foo() &amp;#123;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-16T05:10:04.000Z">
+<meta property="article:modified_time" content="2021-09-16T05:45:56.749Z">
+<meta property="article:author" content="Oliverxuan">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://oliverxuan.github.io/2021/09/16/Js%E4%B8%AD%E7%9A%84%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Js中的严格模式 | Oliver-xuan</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Oliver-xuan</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录我的程序员生涯</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/09/16/Js%E4%B8%AD%E7%9A%84%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/2.jpeg">
+      <meta itemprop="name" content="Oliverxuan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oliver-xuan">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Js中的严格模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-09-16 13:10:04 / 修改时间：13:45:56" itemprop="dateCreated datePublished" datetime="2021-09-16T13:10:04+08:00">2021-09-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BA%95%E5%B1%82%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">底层逻辑</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.7k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在 JavaScript 中，我们常常在非严格模式/松散模式下进行编译。Js 会将一些语法的错误保持静默，像是睁一只眼闭一只眼。在严格模式下，这些错误就会被 Js 揪出来。</p>
+<h1 id="JS-语法补充"><a href="#JS-语法补充" class="headerlink" title="JS 语法补充"></a>JS 语法补充</h1><h3 id="with-语句"><a href="#with-语句" class="headerlink" title="with 语句"></a>with 语句</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">age</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">mes</span>: <span class="string">&#x27;like&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//现在obj里找，没有就一直向上找</span></span><br><span class="line">    <span class="keyword">with</span> (obj) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(mes)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  bar()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+
+<p>在 with 语句中，我们可以给其指定一个对象，使其中的语句优先查找对象中的相关内容。</p>
+<p>如果该对象中没有改属性，则就一直向上查找，直到全局。</p>
+<p><strong>并不建议使用 with，其代码可读性差，容易产生混淆错误兼容性问题。</strong></p>
+<h3 id="eval-函数"><a href="#eval-函数" class="headerlink" title="eval 函数"></a>eval 函数</h3><p>eval 是一个特殊的函数，它可以将传入的字符串当做 JavaScript 代码来运行。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> evalString = <span class="string">`var message = &quot;Hello&quot;;console.log(message);`</span></span><br><span class="line"><span class="built_in">eval</span>(evalString)</span><br><span class="line"><span class="built_in">console</span>.log(message)</span><br></pre></td></tr></table></figure>
+
+<p>十分不建议在实际开发中使用，其容易被劫持，存在很大的安全隐患！</p>
+<ol>
+<li><p>eval 代码的可读性非常的差（代码的可读性是高质量代码的重要原则）</p>
+</li>
+<li><p>eval 是一个字符串，那么有可能在执行的过程中被刻意篡改，那么可能会造成被攻击的风险；</p>
+</li>
+<li><p>eval 的执行必须经过 JS 解释器，不能被 JS 引擎优化</p>
+</li>
+</ol>
+<h1 id="非严格模式静默"><a href="#非严格模式静默" class="headerlink" title="非严格模式静默"></a>非严格模式静默</h1><h3 id="非严格模式"><a href="#非严格模式" class="headerlink" title="非严格模式"></a>非严格模式</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mes = <span class="string">&#x27;123&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mes)</span><br><span class="line">&#125;</span><br><span class="line">foo() <span class="comment">//123</span></span><br><span class="line"><span class="comment">//在非严格模式下 此处能打印mes的值</span></span><br></pre></td></tr></table></figure>
+
+<p>我们并没有用 var 来声明变量，而是直接赋值。这是一种错误的语法，但是在非严格模式下，js 保持静默。</p>
+<h3 id="严格模式"><a href="#严格模式" class="headerlink" title="严格模式"></a>严格模式</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//开启严格模式</span></span><br><span class="line"><span class="meta">&#x27;use strict&#x27;</span></span><br><span class="line"></span><br><span class="line">mes = <span class="string">&#x27;123&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mes)</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+
+<p>在严格模式下，js 会严格查找语法中的错误，此处的 mes 会报错，为： mes is not defined</p>
+<h1 id="严格模式-1"><a href="#严格模式-1" class="headerlink" title="严格模式"></a>严格模式</h1><h2 id="严格模式概述"><a href="#严格模式概述" class="headerlink" title="严格模式概述"></a>严格模式概述</h2><ol>
+<li><p>在 ECMAScript5 标准中，JavaScript 提出了<strong>严格模式的概念（Strict Mode）</strong></p>
+<ul>
+<li>严格模式很好理解，是一种具有限制性的 JavaScript 模式，从而使代码隐式的脱离了 ”懒散（sloppy）模式“</li>
+<li>支持严格模式的浏览器在检测到代码中有严格模式时，会以更加严格的方式对代码进行检测和执行</li>
+</ul>
+</li>
+<li><p>严格模式对正常的 JavaScript 语义进行了一些限制：</p>
+<ul>
+<li><p>严格模式通过 抛出错误 来消除一些原有的 静默（silent）错误</p>
+</li>
+<li><p>严格模式让 JS 引擎在执行代码时可以进行更多的优化（不需要对一些特殊的语法进行处理）</p>
+</li>
+<li><p>严格模式禁用了在 ECMAScript 未来版本中可能会定义的一些语法</p>
+<p>​ <em>Text from why：coderwhy</em></p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="严格模式的开启方式"><a href="#严格模式的开启方式" class="headerlink" title="严格模式的开启方式"></a>严格模式的开启方式</h2><h3 id="文件开启"><a href="#文件开启" class="headerlink" title="文件开启"></a>文件开启</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//	文件开启的方式</span></span><br><span class="line"><span class="comment">// &#x27;use strict&#x27;</span></span><br><span class="line"></span><br><span class="line">mes = <span class="string">&#x27;123&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mes)</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数内开启"><a href="#函数内开启" class="headerlink" title="函数内开启"></a>函数内开启</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">use</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// //函数内开启严格模式</span></span><br><span class="line">  <span class="comment">// &#x27;use strict&#x27;</span></span><br><span class="line">  <span class="literal">true</span>.foo = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">use()</span><br></pre></td></tr></table></figure>
+
+<h2 id="严格模式的限制"><a href="#严格模式的限制" class="headerlink" title="严格模式的限制"></a>严格模式的限制</h2><ol>
+<li><p>无法意外地创建出全局变量。</p>
+</li>
+<li><p>所有的静默失效，会以异常的方式抛出。</p>
+</li>
+<li><p>如果试图删除不可删除的属性，将会报错。</p>
+</li>
+<li><p>不允许函数中传入两个相同的变量名（非严格模式下，x，y，x。接受的为最后一个 x）</p>
+</li>
+<li><p>不允许使用 0 的八进制语法</p>
+</li>
+<li><p>不允许使用 with</p>
+</li>
+<li><p>eval 不能再引用上层变量</p>
+</li>
+<li><p>this 不会转换为默认对象，（而是变成 undefined）</p>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>js 中的严格模式，在新手使用中，是一种很好的保护方式。可以在严格的语法纠错中，找的自己的问题出在哪里。不为后续的开发留下安全隐患。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/15/React-%E5%88%9D%E4%BD%93%E9%AA%8C/" rel="prev" title="React 初体验">
+      <i class="fa fa-chevron-left"></i> React 初体验
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JS-%E8%AF%AD%E6%B3%95%E8%A1%A5%E5%85%85"><span class="nav-number">1.</span> <span class="nav-text">JS 语法补充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#with-%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.0.1.</span> <span class="nav-text">with 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eval-%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.2.</span> <span class="nav-text">eval 函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9E%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F%E9%9D%99%E9%BB%98"><span class="nav-number">2.</span> <span class="nav-text">非严格模式静默</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.0.1.</span> <span class="nav-text">非严格模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.0.2.</span> <span class="nav-text">严格模式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F-1"><span class="nav-number">3.</span> <span class="nav-text">严格模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F%E6%A6%82%E8%BF%B0"><span class="nav-number">3.1.</span> <span class="nav-text">严格模式概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%BC%80%E5%90%AF%E6%96%B9%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">严格模式的开启方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%BC%80%E5%90%AF"><span class="nav-number">3.2.1.</span> <span class="nav-text">文件开启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%86%85%E5%BC%80%E5%90%AF"><span class="nav-number">3.2.2.</span> <span class="nav-text">函数内开启</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F%E7%9A%84%E9%99%90%E5%88%B6"><span class="nav-number">3.3.</span> <span class="nav-text">严格模式的限制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Oliverxuan"
+      src="/images/2.jpeg">
+  <p class="site-author-name" itemprop="name">Oliverxuan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Oliverxuan</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">46k</span>
+</div>
+<!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">17k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
