@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.useso.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oliverxuan.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前言： 在一些简单的前后端分离的项目中，我们可以选择使用 node 来快速搭建我们的后端系统。在之前，我做的项目《面面俱到》就是使用的 node+Koa 作为后端框架来快速搭建的。基本完成了所需要的功能。最近开始了新的 app 制作，程序这东西真的长时间不写就会手生。所以借此机会。我将我初始化 node 项目的过程记录下来 具体实现初始化 node 文件夹1npm init -y  我们将最基础的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node后端项目初始化">
+<meta property="og:url" content="http://oliverxuan.github.io/2021/10/07/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/index.html">
+<meta property="og:site_name" content="Oliver-xuan">
+<meta property="og:description" content="前言： 在一些简单的前后端分离的项目中，我们可以选择使用 node 来快速搭建我们的后端系统。在之前，我做的项目《面面俱到》就是使用的 node+Koa 作为后端框架来快速搭建的。基本完成了所需要的功能。最近开始了新的 app 制作，程序这东西真的长时间不写就会手生。所以借此机会。我将我初始化 node 项目的过程记录下来 具体实现初始化 node 文件夹1npm init -y  我们将最基础的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://oliverxuan.github.io/2021/10/07/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/package.png">
+<meta property="og:image" content="http://oliverxuan.github.io/2021/10/07/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/koa.png">
+<meta property="og:image" content="http://oliverxuan.github.io/2021/10/07/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/menu.png">
+<meta property="og:image" content="http://oliverxuan.github.io/2021/10/07/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/dependent.png">
+<meta property="article:published_time" content="2021-10-07T05:23:57.000Z">
+<meta property="article:modified_time" content="2021-10-25T06:54:33.967Z">
+<meta property="article:author" content="Oliverxuan">
+<meta property="article:tag" content="node.js">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://oliverxuan.github.io/2021/10/07/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/package.png">
+
+<link rel="canonical" href="http://oliverxuan.github.io/2021/10/07/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>node后端项目初始化 | Oliver-xuan</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Oliver-xuan</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录我的程序员生涯</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/10/07/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/2.jpeg">
+      <meta itemprop="name" content="Oliverxuan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oliver-xuan">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          node后端项目初始化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-07 13:23:57" itemprop="dateCreated datePublished" datetime="2021-10-07T13:23:57+08:00">2021-10-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-25 14:54:33" itemprop="dateModified" datetime="2021-10-25T14:54:33+08:00">2021-10-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0/" itemprop="url" rel="index"><span itemprop="name">技术实现</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.7k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>前言：</p>
+<p>在一些简单的前后端分离的项目中，我们可以选择使用 node 来快速搭建我们的后端系统。在之前，我做的项目《面面俱到》就是使用的 node+Koa 作为后端框架来快速搭建的。基本完成了所需要的功能。最近开始了新的 app 制作，程序这东西真的长时间不写就会手生。所以借此机会。我将我初始化 node 项目的过程记录下来</p>
+<h1 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h1><h3 id="初始化-node-文件夹"><a href="#初始化-node-文件夹" class="headerlink" title="初始化 node 文件夹"></a>初始化 node 文件夹</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+
+<p>我们将最基础的项目目录搭建出来</p>
+<p>在此时，我们会得到一个简单的 package.json 文件。此文件包含了我们项目所需的基础信息，运行脚本，运行环境。</p>
+<p><img src="/2021/10/07/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/package.png" alt="package.json"></p>
+<h3 id="npm-Koa-框架"><a href="#npm-Koa-框架" class="headerlink" title="npm Koa 框架"></a>npm Koa 框架</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">install</span> koa</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/07/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/koa.png" alt="koa"></p>
+<p>我们此时将最基本的项目依赖已经部署好了，但此时我们的项目如同一盘散沙，没有结构。</p>
+<h3 id="划分目录结构"><a href="#划分目录结构" class="headerlink" title="划分目录结构"></a>划分目录结构</h3><p><img src="/2021/10/07/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/menu.png" alt="menu"></p>
+<h5 id="main-js"><a href="#main-js" class="headerlink" title="main.js"></a>main.js</h5><p>其中 main.js 为我们启动程序的入口。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//koa 导入</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="built_in">require</span>(<span class="string">&#x27;./app&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//数据库js文件导入</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;./app/database&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//配置文件导入</span></span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">&#x27;./app/config&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//服务器启动</span></span><br><span class="line">app.listen(config.APP_PORT, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`服务器在：<span class="subst">$&#123;config.APP_PORT&#125;</span> 端口启动成功～`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="app-文件夹"><a href="#app-文件夹" class="headerlink" title="app 文件夹"></a>app 文件夹</h4><p>app 文件夹，其中包含了很多关于全局操作的文件，例如</p>
+<p>key：是我们程序中颁发 Token，解密 Token 时所需要的公钥和私钥。</p>
+<h5 id="config-js"><a href="#config-js" class="headerlink" title="config.js"></a>config.js</h5><p>是我们程序中相关配置信息的处理 js 文件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//导入dotenv配置管理插件</span></span><br><span class="line"><span class="keyword">const</span> dotenv = <span class="built_in">require</span>(<span class="string">&#x27;dotenv&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入fs文件管理插件</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//启动dotenv插件相关操作</span></span><br><span class="line">dotenv.config()</span><br><span class="line"></span><br><span class="line"><span class="comment">//读取私钥</span></span><br><span class="line"><span class="keyword">const</span> PRIVATE_KEY = fs.readFileSync(<span class="string">&#x27;src/app/keys/private.key&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//读取公钥</span></span><br><span class="line"><span class="keyword">const</span> PUBLIC_KEY = fs.readFileSync(<span class="string">&#x27;src/app/keys/public.key&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//读取.env中的配置信息</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  APP_PORT,</span><br><span class="line">  MYSQL_HOST,</span><br><span class="line">  MYSQL_PORT,</span><br><span class="line">  MYSQL_DATABASE,</span><br><span class="line">  MYSQL_ROOT,</span><br><span class="line">  MYSQL_PASSWORD,</span><br><span class="line">&#125; = process.env</span><br><span class="line"></span><br><span class="line"><span class="comment">//key导出</span></span><br><span class="line"><span class="built_in">module</span>.exports.PRIVATE_KEY = PRIVATE_KEY</span><br><span class="line"><span class="built_in">module</span>.exports.PUBLIC_KEY = PUBLIC_KEY</span><br></pre></td></tr></table></figure>
+
+<h5 id="env"><a href="#env" class="headerlink" title=".env"></a>.env</h5><p><strong>.env 文件相对于来说是需要 coder 进行严格保密的文件</strong>，其中包含了许多重要的信息，我们不能随意将其暴露出去（key 也是）。在进行 git push 的过程中，也不要忘记在<strong>gitignore 文件中加上.env 忽略！</strong></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 服务器端口号</span></span><br><span class="line"><span class="attr">APP_PORT</span>=<span class="number">1234</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># mysql配置</span></span><br><span class="line"><span class="attr">MYSQL_HOST</span>=<span class="number">123.1</span>.<span class="number">123.123</span></span><br><span class="line"><span class="attr">MYSQL_PORT</span>=<span class="number">6666</span></span><br><span class="line"><span class="attr">MYSQL_DATABASE</span>=demo</span><br><span class="line"><span class="attr">MYSQL_ROOT</span>=Demo</span><br><span class="line"><span class="attr">MYSQL_PASSWORD</span>=demo</span><br></pre></td></tr></table></figure>
+
+<p>我们需要做到，每个 coder 在 clone 你的程序后，通过自建.env 文件就能将其相关的配置信息导入，这将大大提升效率和安全性。</p>
+<h5 id="database-js"><a href="#database-js" class="headerlink" title="database.js"></a>database.js</h5><p>该文件夹是用来进行数据库相关操作的 js 文件。我们可以通过 database.js 对我们的数据库操作进行快速的初始化。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//数据库插件导入</span></span><br><span class="line"><span class="keyword">const</span> mysql = <span class="built_in">require</span>(<span class="string">&#x27;mysql2&#x27;</span>)</span><br><span class="line"><span class="comment">//配置文件信息导入</span></span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">&#x27;./config&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//建立数据库连接池</span></span><br><span class="line"><span class="keyword">const</span> connections = mysql.createPool(&#123;</span><br><span class="line">  <span class="comment">//配置数据库主机信息</span></span><br><span class="line">  <span class="attr">host</span>: config.MYSQL_HOST,</span><br><span class="line">  <span class="comment">//端口号</span></span><br><span class="line">  <span class="attr">port</span>: config.MYSQL_PORT,</span><br><span class="line">  <span class="comment">//将要连接的数据库名</span></span><br><span class="line">  <span class="attr">database</span>: config.MYSQL_DATABASE,</span><br><span class="line">  <span class="comment">//root用户名</span></span><br><span class="line">  <span class="attr">user</span>: config.MYSQL_ROOT,</span><br><span class="line">  <span class="comment">//root密码</span></span><br><span class="line">  <span class="attr">password</span>: config.MYSQL_PASSWORD,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//取得数据库连接并运行判断，常常用于程序最开始。</span></span><br><span class="line">connections.getConnection(<span class="function">(<span class="params">err, conn</span>) =&gt;</span> &#123;</span><br><span class="line">  conn.connect(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (err) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;数据库连接失败!&#x27;</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;数据库连接成功！&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//将数据库的连接形式以promise的方式导出。</span></span><br><span class="line"><span class="built_in">module</span>.exports = connections.promise()</span><br></pre></td></tr></table></figure>
+
+<h5 id="error-handle-js"><a href="#error-handle-js" class="headerlink" title="error- handle.js"></a>error- handle.js</h5><p>常用于当前端用户请求格式，数据测试错误的时候，我们将给他一个具体的错误体现。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//导入错误类型文件</span></span><br><span class="line"><span class="keyword">const</span> errorTypes = <span class="built_in">require</span>(<span class="string">&#x27;../constants/error-types&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义error Handler函数</span></span><br><span class="line"><span class="keyword">const</span> errorHandler = <span class="function">(<span class="params">error, ctx</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> status, message</span><br><span class="line"></span><br><span class="line">  <span class="comment">//对错误类型进行判断，并根据错误类型返还status code</span></span><br><span class="line">  <span class="keyword">switch</span> (error.message) &#123;</span><br><span class="line">    <span class="keyword">case</span> errorTypes.NAME_OR_PASSWORD_IS_REQUIRED:</span><br><span class="line">      status = <span class="number">400</span> <span class="comment">//Bad request</span></span><br><span class="line">      message = <span class="string">&#x27;用户名或者密码为空&#x27;</span></span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">case</span> errorTypes.USER_ALREADY_EXISTS:</span><br><span class="line">      status = <span class="number">409</span> <span class="comment">//Conflict</span></span><br><span class="line">      message = <span class="string">&#x27;用户名已存在&#x27;</span></span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">case</span> errorTypes.USER_DOES_NOT_EXISTS:</span><br><span class="line">      status = <span class="number">400</span> <span class="comment">//参数错误</span></span><br><span class="line">      message = <span class="string">&#x27;用户名不存在&#x27;</span></span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">case</span> errorTypes.PASSWORD_IS_INCORRENT:</span><br><span class="line">      status = <span class="number">400</span> <span class="comment">//参数错误</span></span><br><span class="line">      message = <span class="string">&#x27;用户密码错误!&#x27;</span></span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">case</span> errorTypes.PASSWORD_IS_INCORRENT:</span><br><span class="line">      status = <span class="number">400</span> <span class="comment">//参数错误</span></span><br><span class="line">      message = <span class="string">&#x27;用户密码错误!&#x27;</span></span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">case</span> errorTypes.UNAUTHORIZATION:</span><br><span class="line">      status = <span class="number">401</span> <span class="comment">//参数错误</span></span><br><span class="line">      message = <span class="string">&#x27;TOKEN验证不通过&#x27;</span></span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="attr">default</span>:</span><br><span class="line">      status = <span class="number">404</span></span><br><span class="line">      message = <span class="string">&#x27;NOT FOUND&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//设置status</span></span><br><span class="line">  ctx.status = status</span><br><span class="line">  <span class="comment">//打印错误信息</span></span><br><span class="line">  ctx.body = message</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = errorHandler</span><br></pre></td></tr></table></figure>
+
+<h5 id="index-js"><a href="#index-js" class="headerlink" title="index.js"></a>index.js</h5><p>该文件是可以称作程序的第二大脑，第二入口。他将一些插件，koa 的初始化，跨域等方法集成在 index.js 文件中。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app操作</span></span><br><span class="line"><span class="comment">//导入koa插件</span></span><br><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">&#x27;koa-bodyparser&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> errorHandler = <span class="built_in">require</span>(<span class="string">&#x27;./error-handle&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="built_in">require</span>(<span class="string">&#x27;../router&#x27;</span>)</span><br><span class="line"><span class="comment">//koa跨域插件</span></span><br><span class="line"><span class="keyword">const</span> cors = <span class="built_in">require</span>(<span class="string">&#x27;@koa/cors&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</span><br><span class="line"></span><br><span class="line"><span class="comment">//Koa 跨域插件</span></span><br><span class="line">app.use(cors())</span><br><span class="line">app.use(bodyParser())</span><br><span class="line">useRoutes(app)</span><br><span class="line">app.on(<span class="string">&#x27;error&#x27;</span>, errorHandler)</span><br><span class="line"></span><br><span class="line"><span class="comment">//将app导出暴露</span></span><br><span class="line"><span class="built_in">module</span>.exports = app</span><br></pre></td></tr></table></figure>
+
+<h4 id="constants-文件夹"><a href="#constants-文件夹" class="headerlink" title="constants 文件夹"></a>constants 文件夹</h4><p>该文件定义了一些常能用到的，但不属于其他结构的中立 js 文件。</p>
+<h5 id="error-types-js"><a href="#error-types-js" class="headerlink" title="error-types.js"></a>error-types.js</h5><p>在此文件中，列出了用户操作的过程中，可能出现的一些错误。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义一些错误类型</span></span><br><span class="line"><span class="keyword">const</span> NAME_OR_PASSWORD_IS_REQUIRED = <span class="string">&#x27;name_or_password_is_required&#x27;</span></span><br><span class="line"><span class="keyword">const</span> USER_ALREADY_EXISTS = <span class="string">&#x27;user_already_exists&#x27;</span></span><br><span class="line"><span class="keyword">const</span> USER_DOES_NOT_EXISTS = <span class="string">&#x27;user_does_not_exists&#x27;</span></span><br><span class="line"><span class="keyword">const</span> PASSWORD_IS_INCORRENT = <span class="string">&#x27;password_is_incorrent&#x27;</span></span><br><span class="line"><span class="keyword">const</span> UNAUTHORIZATION = <span class="string">&#x27;unauthorization&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//导出相关的错误类型</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  NAME_OR_PASSWORD_IS_REQUIRED,</span><br><span class="line">  USER_ALREADY_EXISTS,</span><br><span class="line">  USER_DOES_NOT_EXISTS,</span><br><span class="line">  PASSWORD_IS_INCORRENT,</span><br><span class="line">  UNAUTHORIZATION,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="controller-文件夹"><a href="#controller-文件夹" class="headerlink" title="controller 文件夹"></a>controller 文件夹</h4><p>该文件夹常用于接口文件的具体操作管理，就如同它的名字，controller</p>
+<p>eg:user.controller.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//导入数据库操作文件</span></span><br><span class="line"><span class="keyword">const</span> service = <span class="built_in">require</span>(<span class="string">&#x27;../service/user.service&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//通常以类的形式打头</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">  <span class="comment">//进行具体的一些操作</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//用户注册</span></span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="title">create</span>(<span class="params">ctx, next</span>)</span> &#123;</span><br><span class="line">    <span class="comment">//获取参数</span></span><br><span class="line">    <span class="keyword">const</span> user = ctx.request.body</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建用户信息</span></span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> service.create(user)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回数据</span></span><br><span class="line">    <span class="built_in">console</span>.log(user.name + <span class="string">&#x27;创建用户成功&#x27;</span>)</span><br><span class="line">    ctx.body = <span class="string">&#x27;用户创建成功&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//将UserController的new对象导出</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="keyword">new</span> UserController()</span><br></pre></td></tr></table></figure>
+
+<h4 id="middleware-文件夹"><a href="#middleware-文件夹" class="headerlink" title="middleware 文件夹"></a>middleware 文件夹</h4><p>middleware 中间件，其中包含了很多的程序所需的操作，不同于 service 文件夹，他不涉及数据库操作。</p>
+<p>eg: user.middleware.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> errorType = <span class="built_in">require</span>(<span class="string">&#x27;../constants/error-types&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> service = <span class="built_in">require</span>(<span class="string">&#x27;../service/user.service&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> md5password = <span class="built_in">require</span>(<span class="string">&#x27;../utils/password-handle&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//验证用户输入的正确性</span></span><br><span class="line"><span class="keyword">const</span> verifyUser = <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  <span class="comment">//获取用户名，密码</span></span><br><span class="line">  <span class="keyword">const</span> &#123; name, password &#125; = ctx.request.body</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;用户&#x27;</span> + name + <span class="string">&#x27;正在尝试后端服务&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">//判断不能为空</span></span><br><span class="line">  <span class="keyword">if</span> (!name || !password) &#123;</span><br><span class="line">    <span class="keyword">const</span> error = <span class="keyword">new</span> <span class="built_in">Error</span>(errorType.NAME_OR_PASSWORD_IS_REQUIRED)</span><br><span class="line">    <span class="keyword">return</span> ctx.app.emit(<span class="string">&#x27;error&#x27;</span>, error, ctx)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//判断本次注册的用户名是否被注册</span></span><br><span class="line">  <span class="keyword">const</span> result = <span class="keyword">await</span> service.getUserByName(name)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (result.length) &#123;</span><br><span class="line">    <span class="keyword">const</span> error = <span class="keyword">new</span> <span class="built_in">Error</span>(errorType.USER_ALREADY_EXISTS)</span><br><span class="line">    <span class="keyword">return</span> ctx.app.emit(<span class="string">&#x27;error&#x27;</span>, error, ctx)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> next()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//md5加密密码</span></span><br><span class="line"><span class="keyword">const</span> handlePassword = <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; password &#125; = ctx.request.body</span><br><span class="line">  ctx.request.body.password = md5password(password)</span><br><span class="line">  <span class="keyword">await</span> next()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//最后别忘记将写好的方法导出！</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  verifyUser,</span><br><span class="line">  handlePassword,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="router-文件夹"><a href="#router-文件夹" class="headerlink" title="router 文件夹"></a>router 文件夹</h4><p>该文件夹主要是注册一些程序的接口。并定义该接口在被调用的时候进行什么操作。</p>
+<p>eg: user.router.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 路由相关的js 注册接口适用</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Router = <span class="built_in">require</span>(<span class="string">&#x27;koa-router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; create &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../controller/user.controller&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; verifyUser, handlePassword &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../middleware/user.middleware&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//入口</span></span><br><span class="line"><span class="keyword">const</span> userRouter = <span class="keyword">new</span> Router(&#123; <span class="attr">prefix</span>: <span class="string">&#x27;/users&#x27;</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//用户注册接口</span></span><br><span class="line">userRouter.post(<span class="string">&#x27;/register&#x27;</span>, verifyUser, handlePassword, create)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = userRouter</span><br></pre></td></tr></table></figure>
+
+<h5 id="index-js-1"><a href="#index-js-1" class="headerlink" title="index.js"></a>index.js</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//导入fs相关插件</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//自动化注册处理router程序</span></span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="function">(<span class="params">app</span>) =&gt;</span> &#123;</span><br><span class="line">  fs.readdirSync(__dirname).forEach(<span class="function">(<span class="params">file</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (file === <span class="string">&#x27;index.js&#x27;</span>) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">const</span> router = <span class="built_in">require</span>(<span class="string">`./<span class="subst">$&#123;file&#125;</span>`</span>)</span><br><span class="line">    app.use(router.routes())</span><br><span class="line">    app.use(router.allowedMethods())</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//导出useRouter文件</span></span><br><span class="line"><span class="built_in">module</span>.exports = useRoutes</span><br></pre></td></tr></table></figure>
+
+<h4 id="service-文件夹"><a href="#service-文件夹" class="headerlink" title="service 文件夹"></a>service 文件夹</h4><p>该文件夹主要是对接数据库的操作。</p>
+<p>eg: user.service.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//导入数据库操作配置文件</span></span><br><span class="line"><span class="keyword">const</span> connection = <span class="built_in">require</span>(<span class="string">&#x27;../app/database&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//新建数据库操作类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="title">create</span>(<span class="params">user</span>)</span> &#123;</span><br><span class="line">    <span class="comment">//获取传递的参数</span></span><br><span class="line">    <span class="keyword">const</span> &#123; name, password &#125; = user</span><br><span class="line">    <span class="comment">//sql语句</span></span><br><span class="line">    <span class="keyword">const</span> statement = <span class="string">&#x27;INSERT INTO users (name,password) VALUES (?,?);&#x27;</span></span><br><span class="line">    <span class="comment">//执行数据库操作</span></span><br><span class="line">    <span class="keyword">const</span> reslut = <span class="keyword">await</span> connection.execute(statement, [name, password])</span><br><span class="line">    <span class="comment">//返回数据</span></span><br><span class="line">    <span class="keyword">return</span> reslut[<span class="number">0</span>]</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="title">getUserByName</span>(<span class="params">name</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> statement = <span class="string">`SELECT * FROM users WHERE name = ?;`</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> connection.execute(statement, [name])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result[<span class="number">0</span>]</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="title">getNameById</span>(<span class="params">userId</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> statement = <span class="string">`SELECT u.type,u.isflag,u.fix,u.createAt FROM users u WHERE id=?;`</span></span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> connection.execute(statement, [userId])</span><br><span class="line">    <span class="keyword">return</span> result[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将数据的操作方法导出</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="keyword">new</span> UserService()</span><br></pre></td></tr></table></figure>
+
+<h4 id="utils-文件夹"><a href="#utils-文件夹" class="headerlink" title="utils 文件夹"></a>utils 文件夹</h4><p>该文件夹主要是一些工具性质的 js 文件/方法，比如我们这里使用到了密码加密方法，我们也可以新增一些其他的方法，帮助我们编写代码。</p>
+<h3 id="版本依赖"><a href="#版本依赖" class="headerlink" title="版本依赖"></a>版本依赖</h3><p><img src="/2021/10/07/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/dependent.png" alt="dependent"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过这次对 node-koa 后端项目创建过程的总结，渐渐熟悉掌握了这种开发模式，在以后的开发中也可以更加得心应手！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/node-js/" rel="tag"># node.js</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/22/Js%E4%B8%AD%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8E%9F%E5%9E%8B/" rel="prev" title="Js中的构造函数及原型">
+      <i class="fa fa-chevron-left"></i> Js中的构造函数及原型
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-node-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">1.0.1.</span> <span class="nav-text">初始化 node 文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#npm-Koa-%E6%A1%86%E6%9E%B6"><span class="nav-number">1.0.2.</span> <span class="nav-text">npm Koa 框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%92%E5%88%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.0.3.</span> <span class="nav-text">划分目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#main-js"><span class="nav-number">1.0.3.0.1.</span> <span class="nav-text">main.js</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#app-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">app 文件夹</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#config-js"><span class="nav-number">1.0.3.1.1.</span> <span class="nav-text">config.js</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#env"><span class="nav-number">1.0.3.1.2.</span> <span class="nav-text">.env</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#database-js"><span class="nav-number">1.0.3.1.3.</span> <span class="nav-text">database.js</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#error-handle-js"><span class="nav-number">1.0.3.1.4.</span> <span class="nav-text">error- handle.js</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#index-js"><span class="nav-number">1.0.3.1.5.</span> <span class="nav-text">index.js</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#constants-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">constants 文件夹</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#error-types-js"><span class="nav-number">1.0.3.2.1.</span> <span class="nav-text">error-types.js</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#controller-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">1.0.3.3.</span> <span class="nav-text">controller 文件夹</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#middleware-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">1.0.3.4.</span> <span class="nav-text">middleware 文件夹</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#router-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">1.0.3.5.</span> <span class="nav-text">router 文件夹</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#index-js-1"><span class="nav-number">1.0.3.5.1.</span> <span class="nav-text">index.js</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#service-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">1.0.3.6.</span> <span class="nav-text">service 文件夹</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#utils-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">1.0.3.7.</span> <span class="nav-text">utils 文件夹</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E4%BE%9D%E8%B5%96"><span class="nav-number">1.0.4.</span> <span class="nav-text">版本依赖</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Oliverxuan"
+      src="/images/2.jpeg">
+  <p class="site-author-name" itemprop="name">Oliverxuan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Oliverxuan</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">58k</span>
+</div>
+<!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">21.2k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
