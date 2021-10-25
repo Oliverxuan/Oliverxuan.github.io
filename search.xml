@@ -38,54 +38,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello,好久不见</title>
-    <url>/2021/08/11/Hello-%E5%A5%BD%E4%B9%85%E4%B8%8D%E8%A7%81/</url>
-    <content><![CDATA[<h2 id="最近都去干什么了？"><a href="#最近都去干什么了？" class="headerlink" title="最近都去干什么了？"></a>最近都去干什么了？</h2><p>距离上次更新我的博客已经过去了 10 多天了，在这段时间里我开始新的征程 =&gt; 准备 9 月份的 辽宁省大学生移动开发大赛</p>
-<p>我计划着开发一个护肤品测评网站，整个网站的架构为：<br>前端：Vue 全家桶，axios</p>
-<p>后端：Node.js，express</p>
-<p>数据库：Mysql</p>
-<h2 id="期间遇到的问题困难"><a href="#期间遇到的问题困难" class="headerlink" title="期间遇到的问题困难"></a>期间遇到的问题困难</h2><p>由于我之前没有涉及过后端的接口开发，所以我在这 10 天的时间里自学了一点 Node.js 的开发基础。顺便学习了 Express，Koa 框架的基本开发。</p>
-<p>到目前为止，我已成功地将写好的使用 Express 的 Js 程序用 Node.js 部署在我的云服务器上。</p>
-<p>在这其中我遇到了很多的困难，例如：</p>
-<ol>
-<li><p>在服务器上部署合适的 Node &amp; Mysql</p>
-</li>
-<li><p>如何在本地通过 ssh 连接远端服务器</p>
-</li>
-</ol>
-<ul>
-<li>ssh root@ip</li>
-</ul>
-<ol start="3">
-<li>如何在 vs code navicat-mysql ssh 连接远端数据</li>
-</ol>
-<ul>
-<li>vs code 通过远程资源管理器</li>
-<li>mysql 里设置可远端读写权限</li>
-<li>navicat 在建立连接时正确写入服务器中的数据库信息</li>
-<li>注意需要在服务器安全组里开放相应的端口</li>
-</ul>
-<ol start="4">
-<li><p>建立数据库，在 Vue 里通过 axios 连接远端数据库</p>
-</li>
-<li><p>处理接口数据</p>
-</li>
-<li><p>如何在服务器上一直运行 Node 项目</p>
-</li>
-</ol>
-<ul>
-<li>npm2 管理插件</li>
-</ul>
-<p>在此感谢前辈们在遇到困难时留下的宝贵经验，以至于我在后续开发时遇到问题都能及时解决</p>
-]]></content>
-      <categories>
-        <category>CodeLife</category>
-      </categories>
-      <tags>
-        <tag>规划</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Js中call,apply,bind的实现</title>
     <url>/2021/09/12/Js%E4%B8%ADcall-apply-bind%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<p>在 Js 中，我们常常会用到 call，apply，bind。进行一些 this 操作。我们不禁对其产生了好奇。</p>
@@ -157,6 +109,54 @@
       </categories>
       <tags>
         <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello,好久不见</title>
+    <url>/2021/08/11/Hello-%E5%A5%BD%E4%B9%85%E4%B8%8D%E8%A7%81/</url>
+    <content><![CDATA[<h2 id="最近都去干什么了？"><a href="#最近都去干什么了？" class="headerlink" title="最近都去干什么了？"></a>最近都去干什么了？</h2><p>距离上次更新我的博客已经过去了 10 多天了，在这段时间里我开始新的征程 =&gt; 准备 9 月份的 辽宁省大学生移动开发大赛</p>
+<p>我计划着开发一个护肤品测评网站，整个网站的架构为：<br>前端：Vue 全家桶，axios</p>
+<p>后端：Node.js，express</p>
+<p>数据库：Mysql</p>
+<h2 id="期间遇到的问题困难"><a href="#期间遇到的问题困难" class="headerlink" title="期间遇到的问题困难"></a>期间遇到的问题困难</h2><p>由于我之前没有涉及过后端的接口开发，所以我在这 10 天的时间里自学了一点 Node.js 的开发基础。顺便学习了 Express，Koa 框架的基本开发。</p>
+<p>到目前为止，我已成功地将写好的使用 Express 的 Js 程序用 Node.js 部署在我的云服务器上。</p>
+<p>在这其中我遇到了很多的困难，例如：</p>
+<ol>
+<li><p>在服务器上部署合适的 Node &amp; Mysql</p>
+</li>
+<li><p>如何在本地通过 ssh 连接远端服务器</p>
+</li>
+</ol>
+<ul>
+<li>ssh root@ip</li>
+</ul>
+<ol start="3">
+<li>如何在 vs code navicat-mysql ssh 连接远端数据</li>
+</ol>
+<ul>
+<li>vs code 通过远程资源管理器</li>
+<li>mysql 里设置可远端读写权限</li>
+<li>navicat 在建立连接时正确写入服务器中的数据库信息</li>
+<li>注意需要在服务器安全组里开放相应的端口</li>
+</ul>
+<ol start="4">
+<li><p>建立数据库，在 Vue 里通过 axios 连接远端数据库</p>
+</li>
+<li><p>处理接口数据</p>
+</li>
+<li><p>如何在服务器上一直运行 Node 项目</p>
+</li>
+</ol>
+<ul>
+<li>npm2 管理插件</li>
+</ul>
+<p>在此感谢前辈们在遇到困难时留下的宝贵经验，以至于我在后续开发时遇到问题都能及时解决</p>
+]]></content>
+      <categories>
+        <category>CodeLife</category>
+      </categories>
+      <tags>
+        <tag>规划</tag>
       </tags>
   </entry>
   <entry>
@@ -365,83 +365,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Js中的严格模式</title>
-    <url>/2021/09/16/Js%E4%B8%AD%E7%9A%84%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<p>在 JavaScript 中，我们常常在非严格模式/松散模式下进行编译。Js 会将一些语法的错误保持静默，像是睁一只眼闭一只眼。在严格模式下，这些错误就会被 Js 揪出来。</p>
-<h1 id="JS-语法补充"><a href="#JS-语法补充" class="headerlink" title="JS 语法补充"></a>JS 语法补充</h1><h3 id="with-语句"><a href="#with-语句" class="headerlink" title="with 语句"></a>with 语句</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">age</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">mes</span>: <span class="string">&#x27;like&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//现在obj里找，没有就一直向上找</span></span><br><span class="line">    <span class="keyword">with</span> (obj) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(mes)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  bar()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
-
-<p>在 with 语句中，我们可以给其指定一个对象，使其中的语句优先查找对象中的相关内容。</p>
-<p>如果该对象中没有改属性，则就一直向上查找，直到全局。</p>
-<p><strong>并不建议使用 with，其代码可读性差，容易产生混淆错误兼容性问题。</strong></p>
-<h3 id="eval-函数"><a href="#eval-函数" class="headerlink" title="eval 函数"></a>eval 函数</h3><p>eval 是一个特殊的函数，它可以将传入的字符串当做 JavaScript 代码来运行。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evalString = <span class="string">`var message = &quot;Hello&quot;;console.log(message);`</span></span><br><span class="line"><span class="built_in">eval</span>(evalString)</span><br><span class="line"><span class="built_in">console</span>.log(message)</span><br></pre></td></tr></table></figure>
-
-<p>十分不建议在实际开发中使用，其容易被劫持，存在很大的安全隐患！</p>
-<ol>
-<li><p>eval 代码的可读性非常的差（代码的可读性是高质量代码的重要原则）</p>
-</li>
-<li><p>eval 是一个字符串，那么有可能在执行的过程中被刻意篡改，那么可能会造成被攻击的风险；</p>
-</li>
-<li><p>eval 的执行必须经过 JS 解释器，不能被 JS 引擎优化</p>
-</li>
-</ol>
-<h1 id="非严格模式静默"><a href="#非严格模式静默" class="headerlink" title="非严格模式静默"></a>非严格模式静默</h1><h3 id="非严格模式"><a href="#非严格模式" class="headerlink" title="非严格模式"></a>非严格模式</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">mes = <span class="string">&#x27;123&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mes)</span><br><span class="line">&#125;</span><br><span class="line">foo() <span class="comment">//123</span></span><br><span class="line"><span class="comment">//在非严格模式下 此处能打印mes的值</span></span><br></pre></td></tr></table></figure>
-
-<p>我们并没有用 var 来声明变量，而是直接赋值。这是一种错误的语法，但是在非严格模式下，js 保持静默。</p>
-<h3 id="严格模式"><a href="#严格模式" class="headerlink" title="严格模式"></a>严格模式</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//开启严格模式</span></span><br><span class="line"><span class="meta">&#x27;use strict&#x27;</span></span><br><span class="line"></span><br><span class="line">mes = <span class="string">&#x27;123&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mes)</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
-
-<p>在严格模式下，js 会严格查找语法中的错误，此处的 mes 会报错，为： mes is not defined</p>
-<h1 id="严格模式-1"><a href="#严格模式-1" class="headerlink" title="严格模式"></a>严格模式</h1><h2 id="严格模式概述"><a href="#严格模式概述" class="headerlink" title="严格模式概述"></a>严格模式概述</h2><ol>
-<li><p>在 ECMAScript5 标准中，JavaScript 提出了<strong>严格模式的概念（Strict Mode）</strong></p>
-<ul>
-<li>严格模式很好理解，是一种具有限制性的 JavaScript 模式，从而使代码隐式的脱离了 ”懒散（sloppy）模式“</li>
-<li>支持严格模式的浏览器在检测到代码中有严格模式时，会以更加严格的方式对代码进行检测和执行</li>
-</ul>
-</li>
-<li><p>严格模式对正常的 JavaScript 语义进行了一些限制：</p>
-<ul>
-<li><p>严格模式通过 抛出错误 来消除一些原有的 静默（silent）错误</p>
-</li>
-<li><p>严格模式让 JS 引擎在执行代码时可以进行更多的优化（不需要对一些特殊的语法进行处理）</p>
-</li>
-<li><p>严格模式禁用了在 ECMAScript 未来版本中可能会定义的一些语法</p>
-<p>​ <em>Text from why：coderwhy</em></p>
-</li>
-</ul>
-</li>
-</ol>
-<h2 id="严格模式的开启方式"><a href="#严格模式的开启方式" class="headerlink" title="严格模式的开启方式"></a>严格模式的开启方式</h2><h3 id="文件开启"><a href="#文件开启" class="headerlink" title="文件开启"></a>文件开启</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//	文件开启的方式</span></span><br><span class="line"><span class="comment">// &#x27;use strict&#x27;</span></span><br><span class="line"></span><br><span class="line">mes = <span class="string">&#x27;123&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mes)</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
-
-<h3 id="函数内开启"><a href="#函数内开启" class="headerlink" title="函数内开启"></a>函数内开启</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">use</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// //函数内开启严格模式</span></span><br><span class="line">  <span class="comment">// &#x27;use strict&#x27;</span></span><br><span class="line">  <span class="literal">true</span>.foo = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">use()</span><br></pre></td></tr></table></figure>
-
-<h2 id="严格模式的限制"><a href="#严格模式的限制" class="headerlink" title="严格模式的限制"></a>严格模式的限制</h2><ol>
-<li><p>无法意外地创建出全局变量。</p>
-</li>
-<li><p>所有的静默失效，会以异常的方式抛出。</p>
-</li>
-<li><p>如果试图删除不可删除的属性，将会报错。</p>
-</li>
-<li><p>不允许函数中传入两个相同的变量名（非严格模式下，x，y，x。接受的为最后一个 x）</p>
-</li>
-<li><p>不允许使用 0 的八进制语法</p>
-</li>
-<li><p>不允许使用 with</p>
-</li>
-<li><p>eval 不能再引用上层变量</p>
-</li>
-<li><p>this 不会转换为默认对象，（而是变成 undefined）</p>
-</li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>js 中的严格模式，在新手使用中，是一种很好的保护方式。可以在严格的语法纠错中，找的自己的问题出在哪里。不为后续的开发留下安全隐患。</p>
-]]></content>
-      <categories>
-        <category>底层逻辑</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Js中的构造函数及原型</title>
     <url>/2021/09/22/Js%E4%B8%AD%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8E%9F%E5%9E%8B/</url>
     <content><![CDATA[<h1 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h1><p>Js 中的构造函数与 Java 的构造函数思想区别不大，只是需要注意下细节。</p>
@@ -569,6 +492,37 @@
       </tags>
   </entry>
   <entry>
+    <title>Js常用数组高阶函数</title>
+    <url>/2021/09/06/Js%E4%B8%AD%E7%9A%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<p>js 中有很多高阶函数，能在日常的代码编写工作中提高效率。下面列举一些常用 js 的数组高阶函数</p>
+<h2 id="FOO-数组"><a href="#FOO-数组" class="headerlink" title="FOO 数组"></a>FOO 数组</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> nums = [<span class="number">10</span>, <span class="number">5</span>, <span class="number">11</span>, <span class="number">100</span>, <span class="number">55</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="filter-过滤"><a href="#filter-过滤" class="headerlink" title="filter: 过滤"></a>filter: 过滤</h3><p>返回布尔类型 可以传递三个值 item 当前的的元素，index 当前数组下标， arr 当前整个数组</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//数组取偶操作</span></span><br><span class="line"><span class="keyword">var</span> numbers = nums.filter(<span class="function">(<span class="params">item, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item % <span class="number">2</span> == <span class="number">0</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(numbers)</span><br></pre></td></tr></table></figure>
+
+<h3 id="map-映射"><a href="#map-映射" class="headerlink" title="map: 映射"></a>map: 映射</h3><p>对所有的 item 进行操作</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//对每个item进行*10操作</span></span><br><span class="line"><span class="keyword">var</span> nums2 = nums.map(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item * <span class="number">10</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(nums2)</span><br></pre></td></tr></table></figure>
+
+<h3 id="forEach-迭代"><a href="#forEach-迭代" class="headerlink" title="forEach: 迭代"></a>forEach: 迭代</h3><p>无返回值</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//遍历数组，无返回值！</span></span><br><span class="line">nums.forEach(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(item)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="find-findIndex-查找"><a href="#find-findIndex-查找" class="headerlink" title="find/findIndex :查找"></a>find/findIndex :查找</h3><p>查找 item/返还该 item/itemIndex</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> item = nums.find(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item == <span class="number">11</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(item)</span><br></pre></td></tr></table></figure>
+
+<h3 id="reduce-累加"><a href="#reduce-累加" class="headerlink" title="reduce :累加"></a>reduce :累加</h3><p>preValue 前数据;</p>
+<p>0:基础数据</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//数组累加操作</span></span><br><span class="line"><span class="keyword">var</span> total = nums.reduce(<span class="function">(<span class="params">preValue, item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> preValue + item</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"><span class="built_in">console</span>.log(total)</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>js 中很多高阶函数，我们还需继续探索。慢慢感受 js 的魅力！</p>
+]]></content>
+      <categories>
+        <category>技术实现</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>React 初体验</title>
     <url>/2021/09/15/React-%E5%88%9D%E4%BD%93%E9%AA%8C/</url>
     <content><![CDATA[<h1 id="React"><a href="#React" class="headerlink" title="React"></a>React</h1><p>React 基本上是高级前端工程师的必备技能，相较于 Vue 也更加灵活。可以说是 Facebook 工程师们智慧的结晶。</p>
@@ -595,31 +549,77 @@
       </tags>
   </entry>
   <entry>
-    <title>Js常用数组高阶函数</title>
-    <url>/2021/09/06/Js%E4%B8%AD%E7%9A%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<p>js 中有很多高阶函数，能在日常的代码编写工作中提高效率。下面列举一些常用 js 的数组高阶函数</p>
-<h2 id="FOO-数组"><a href="#FOO-数组" class="headerlink" title="FOO 数组"></a>FOO 数组</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> nums = [<span class="number">10</span>, <span class="number">5</span>, <span class="number">11</span>, <span class="number">100</span>, <span class="number">55</span>]</span><br></pre></td></tr></table></figure>
+    <title>Js中的严格模式</title>
+    <url>/2021/09/16/Js%E4%B8%AD%E7%9A%84%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<p>在 JavaScript 中，我们常常在非严格模式/松散模式下进行编译。Js 会将一些语法的错误保持静默，像是睁一只眼闭一只眼。在严格模式下，这些错误就会被 Js 揪出来。</p>
+<h1 id="JS-语法补充"><a href="#JS-语法补充" class="headerlink" title="JS 语法补充"></a>JS 语法补充</h1><h3 id="with-语句"><a href="#with-语句" class="headerlink" title="with 语句"></a>with 语句</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">age</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">mes</span>: <span class="string">&#x27;like&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//现在obj里找，没有就一直向上找</span></span><br><span class="line">    <span class="keyword">with</span> (obj) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(mes)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  bar()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
 
-<h3 id="filter-过滤"><a href="#filter-过滤" class="headerlink" title="filter: 过滤"></a>filter: 过滤</h3><p>返回布尔类型 可以传递三个值 item 当前的的元素，index 当前数组下标， arr 当前整个数组</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//数组取偶操作</span></span><br><span class="line"><span class="keyword">var</span> numbers = nums.filter(<span class="function">(<span class="params">item, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item % <span class="number">2</span> == <span class="number">0</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(numbers)</span><br></pre></td></tr></table></figure>
+<p>在 with 语句中，我们可以给其指定一个对象，使其中的语句优先查找对象中的相关内容。</p>
+<p>如果该对象中没有改属性，则就一直向上查找，直到全局。</p>
+<p><strong>并不建议使用 with，其代码可读性差，容易产生混淆错误兼容性问题。</strong></p>
+<h3 id="eval-函数"><a href="#eval-函数" class="headerlink" title="eval 函数"></a>eval 函数</h3><p>eval 是一个特殊的函数，它可以将传入的字符串当做 JavaScript 代码来运行。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> evalString = <span class="string">`var message = &quot;Hello&quot;;console.log(message);`</span></span><br><span class="line"><span class="built_in">eval</span>(evalString)</span><br><span class="line"><span class="built_in">console</span>.log(message)</span><br></pre></td></tr></table></figure>
 
-<h3 id="map-映射"><a href="#map-映射" class="headerlink" title="map: 映射"></a>map: 映射</h3><p>对所有的 item 进行操作</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//对每个item进行*10操作</span></span><br><span class="line"><span class="keyword">var</span> nums2 = nums.map(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item * <span class="number">10</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(nums2)</span><br></pre></td></tr></table></figure>
+<p>十分不建议在实际开发中使用，其容易被劫持，存在很大的安全隐患！</p>
+<ol>
+<li><p>eval 代码的可读性非常的差（代码的可读性是高质量代码的重要原则）</p>
+</li>
+<li><p>eval 是一个字符串，那么有可能在执行的过程中被刻意篡改，那么可能会造成被攻击的风险；</p>
+</li>
+<li><p>eval 的执行必须经过 JS 解释器，不能被 JS 引擎优化</p>
+</li>
+</ol>
+<h1 id="非严格模式静默"><a href="#非严格模式静默" class="headerlink" title="非严格模式静默"></a>非严格模式静默</h1><h3 id="非严格模式"><a href="#非严格模式" class="headerlink" title="非严格模式"></a>非严格模式</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">mes = <span class="string">&#x27;123&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mes)</span><br><span class="line">&#125;</span><br><span class="line">foo() <span class="comment">//123</span></span><br><span class="line"><span class="comment">//在非严格模式下 此处能打印mes的值</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="forEach-迭代"><a href="#forEach-迭代" class="headerlink" title="forEach: 迭代"></a>forEach: 迭代</h3><p>无返回值</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//遍历数组，无返回值！</span></span><br><span class="line">nums.forEach(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(item)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>我们并没有用 var 来声明变量，而是直接赋值。这是一种错误的语法，但是在非严格模式下，js 保持静默。</p>
+<h3 id="严格模式"><a href="#严格模式" class="headerlink" title="严格模式"></a>严格模式</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//开启严格模式</span></span><br><span class="line"><span class="meta">&#x27;use strict&#x27;</span></span><br><span class="line"></span><br><span class="line">mes = <span class="string">&#x27;123&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mes)</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
 
-<h3 id="find-findIndex-查找"><a href="#find-findIndex-查找" class="headerlink" title="find/findIndex :查找"></a>find/findIndex :查找</h3><p>查找 item/返还该 item/itemIndex</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> item = nums.find(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item == <span class="number">11</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(item)</span><br></pre></td></tr></table></figure>
+<p>在严格模式下，js 会严格查找语法中的错误，此处的 mes 会报错，为： mes is not defined</p>
+<h1 id="严格模式-1"><a href="#严格模式-1" class="headerlink" title="严格模式"></a>严格模式</h1><h2 id="严格模式概述"><a href="#严格模式概述" class="headerlink" title="严格模式概述"></a>严格模式概述</h2><ol>
+<li><p>在 ECMAScript5 标准中，JavaScript 提出了<strong>严格模式的概念（Strict Mode）</strong></p>
+<ul>
+<li>严格模式很好理解，是一种具有限制性的 JavaScript 模式，从而使代码隐式的脱离了 ”懒散（sloppy）模式“</li>
+<li>支持严格模式的浏览器在检测到代码中有严格模式时，会以更加严格的方式对代码进行检测和执行</li>
+</ul>
+</li>
+<li><p>严格模式对正常的 JavaScript 语义进行了一些限制：</p>
+<ul>
+<li><p>严格模式通过 抛出错误 来消除一些原有的 静默（silent）错误</p>
+</li>
+<li><p>严格模式让 JS 引擎在执行代码时可以进行更多的优化（不需要对一些特殊的语法进行处理）</p>
+</li>
+<li><p>严格模式禁用了在 ECMAScript 未来版本中可能会定义的一些语法</p>
+<p>​ <em>Text from why：coderwhy</em></p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="严格模式的开启方式"><a href="#严格模式的开启方式" class="headerlink" title="严格模式的开启方式"></a>严格模式的开启方式</h2><h3 id="文件开启"><a href="#文件开启" class="headerlink" title="文件开启"></a>文件开启</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//	文件开启的方式</span></span><br><span class="line"><span class="comment">// &#x27;use strict&#x27;</span></span><br><span class="line"></span><br><span class="line">mes = <span class="string">&#x27;123&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mes)</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
 
-<h3 id="reduce-累加"><a href="#reduce-累加" class="headerlink" title="reduce :累加"></a>reduce :累加</h3><p>preValue 前数据;</p>
-<p>0:基础数据</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//数组累加操作</span></span><br><span class="line"><span class="keyword">var</span> total = nums.reduce(<span class="function">(<span class="params">preValue, item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> preValue + item</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"><span class="built_in">console</span>.log(total)</span><br></pre></td></tr></table></figure>
+<h3 id="函数内开启"><a href="#函数内开启" class="headerlink" title="函数内开启"></a>函数内开启</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">use</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// //函数内开启严格模式</span></span><br><span class="line">  <span class="comment">// &#x27;use strict&#x27;</span></span><br><span class="line">  <span class="literal">true</span>.foo = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">use()</span><br></pre></td></tr></table></figure>
 
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>js 中很多高阶函数，我们还需继续探索。慢慢感受 js 的魅力！</p>
+<h2 id="严格模式的限制"><a href="#严格模式的限制" class="headerlink" title="严格模式的限制"></a>严格模式的限制</h2><ol>
+<li><p>无法意外地创建出全局变量。</p>
+</li>
+<li><p>所有的静默失效，会以异常的方式抛出。</p>
+</li>
+<li><p>如果试图删除不可删除的属性，将会报错。</p>
+</li>
+<li><p>不允许函数中传入两个相同的变量名（非严格模式下，x，y，x。接受的为最后一个 x）</p>
+</li>
+<li><p>不允许使用 0 的八进制语法</p>
+</li>
+<li><p>不允许使用 with</p>
+</li>
+<li><p>eval 不能再引用上层变量</p>
+</li>
+<li><p>this 不会转换为默认对象，（而是变成 undefined）</p>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>js 中的严格模式，在新手使用中，是一种很好的保护方式。可以在严格的语法纠错中，找的自己的问题出在哪里。不为后续的开发留下安全隐患。</p>
 ]]></content>
       <categories>
-        <category>技术实现</category>
+        <category>底层逻辑</category>
       </categories>
       <tags>
         <tag>JavaScript</tag>
@@ -664,61 +664,6 @@
       </categories>
       <tags>
         <tag>axios</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo s 时4000端口被占用问题</title>
-    <url>/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>hexo s 启动的时候遇到了 4000 端口无法创建使用的问题。<br>具体打开 localhost：4000 发现 4000 端口下 hexo 依然在运行！</p>
-<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>(mac 环境):</p>
-<ol>
-<li>sudo lsof -i tcp:4000<br><strong>查询当前端口的进程</strong></li>
-<li>报错：</li>
-</ol>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">COMMAND</span>   PID USER   FD   TYPE             DEVICE SIZE/<span class="literal">OFF</span> NODE NAME</span><br><span class="line"><span class="attribute">node</span>    <span class="number">19087</span> root   <span class="number">23</span>u  IPv<span class="number">6</span> <span class="number">0</span>xe<span class="number">0</span>d<span class="number">367</span>ae<span class="number">3505</span>eeb<span class="number">3</span>      <span class="number">0</span>t<span class="number">0</span>  TCP *:terabase (LISTEN)</span><br></pre></td></tr></table></figure>
-
-<p>发现进程 19087</p>
-<ol start="3">
-<li>sudo kill 19087</li>
-</ol>
-<p><strong>再次打开就没有 hexo 的页面了</strong></p>
-<h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>]]></content>
-      <categories>
-        <category>Obstacle</category>
-      </categories>
-      <tags>
-        <tag>技术踩坑</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mmjd项目的完成情况</title>
-    <url>/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/</url>
-    <content><![CDATA[<h2 id="项目进度"><a href="#项目进度" class="headerlink" title="项目进度:"></a>项目进度:</h2><p>最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式</p>
-<h2 id="接口功能："><a href="#接口功能：" class="headerlink" title="接口功能："></a>接口功能：</h2><h3 id="不多说了，直接上图！"><a href="#不多说了，直接上图！" class="headerlink" title="不多说了，直接上图！"></a>不多说了，直接上图！</h3><ol>
-<li>后端接口：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/user.png" alt="接口功能图"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/end.png" alt="接口功能图"></li>
-</ol>
-<p>真的是完完整地做完了整个项目的后端接口。从中真的学会了很多！慢慢也熟悉了 Node.js + Koa 开发接口的开发逻辑。</p>
-<ol start="2">
-<li>Mysql：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql1.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql2.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql3.png" alt="mysql"></li>
-</ol>
-<p>从中也重新回忆起了很多的 sql 语句（真的好久不用生疏了！）比如：left join ，json_object….</p>
-<h2 id="前端界面："><a href="#前端界面：" class="headerlink" title="前端界面："></a>前端界面：</h2><p><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/font1.png" alt="font"><br>现在的前端界面真的奇丑无比，等着这两天我调好了我们再看！</p>
-<h2 id="技术栈："><a href="#技术栈：" class="headerlink" title="技术栈："></a>技术栈：</h2><ol>
-<li>前端：Html JavaScript CSS Vue Vuex VueRouter axios Webpack node.js Bootstrap</li>
-<li>后端：node.js Koa mysql</li>
-<li>数据库: mysql</li>
-</ol>
-<h2 id="收获："><a href="#收获：" class="headerlink" title="收获："></a>收获：</h2><p>通过这次完完整整地独自开发前后端的项目，很多东西真的就是要亲自来才能深刻体会！<br>希望自己以后能参与或创造更多的项目！</p>
-<h2 id="开源地址"><a href="#开源地址" class="headerlink" title="开源地址:"></a>开源地址:</h2><ol>
-<li>前端：<br><a href="https://github.com/Oliverxuan/mmjd">https://github.com/Oliverxuan/mmjd</a></li>
-<li>后端：<br><a href="https://github.com/Oliverxuan/MMJD-node">https://github.com/Oliverxuan/MMJD-node</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>CodeLife</category>
-      </categories>
-      <tags>
-        <tag>项目</tag>
       </tags>
   </entry>
   <entry>
@@ -786,6 +731,61 @@
       </tags>
   </entry>
   <entry>
+    <title>hexo s 时4000端口被占用问题</title>
+    <url>/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>hexo s 启动的时候遇到了 4000 端口无法创建使用的问题。<br>具体打开 localhost：4000 发现 4000 端口下 hexo 依然在运行！</p>
+<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>(mac 环境):</p>
+<ol>
+<li>sudo lsof -i tcp:4000<br><strong>查询当前端口的进程</strong></li>
+<li>报错：</li>
+</ol>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">COMMAND</span>   PID USER   FD   TYPE             DEVICE SIZE/<span class="literal">OFF</span> NODE NAME</span><br><span class="line"><span class="attribute">node</span>    <span class="number">19087</span> root   <span class="number">23</span>u  IPv<span class="number">6</span> <span class="number">0</span>xe<span class="number">0</span>d<span class="number">367</span>ae<span class="number">3505</span>eeb<span class="number">3</span>      <span class="number">0</span>t<span class="number">0</span>  TCP *:terabase (LISTEN)</span><br></pre></td></tr></table></figure>
+
+<p>发现进程 19087</p>
+<ol start="3">
+<li>sudo kill 19087</li>
+</ol>
+<p><strong>再次打开就没有 hexo 的页面了</strong></p>
+<h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>]]></content>
+      <categories>
+        <category>Obstacle</category>
+      </categories>
+      <tags>
+        <tag>技术踩坑</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mmjd项目的完成情况</title>
+    <url>/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/</url>
+    <content><![CDATA[<h2 id="项目进度"><a href="#项目进度" class="headerlink" title="项目进度:"></a>项目进度:</h2><p>最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式</p>
+<h2 id="接口功能："><a href="#接口功能：" class="headerlink" title="接口功能："></a>接口功能：</h2><h3 id="不多说了，直接上图！"><a href="#不多说了，直接上图！" class="headerlink" title="不多说了，直接上图！"></a>不多说了，直接上图！</h3><ol>
+<li>后端接口：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/user.png" alt="接口功能图"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/end.png" alt="接口功能图"></li>
+</ol>
+<p>真的是完完整地做完了整个项目的后端接口。从中真的学会了很多！慢慢也熟悉了 Node.js + Koa 开发接口的开发逻辑。</p>
+<ol start="2">
+<li>Mysql：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql1.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql2.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql3.png" alt="mysql"></li>
+</ol>
+<p>从中也重新回忆起了很多的 sql 语句（真的好久不用生疏了！）比如：left join ，json_object….</p>
+<h2 id="前端界面："><a href="#前端界面：" class="headerlink" title="前端界面："></a>前端界面：</h2><p><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/font1.png" alt="font"><br>现在的前端界面真的奇丑无比，等着这两天我调好了我们再看！</p>
+<h2 id="技术栈："><a href="#技术栈：" class="headerlink" title="技术栈："></a>技术栈：</h2><ol>
+<li>前端：Html JavaScript CSS Vue Vuex VueRouter axios Webpack node.js Bootstrap</li>
+<li>后端：node.js Koa mysql</li>
+<li>数据库: mysql</li>
+</ol>
+<h2 id="收获："><a href="#收获：" class="headerlink" title="收获："></a>收获：</h2><p>通过这次完完整整地独自开发前后端的项目，很多东西真的就是要亲自来才能深刻体会！<br>希望自己以后能参与或创造更多的项目！</p>
+<h2 id="开源地址"><a href="#开源地址" class="headerlink" title="开源地址:"></a>开源地址:</h2><ol>
+<li>前端：<br><a href="https://github.com/Oliverxuan/mmjd">https://github.com/Oliverxuan/mmjd</a></li>
+<li>后端：<br><a href="https://github.com/Oliverxuan/MMJD-node">https://github.com/Oliverxuan/MMJD-node</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>CodeLife</category>
+      </categories>
+      <tags>
+        <tag>项目</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vue表单提交时自动刷新</title>
     <url>/2021/08/31/vue%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4%E6%97%B6%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0/</url>
     <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在之前 mmjd 的项目中，我设计了一个登陆的界面。发现当第一次提交的时候，会默认刷新一次。导致用户提交的表单是空的。从而报错。</p>
@@ -800,6 +800,17 @@
       </categories>
       <tags>
         <tag>vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>node后端项目初始化</title>
+    <url>/2021/10/25/node%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技术实现</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
       </tags>
   </entry>
   <entry>
@@ -947,6 +958,37 @@
       </tags>
   </entry>
   <entry>
+    <title>循环队列的实现</title>
+    <url>/2021/07/28/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>设计你的循环队列实现。 循环队列是一种线性数据结构，其操作表现基于 FIFO（先进先出）原则并且队尾被连接在队首之后以形成一个循环。它也被称为“环形缓冲器”。</p>
+<p>循环队列的一个好处是我们可以利用这个队列之前用过的空间。在一个普通队列里，一旦一个队列满了，我们就不能插入下一个元素，即使在队列前面仍有空间。但是使用循环队列，我们能使用这些空间去存储新的值。</p>
+<p>你的实现应该支持如下操作：</p>
+<p>MyCircularQueue(k): 构造器，设置队列长度为 k 。<br>Front: 从队首获取元素。如果队列为空，返回 -1 。<br>Rear: 获取队尾元素。如果队列为空，返回 -1 。<br>enQueue(value): 向循环队列插入一个元素。如果成功插入则返回真。<br>deQueue(): 从循环队列中删除一个元素。如果成功删除则返回真。<br>isEmpty(): 检查循环队列是否为空。<br>isFull(): 检查循环队列是否已满。</p>
+<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/design-circular-queue">https://leetcode-cn.com/problems/design-circular-queue</a></p>
+<h3 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h3><p>MyCircularQueue circularQueue = new MyCircularQueue(3); // 设置长度为 3<br>circularQueue.enQueue(1);  // 返回 true<br>circularQueue.enQueue(2);  // 返回 true<br>circularQueue.enQueue(3);  // 返回 true<br>circularQueue.enQueue(4);  // 返回 false，队列已满<br>circularQueue.Rear();  // 返回 3<br>circularQueue.isFull();  // 返回 true<br>circularQueue.deQueue();  // 返回 true<br>circularQueue.enQueue(4);  // 返回 true<br>circularQueue.Rear();  // 返回 4</p>
+<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><ol>
+<li>首先要明白循环队列的原理</li>
+<li>如何设计循环队列中的两个指针</li>
+<li>细节处理</li>
+</ol>
+<p>循环队列原理<br><a href="https://www.bilibili.com/video/BV1yx411e7nb?from=search&amp;seid=13632348157331521482/">https://www.bilibili.com/video/BV1yx411e7nb?from=search&amp;seid=13632348157331521482/</a></p>
+<h3 id="实现难点："><a href="#实现难点：" class="headerlink" title="实现难点："></a>实现难点：</h3><ol>
+<li>为什么要在 eg：head（head+1）% size 取模？</li>
+<li>为什么 get tail 的时候不能直接返回？</li>
+<li>细节处理</li>
+</ol>
+<h3 id="实现代码："><a href="#实现代码：" class="headerlink" title="实现代码："></a>实现代码：</h3><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCircularQueue</span> &#123;</span></span><br><span class="line">    <span class="comment">//构造原始数组</span></span><br><span class="line">    <span class="keyword">int</span>[] arr;</span><br><span class="line">    <span class="comment">//数组长度</span></span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">    <span class="comment">//头指针，记录循环列表的头部</span></span><br><span class="line">    <span class="keyword">int</span> head;</span><br><span class="line">    <span class="comment">//尾指针，记录循环列表的尾部</span></span><br><span class="line">    <span class="keyword">int</span> tail;</span><br><span class="line">    <span class="comment">//计数器，记录总共有多少个元素</span></span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造器，将原始的数组arr转化为实体，以及一些变量的初始化</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyCircularQueue</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        arr = <span class="keyword">new</span> <span class="keyword">int</span>[k];</span><br><span class="line">        size = k;</span><br><span class="line">        head = <span class="number">0</span>;</span><br><span class="line">        tail = <span class="number">0</span>;</span><br><span class="line">        count = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//入队操作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">enQueue</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//先判断队列是否已满。</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isFull</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[tail] = value;</span><br><span class="line">        <span class="comment">//关键点！此处的指针也应该跟着循环，不能说到了数组的size（最大长度）就一直无限延续</span></span><br><span class="line">        <span class="comment">//所以这里需要取模运算&quot;%&quot; 例：k=size=7  tail=7 tail=（7+1%7=1 所以下次tail</span></span><br><span class="line">        <span class="comment">//的位置就在下角标为 1 的位置 从而达到循环指针的目的 后面的head指针同理</span></span><br><span class="line">        tail = (tail + <span class="number">1</span>) % size;</span><br><span class="line">        count++;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//出队操作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">deQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//判断是否为空</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isEmpty</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        head = (head + <span class="number">1</span>) % size;</span><br><span class="line">        count--;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//取头元素</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Front</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isEmpty</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr[head];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Rear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isEmpty</span>())&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//此处需要注意tail的真实位置到底指向的是哪里。</span></span><br><span class="line">        <span class="comment">//注意数据的处理不能取负。</span></span><br><span class="line">        <span class="keyword">return</span> arr[(tail - <span class="number">1</span> + size) % size];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断空</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count==<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断满</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isFull</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size==count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>在对循环队列实现的时候，注意的细节点有很多，需要做到指针循环才能达到整体的循环目的。<br>总的来说还是难度中等。</p>
+]]></content>
+      <categories>
+        <category>Problems</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>浅谈Js面向对象</title>
     <url>/2021/09/22/%E6%B5%85%E8%B0%88Js%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/</url>
     <content><![CDATA[<p>万事万物皆对象。这句话是我以前在学习 JAVA 时的感悟。</p>
@@ -1066,43 +1108,6 @@
       </tags>
   </entry>
   <entry>
-    <title>通过node如何创建一个接口</title>
-    <url>/2021/08/31/%E9%80%9A%E8%BF%87node%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8E%A5%E5%8F%A3/</url>
-    <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>通过 node.js 环境与 Koa 框架，编写一个接口</p>
-<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><ul>
-<li>app 文件夹</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;!-- index.js --&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入Koa框架</span></span><br><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">&#x27;koa-bodyparser&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> errorHandler = <span class="built_in">require</span>(<span class="string">&#x27;./error-handle&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="built_in">require</span>(<span class="string">&#x27;../router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//新建Koa实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</span><br><span class="line"></span><br><span class="line">app.use(bodyParser())</span><br><span class="line">useRoutes(app)</span><br><span class="line">app.on(<span class="string">&#x27;error&#x27;</span>, errorHandler)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = app</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>main.js 文件</li>
-</ul>
-<p>main.js 文件一般是程序的主要入口</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入之前创建的app实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="built_in">require</span>(<span class="string">&#x27;./app&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入数据库相关配置</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;./app/database&#x27;</span>)</span><br><span class="line"><span class="comment">//导入相关配置</span></span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">&#x27;./app/config&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建启动服务器</span></span><br><span class="line">app.listen(config.APP_PORT, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`服务器在<span class="subst">$&#123;config.APP_PORT&#125;</span>端口已启动`</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>router 文件夹<br>index.js 文件 主要用来配置 router（路由）相关信息</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入fs插件</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建useRoutes</span></span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="function">(<span class="params">app</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">//自动生成router相关配置</span></span><br><span class="line">  fs.readdirSync(__dirname).forEach(<span class="function">(<span class="params">file</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (file === <span class="string">&#x27;index.js&#x27;</span>) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">const</span> router = <span class="built_in">require</span>(<span class="string">`./<span class="subst">$&#123;file&#125;</span>`</span>)</span><br><span class="line">    app.use(router.routes())</span><br><span class="line">    app.use(router.allowedMethods())</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = useRoutes</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>img.router.js 具体的路由文件</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入koa路由</span></span><br><span class="line"><span class="keyword">const</span> Router = <span class="built_in">require</span>(<span class="string">&#x27;koa-router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//制定接口的路径</span></span><br><span class="line"><span class="keyword">const</span> imgRouter = <span class="keyword">new</span> Router(&#123; <span class="attr">prefix</span>: <span class="string">&#x27;/mmjd&#x27;</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入相关方法/中间件</span></span><br><span class="line"><span class="keyword">const</span> &#123; getImgs,personType,personImgs &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../controller/img.controller&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> &#123; verifyAuth &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../middleware/auth.middleware&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//注册接口，并标明请求方法</span></span><br><span class="line">imgRouter.get(<span class="string">&#x27;/&#x27;</span>, getImgs)</span><br><span class="line">imgRouter.post(<span class="string">&#x27;/personimg&#x27;</span>,verifyAuth,personType,personImgs)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = imgRouter</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>其次就是在 middleware 或者 controller，service 中写具体操作了</li>
-</ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其中还是有很多细节的东西没有掌握好，此点需要以后继续深入研究！</p>
-]]></content>
-      <categories>
-        <category>技术实现</category>
-      </categories>
-      <tags>
-        <tag>node.js</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>浅谈js闭包</title>
     <url>/2021/09/05/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/</url>
     <content><![CDATA[<p>最近在学习 Javascript 高级语法，研究到了一些底层逻辑，有了很多的心得体会。赶紧记录下来！</p>
@@ -1188,6 +1193,43 @@
       </tags>
   </entry>
   <entry>
+    <title>通过node如何创建一个接口</title>
+    <url>/2021/08/31/%E9%80%9A%E8%BF%87node%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8E%A5%E5%8F%A3/</url>
+    <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>通过 node.js 环境与 Koa 框架，编写一个接口</p>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><ul>
+<li>app 文件夹</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;!-- index.js --&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入Koa框架</span></span><br><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">&#x27;koa-bodyparser&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> errorHandler = <span class="built_in">require</span>(<span class="string">&#x27;./error-handle&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="built_in">require</span>(<span class="string">&#x27;../router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//新建Koa实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</span><br><span class="line"></span><br><span class="line">app.use(bodyParser())</span><br><span class="line">useRoutes(app)</span><br><span class="line">app.on(<span class="string">&#x27;error&#x27;</span>, errorHandler)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = app</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>main.js 文件</li>
+</ul>
+<p>main.js 文件一般是程序的主要入口</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入之前创建的app实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="built_in">require</span>(<span class="string">&#x27;./app&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入数据库相关配置</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;./app/database&#x27;</span>)</span><br><span class="line"><span class="comment">//导入相关配置</span></span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">&#x27;./app/config&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建启动服务器</span></span><br><span class="line">app.listen(config.APP_PORT, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`服务器在<span class="subst">$&#123;config.APP_PORT&#125;</span>端口已启动`</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>router 文件夹<br>index.js 文件 主要用来配置 router（路由）相关信息</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入fs插件</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建useRoutes</span></span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="function">(<span class="params">app</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">//自动生成router相关配置</span></span><br><span class="line">  fs.readdirSync(__dirname).forEach(<span class="function">(<span class="params">file</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (file === <span class="string">&#x27;index.js&#x27;</span>) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">const</span> router = <span class="built_in">require</span>(<span class="string">`./<span class="subst">$&#123;file&#125;</span>`</span>)</span><br><span class="line">    app.use(router.routes())</span><br><span class="line">    app.use(router.allowedMethods())</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = useRoutes</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>img.router.js 具体的路由文件</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入koa路由</span></span><br><span class="line"><span class="keyword">const</span> Router = <span class="built_in">require</span>(<span class="string">&#x27;koa-router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//制定接口的路径</span></span><br><span class="line"><span class="keyword">const</span> imgRouter = <span class="keyword">new</span> Router(&#123; <span class="attr">prefix</span>: <span class="string">&#x27;/mmjd&#x27;</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入相关方法/中间件</span></span><br><span class="line"><span class="keyword">const</span> &#123; getImgs,personType,personImgs &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../controller/img.controller&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> &#123; verifyAuth &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../middleware/auth.middleware&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//注册接口，并标明请求方法</span></span><br><span class="line">imgRouter.get(<span class="string">&#x27;/&#x27;</span>, getImgs)</span><br><span class="line">imgRouter.post(<span class="string">&#x27;/personimg&#x27;</span>,verifyAuth,personType,personImgs)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = imgRouter</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>其次就是在 middleware 或者 controller，service 中写具体操作了</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其中还是有很多细节的东西没有掌握好，此点需要以后继续深入研究！</p>
+]]></content>
+      <categories>
+        <category>技术实现</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>门与墙算法的实现</title>
     <url>/2021/07/29/%E9%97%A8%E4%B8%8E%E5%A2%99%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>你被给定一个  m × n  的二维网格 rooms ，网格中有以下三种可能的初始化值：-1  表示墙或是障碍物 0  表示一扇门<br>INF  无限表示一个空的房间。然后，我们用  231 - 1 = 2147483647  代表  INF。你可以认为通往门的距离总是小于  2147483647  的。<br>你要给每个空房间位上填上该房间到   最近门的距离 ，如果无法到达门，则填  INF  即可。</p>
@@ -1217,37 +1259,6 @@
 </ol>
 <h2 id="象形理解"><a href="#象形理解" class="headerlink" title="象形理解"></a>象形理解</h2><p>把每一个门当作一个大的问题小孩（类似孩子王），队列就是记录未解决问题小孩的清单。<br>我们把每一个 INF 区域当作一个医生，安排医生用最小的距离去解决这些问题小孩。<br>我们先在房间里寻找大问题小孩，将他们全部记录在清单上。<br>我们开始分析他周围是否也有问题小孩（孩子王的小跟班）（上下左右检查）<br>如果有（该区域为空）且该问题其他医生没有解决（未赋值）<br>我们就指派该区域的医生去解决这个问题小孩，并且记录该问题小孩离孩子王有多远。（为 block 赋值）<br>如果周围的问题小孩已经有医生解决了，我们就不管。<br>将新的问题小孩记录在队列上，原先的孩子王的下线已经全盘供出，所以他从问题清单上划除。<br>继续解决清单上的新的问题小孩….<br>（可能有点不怎么容易理解。。。。我真的尽力了 源码 yyds ）</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="comment">//定义空房间的特征值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> INF = <span class="number">2147483647</span>;</span><br><span class="line">    <span class="comment">//定义门的特殊值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DOOR = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//定义辅助坐标 以此来表示房间的上下左右</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> List&lt;<span class="keyword">int</span>[]&gt; DIRECTIONS = Arrays.<span class="built_in">asList</span>(</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">0</span>&#125;,</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">-1</span>, <span class="number">0</span>&#125;,</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>, <span class="number">-1</span>&#125;,</span><br><span class="line">            <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>, <span class="number">1</span>&#125;</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">wallsAndGates</span><span class="params">(<span class="keyword">int</span>[][] rooms)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//记录房间的长宽</span></span><br><span class="line">        <span class="keyword">int</span> m= rooms.length;</span><br><span class="line">        <span class="keyword">int</span> n=rooms[<span class="number">0</span>].length;</span><br><span class="line">        <span class="keyword">if</span>(m==<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//创建队列</span></span><br><span class="line">        Queue&lt;<span class="keyword">int</span> []&gt; queue=<span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="comment">//遍历rooms 寻找所有的门</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> row = <span class="number">0</span>; row &lt; m; row++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> col = <span class="number">0</span>; col &lt; n; col++) &#123;</span><br><span class="line">                <span class="comment">//当检测到该地区为门的时候 将门的坐标元素入队</span></span><br><span class="line">                <span class="keyword">if</span>(rooms[row][col]==DOOR)&#123;</span><br><span class="line">                    queue.<span class="built_in">add</span>(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;row,col&#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//核心区域 （当队列不为空的时候，继续执行）</span></span><br><span class="line">        <span class="keyword">while</span>(!queue.<span class="built_in">isEmpty</span>())&#123;</span><br><span class="line">            <span class="comment">//取出队头的元素 也是最先入队的元素 （   d,c,b,a   =&gt; a)</span></span><br><span class="line">            <span class="keyword">int</span>[] block = queue.<span class="built_in">poll</span>();</span><br><span class="line">            <span class="comment">//记录原生的行，列数据</span></span><br><span class="line">            <span class="keyword">int</span> row=block[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> col=block[<span class="number">1</span>];</span><br><span class="line">            <span class="comment">//制造当前block的上下左右block 利用辅助坐标快速制作出新的坐标数据</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> [] direction:</span><br><span class="line">                 DIRECTIONS) &#123;</span><br><span class="line">               <span class="keyword">int</span> r=row+direction[<span class="number">0</span>];</span><br><span class="line">               <span class="keyword">int</span> c=col+direction[<span class="number">1</span>];</span><br><span class="line">               <span class="comment">//判断新的坐标是否合法 是否存在障碍物            ！！（重点！）是否之前已经被被赋值过！！</span></span><br><span class="line">                <span class="comment">//如果已经被赋值 说明当前值就是该区域的最短路径，再次改变就是不准确值</span></span><br><span class="line">                <span class="comment">// 因为是广度优先 所以当前值一定是最优值</span></span><br><span class="line">               <span class="keyword">if</span>(r&lt;<span class="number">0</span> || c&lt;<span class="number">0</span> || r&gt;=rooms.length || c&gt;=rooms[<span class="number">0</span>].length || rooms[r][c]!=INF)&#123;</span><br><span class="line">                   <span class="keyword">continue</span>;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="comment">//细节点  需要在前一个block的值上进行+1 否则步数全为1</span></span><br><span class="line">               rooms[r][c]=rooms[row][col]+<span class="number">1</span>;</span><br><span class="line">               <span class="comment">//如果都不是 则为全新的为赋值block 将其加入队列（列尾）</span></span><br><span class="line">                queue.<span class="built_in">add</span>(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;r,c&#125;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Problems</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>循环队列的实现</title>
-    <url>/2021/07/28/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>设计你的循环队列实现。 循环队列是一种线性数据结构，其操作表现基于 FIFO（先进先出）原则并且队尾被连接在队首之后以形成一个循环。它也被称为“环形缓冲器”。</p>
-<p>循环队列的一个好处是我们可以利用这个队列之前用过的空间。在一个普通队列里，一旦一个队列满了，我们就不能插入下一个元素，即使在队列前面仍有空间。但是使用循环队列，我们能使用这些空间去存储新的值。</p>
-<p>你的实现应该支持如下操作：</p>
-<p>MyCircularQueue(k): 构造器，设置队列长度为 k 。<br>Front: 从队首获取元素。如果队列为空，返回 -1 。<br>Rear: 获取队尾元素。如果队列为空，返回 -1 。<br>enQueue(value): 向循环队列插入一个元素。如果成功插入则返回真。<br>deQueue(): 从循环队列中删除一个元素。如果成功删除则返回真。<br>isEmpty(): 检查循环队列是否为空。<br>isFull(): 检查循环队列是否已满。</p>
-<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/design-circular-queue">https://leetcode-cn.com/problems/design-circular-queue</a></p>
-<h3 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h3><p>MyCircularQueue circularQueue = new MyCircularQueue(3); // 设置长度为 3<br>circularQueue.enQueue(1);  // 返回 true<br>circularQueue.enQueue(2);  // 返回 true<br>circularQueue.enQueue(3);  // 返回 true<br>circularQueue.enQueue(4);  // 返回 false，队列已满<br>circularQueue.Rear();  // 返回 3<br>circularQueue.isFull();  // 返回 true<br>circularQueue.deQueue();  // 返回 true<br>circularQueue.enQueue(4);  // 返回 true<br>circularQueue.Rear();  // 返回 4</p>
-<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><ol>
-<li>首先要明白循环队列的原理</li>
-<li>如何设计循环队列中的两个指针</li>
-<li>细节处理</li>
-</ol>
-<p>循环队列原理<br><a href="https://www.bilibili.com/video/BV1yx411e7nb?from=search&amp;seid=13632348157331521482/">https://www.bilibili.com/video/BV1yx411e7nb?from=search&amp;seid=13632348157331521482/</a></p>
-<h3 id="实现难点："><a href="#实现难点：" class="headerlink" title="实现难点："></a>实现难点：</h3><ol>
-<li>为什么要在 eg：head（head+1）% size 取模？</li>
-<li>为什么 get tail 的时候不能直接返回？</li>
-<li>细节处理</li>
-</ol>
-<h3 id="实现代码："><a href="#实现代码：" class="headerlink" title="实现代码："></a>实现代码：</h3><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCircularQueue</span> &#123;</span></span><br><span class="line">    <span class="comment">//构造原始数组</span></span><br><span class="line">    <span class="keyword">int</span>[] arr;</span><br><span class="line">    <span class="comment">//数组长度</span></span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">    <span class="comment">//头指针，记录循环列表的头部</span></span><br><span class="line">    <span class="keyword">int</span> head;</span><br><span class="line">    <span class="comment">//尾指针，记录循环列表的尾部</span></span><br><span class="line">    <span class="keyword">int</span> tail;</span><br><span class="line">    <span class="comment">//计数器，记录总共有多少个元素</span></span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造器，将原始的数组arr转化为实体，以及一些变量的初始化</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyCircularQueue</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        arr = <span class="keyword">new</span> <span class="keyword">int</span>[k];</span><br><span class="line">        size = k;</span><br><span class="line">        head = <span class="number">0</span>;</span><br><span class="line">        tail = <span class="number">0</span>;</span><br><span class="line">        count = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//入队操作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">enQueue</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//先判断队列是否已满。</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isFull</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        arr[tail] = value;</span><br><span class="line">        <span class="comment">//关键点！此处的指针也应该跟着循环，不能说到了数组的size（最大长度）就一直无限延续</span></span><br><span class="line">        <span class="comment">//所以这里需要取模运算&quot;%&quot; 例：k=size=7  tail=7 tail=（7+1%7=1 所以下次tail</span></span><br><span class="line">        <span class="comment">//的位置就在下角标为 1 的位置 从而达到循环指针的目的 后面的head指针同理</span></span><br><span class="line">        tail = (tail + <span class="number">1</span>) % size;</span><br><span class="line">        count++;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//出队操作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">deQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//判断是否为空</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isEmpty</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        head = (head + <span class="number">1</span>) % size;</span><br><span class="line">        count--;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//取头元素</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Front</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isEmpty</span>()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr[head];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Rear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">isEmpty</span>())&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//此处需要注意tail的真实位置到底指向的是哪里。</span></span><br><span class="line">        <span class="comment">//注意数据的处理不能取负。</span></span><br><span class="line">        <span class="keyword">return</span> arr[(tail - <span class="number">1</span> + size) % size];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断空</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count==<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断满</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isFull</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size==count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>在对循环队列实现的时候，注意的细节点有很多，需要做到指针循环才能达到整体的循环目的。<br>总的来说还是难度中等。</p>
 ]]></content>
       <categories>
         <category>Problems</category>
