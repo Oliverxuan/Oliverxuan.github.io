@@ -1,6 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Better-scroll 中无法滚动问题</title>
+    <url>/2021/08/11/Better-scroll-%E4%B8%AD%E6%97%A0%E6%B3%95%E6%BB%9A%E5%8A%A8%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在昨天我在使用 Vue 开发前端页面的时候，我遇到了在使用 better-scroll 实现页面滚动的时候无法滚动<br>经过排查，问题出在与 better-scroll 的滚动原理与实际高度之间产生矛盾（图片异步加载问题）</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>在之前的 GoodsList 组件中，有一个加载接口图片的操作</p>
+<figure class="highlight handlebars"><table><tr><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-item&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">:src</span>=<span class="string">&quot;goodsItem.img&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>  /&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-info&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.name</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;price&quot;</span>&gt;</span>RMB:</span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.price</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br></pre></td></tr></table></figure>
+
+<p>由于 better-scroll 在计算 wrapper content 高度的时候是在一开始就会计算好 从而达到滚动的目的</p>
+<p>但是 Goods list 会加载网路图片，存在一个异步问题<br>加载完后，实际的高度会远超于之前 better-scroll 计算的高度</p>
+<p>从而导致 better-scroll 之间计算无效了，最终无法滚动</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><figure class="highlight handlebars"><table><tr><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-item&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">:src</span>=<span class="string">&quot;goodsItem.img&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> @<span class="attr">load</span>=<span class="string">&quot;imageload&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-info&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.name</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;price&quot;</span>&gt;</span>RMB:</span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.price</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>在原代码 “&lt; img &gt;”标签处新增 @load=”imageload“ 监听事件</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">    <span class="built_in">imageload</span>() &#123;</span><br><span class="line">      this.$bus.$<span class="built_in">emit</span>(<span class="string">&quot;itemImageLoad&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>随后在方法里将此事件发射到事件总线里面</p>
+<p>注意，需要在 main.js 里注册 事件总线</p>
+<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&quot;./router&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&quot;./store&quot;</span>;</span><br><span class="line"></span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span>;</span><br><span class="line">Vue.prototype.$bus = <span class="keyword">new</span> Vue();</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  router,</span><br><span class="line">  store,</span><br><span class="line">  render: h =&gt; h(App)</span><br><span class="line">&#125;).$mount(<span class="string">&quot;<span class="subst">#app</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>将事件传入事件总线后 需要在 better-scroll 滚动页面里面监听事件</p>
+<figure class="highlight coffeescript"><table><tr><td class="code"><pre><span class="line">mounted() &#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$<span class="literal">on</span>(<span class="string">&quot;itemImageLoad&quot;</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.$refs.scroll.scroll.refresh();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>提前设置 better-scroll 中的 refs 从而方便操作</p>
+<p>最后监听到图片加载后 调用 scroll 的 refresh（）函数达到重新计算高度的目的</p>
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><p>由于之前的频繁发出事件 image load 导致 实际上会 refresh 很多次</p>
+<p>此处就需要 dbounce 防抖函数来处理 ：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn,delay</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> handle;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">clearTimeout</span>(handle)</span><br><span class="line">         handle=<span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">             fn()</span><br><span class="line">         &#125;,delay)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从而达到性能优化的目的</p>
+]]></content>
+      <categories>
+        <category>Obstacle</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HTML/CSS常见问题</title>
+    <url>/2021/10/18/HTML-CSS%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><h3 id="常识"><a href="#常识" class="headerlink" title="常识"></a>常识</h3><h4 id="1-如何理解-HTML-语义化？"><a href="#1-如何理解-HTML-语义化？" class="headerlink" title="1.如何理解 HTML 语义化？"></a>1.如何理解 HTML 语义化？</h4><p>HTML 语义化就是将文字，将内容的消息进行了划分。</p>
+<p>比如 h1，人们一看就明白这个是最大的标题。那么我们如果用 div 标签来做，我们结合 CSS 样式也可以做出最大标题的样子</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span>你好！<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>你好！<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>优点：</strong></p>
+<ol>
+<li>让人更容易读懂（增强代码的可读性）</li>
+<li>让搜索引擎更容易读懂（SEO）</li>
+</ol>
+<h4 id="2-在默认情况下，哪些-HTML-标签是块状元素，哪些是内联元素？"><a href="#2-在默认情况下，哪些-HTML-标签是块状元素，哪些是内联元素？" class="headerlink" title="2.在默认情况下，哪些 HTML 标签是块状元素，哪些是内联元素？"></a>2.在默认情况下，哪些 HTML 标签是块状元素，哪些是内联元素？</h4><p>块状元素：在一般情况下，块状元素在行内都会独占一行。</p>
+<p>eg：display:block/table;有 div h1 h2 table ul ol p 等</p>
+<p>内联元素：在一般情况下，内联元素在行内不独占一行，会挨着排列。</p>
+<p>eg: inline/inline-block；有 span img input button 等</p>
+<table>
+<thead>
+<tr>
+<th>块状元素</th>
+<th align="left">内联元素</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>address - 地址<br/>blockquote - 块引用<br/>center - 举中对齐块<br/>dir - 目录列表<br/>div - 常用块级容易，也是 CSS layout 的主要标签<br/>dl - 定义列表<br/>fieldset - form 控制组<br/>form - 交互表单<br/>h1 - 大标题<br/>h2 - 副标题<br/>h3 - 3 级标题<br/>h4 - 4 级标题<br/>h5 - 5 级标题<br/>h6 - 6 级标题<br/>hr - 水平分隔线<br/>isindex - input prompt<br/>menu - 菜单列表<br/>noframes - frames 可选内容，<br/>noscript - 可选脚本内容<br/>ol - 排序表单<br/>p - 段落<br/>pre - 格式化文本<br/>table - 表格<br/>ul - 非排序列表</td>
+<td align="left">a - 锚点<br/>abbr - 缩写<br/>acronym - 首字<br/>b - 粗体(不推荐)<br/>bdo - bidi override<br/>big - 大字体<br/>br - 换行<br/>cite - 引用<br/>code - 计算机代码(在引用源码的时候需要)<br/>dfn - 定义字段<br/>em - 强调<br/>font - 字体设定(不推荐)<br/>i - 斜体<br/>img - 图片<br/>input - 输入框<br/>kbd - 定义键盘文本<br/>label - 表格标签<br/>q - 短引用<br/>s - 中划线(不推荐)<br/>samp - 定义范例计算机代码<br/>select - 项目选择<br/>small - 小字体文本<br/>span - 常用内联容器，定义文本内区块<br/>strike - 中划线<br/>strong - 粗体强调<br/>sub - 下标<br/>sup - 上标<br/>textarea - 多行文本输入框<br/>tt - 电传文本<br/>u - 下划线<br/>var - 定义变量<br/></td>
+</tr>
+</tbody></table>
+<h2 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h2><h3 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h3><h4 id="1-盒子模型的宽度如何计算？"><a href="#1-盒子模型的宽度如何计算？" class="headerlink" title="1.盒子模型的宽度如何计算？"></a>1.盒子模型的宽度如何计算？</h4><p>offsetWidth = （内容宽度+内边距+边距），无外边距。</p>
+<h4 id="2-如何将盒子的大小与-offsetWidth-设置相同？"><a href="#2-如何将盒子的大小与-offsetWidth-设置相同？" class="headerlink" title="2.如何将盒子的大小与 offsetWidth 设置相同？"></a>2.如何将盒子的大小与 offsetWidth 设置相同？</h4><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="attribute">box-sizing</span>: border-box;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-margin-纵向重叠问题"><a href="#3-margin-纵向重叠问题" class="headerlink" title="3.margin 纵向重叠问题"></a>3.margin 纵向重叠问题</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">  <span class="selector-tag">p</span> &#123;</span></span><br><span class="line"><span class="css">    <span class="attribute">font-size</span>: <span class="number">16px</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">line-height</span>: <span class="number">1</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">margin-top</span>: <span class="number">10px</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">margin-bottom</span>: <span class="number">15px</span>;</span></span><br><span class="line"><span class="css">  &#125;</span></span><br><span class="line"><span class="css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>AAA<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>BBB<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>该 AAA 和 BBB 之间的距离是多少？</p>
+<p><strong>15px</strong></p>
+<ol>
+<li>相邻元素的 margin-top 和 margin- bottom 会发生重叠。</li>
+<li>空白内容的 p 标签也会发生重叠。</li>
+</ol>
+<h4 id="4-margin-的负值问题"><a href="#4-margin-的负值问题" class="headerlink" title="4.margin 的负值问题"></a>4.margin 的负值问题</h4><p>margin 的负值，会相反地进行对应的上下左右移动。</p>
+<p>eg：margin-top：-20px 则为向上平移 20px</p>
+<h4 id="5-BFC-理解和应用"><a href="#5-BFC-理解和应用" class="headerlink" title="5.BFC 理解和应用"></a>5.BFC 理解和应用</h4><p><strong>BFC（块级格式化上下文）：</strong>一块独立渲染区域，内部元素的渲染不会影响到边界以外的元素。</p>
+<p>常见形成 BFC 的条件：</p>
+<ul>
+<li>float 不是 none</li>
+<li>position 是 absolute 或 fixed</li>
+<li>overflow 不是 visible</li>
+<li>display 是 flex inline- block 等</li>
+</ul>
+<h4 id="6-圣杯布局和双飞翼布局"><a href="#6-圣杯布局和双飞翼布局" class="headerlink" title="6.圣杯布局和双飞翼布局"></a>6.圣杯布局和双飞翼布局</h4><p><strong>特征：</strong></p>
+<ul>
+<li>三栏布局，中间一栏最先加载和渲染（内容最重要）</li>
+<li>两侧内容固定，中间内容随着宽度自适应</li>
+<li>一般用于 PC 页面</li>
+</ul>
+<p><strong>技术点：</strong></p>
+<ul>
+<li>使用 float 布局</li>
+<li>两侧使用 margin 负值，以便和中间内容横向重叠</li>
+<li>防止中间内容被两侧覆盖，一个用 padding 一个用 margin</li>
+</ul>
+<p><strong>圣杯布局：</strong></p>
+<p>使用 padding 将两边的边距拉出来</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">    <span class="selector-class">.container</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">min-width</span>: <span class="number">400px</span>;</span></span><br><span class="line"><span class="css">            <span class="comment">/*设置左右边距，为左右栏留出空隙*/</span></span></span><br><span class="line"><span class="css">      <span class="attribute">padding-left</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">padding-right</span>: <span class="number">150px</span>;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css">		      <span class="comment">/*整体向左浮动*/</span></span></span><br><span class="line"><span class="css">    <span class="selector-class">.c</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">float</span>: left;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css"></span></span><br><span class="line"><span class="css">    <span class="selector-class">.main</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">background-color</span>: red;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css">    <span class="selector-class">.left</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">position</span>: relative;</span></span><br><span class="line"><span class="css">      <span class="attribute">width</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">background-color</span>: skyblue;</span></span><br><span class="line"><span class="css">      <span class="attribute">right</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">margin-left</span>: -<span class="number">100%</span>;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css">    <span class="selector-class">.right</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">width</span>: <span class="number">150px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">background-color</span>: skyblue;</span></span><br><span class="line"><span class="css">      <span class="attribute">margin-right</span>: -<span class="number">150px</span>;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css">  </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;main c&quot;</span>&gt;</span>中间<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;left c&quot;</span>&gt;</span>左边<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;right c&quot;</span>&gt;</span>右边<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>双飞翼布局：</strong></p>
+<p>使用 margin 将边距拉出来</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">  <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">    <span class="selector-tag">body</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">max-width</span>: <span class="number">550px</span>;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css"></span></span><br><span class="line"><span class="css">    <span class="selector-class">.col</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">float</span>: left;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css"></span></span><br><span class="line"><span class="css">    <span class="selector-id">#main</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">height</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">background-color</span>: <span class="number">#ccc</span>;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css"></span></span><br><span class="line"><span class="css">    <span class="selector-id">#main-wrap</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">margin-left</span>: <span class="number">190px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">margin-right</span>: <span class="number">190px</span>;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css"></span></span><br><span class="line"><span class="css">    <span class="selector-id">#left</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">width</span>: <span class="number">190px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">height</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">margin-left</span>: -<span class="number">100%</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">background-color</span>: <span class="number">#0000FF</span>;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css"></span></span><br><span class="line"><span class="css">    <span class="selector-id">#right</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">width</span>: <span class="number">190px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">height</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">margin-right</span>: -<span class="number">190px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">background-color</span>: <span class="number">#FF0000</span>;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css">  </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;main&quot;</span> <span class="attr">class</span>=<span class="string">&quot;col&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;main-wrap&quot;</span>&gt;</span></span><br><span class="line">      this is main</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;left&quot;</span> <span class="attr">class</span>=<span class="string">&quot;col&quot;</span>&gt;</span></span><br><span class="line">    this is left</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;right&quot;</span> <span class="attr">class</span>=<span class="string">&quot;col&quot;</span>&gt;</span></span><br><span class="line">    this is right</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="7-手写-clearfix"><a href="#7-手写-clearfix" class="headerlink" title="7.手写 clearfix"></a>7.手写 clearfix</h4><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.clearfix</span>:after&#123;</span><br><span class="line">content:<span class="string">&#x27;&#x27;</span>;</span><br><span class="line">dispaly:table;</span><br><span class="line"><span class="attribute">clear</span>:both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-flex"><a href="#8-flex" class="headerlink" title="8.flex"></a>8.flex</h4><h5 id="1-flex-基本使用"><a href="#1-flex-基本使用" class="headerlink" title="1.flex 基本使用"></a>1.flex 基本使用</h5><ol>
+<li><p>启用 flex：display：flex</p>
+</li>
+<li><p>flex-direction<br>flex items 默认都是沿着 main axis（主轴）从 main start 开始往 main end 方向排布<br>flex-direction 决定了 main axis 的方向，有四个取值 row（默认值）、row-reverse、column、column-reverse<br>row（默认值）：主轴为水平方向，起点在左端。<br>row-reverse：主轴为水平方向，起点在右端。<br>column：主轴为垂直方向，起点在上沿。<br>column-reverse：主轴为垂直方向，起点在下沿。</p>
+</li>
+<li><p>justify-content</p>
+<p>决定了 flex item 在 main axis（主轴）上的对齐方式</p>
+<p>flex-start(默认值):与 main start 对齐<br>flex-end：与 main end 对齐<br>center：居中<br>space-between：flex items 之间的距离相等，与 main start、main end 两端对齐<br>space-evenly: flex items 之间的距离相等,flex items 与 main start 、main end 之间的距离等于 flex items 之间的距离<br>space-around :flex items 之间的距离相等,flex items 与 main start 、main end 之间的距离等于 flex items 之间的距离的一半</p>
+</li>
+<li><p>align-items</p>
+<p>align-items 属性定义项目在交叉轴上如何对齐。</p>
+<p>align-items: flex-start | flex-end | center | baseline | stretch;</p>
+</li>
+</ol>
+<h5 id="2-flex-水平垂直居中"><a href="#2-flex-水平垂直居中" class="headerlink" title="2.flex 水平垂直居中"></a>2.flex 水平垂直居中</h5><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="attribute">display</span>: flex; <span class="comment">/*父元素设置flex属性*/</span></span><br><span class="line"><span class="attribute">justify-content</span>: center; <span class="comment">/*水平主轴居中*/</span></span><br><span class="line"><span class="attribute">align-items</span>: center; <span class="comment">/*垂直交叉轴居中*/</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="3-flex-实现三点骰子"><a href="#3-flex-实现三点骰子" class="headerlink" title="3.flex 实现三点骰子"></a>3.flex 实现三点骰子</h5><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">    <span class="selector-class">.box</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">width</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">height</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">border</span>: <span class="number">2px</span> solid <span class="number">#ccc</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">border-radius</span>: <span class="number">10px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">padding</span>: <span class="number">20px</span>;</span></span><br><span class="line"><span class="css"></span></span><br><span class="line"><span class="css">      <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="css">      <span class="attribute">justify-content</span>: space-between;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css"></span></span><br><span class="line"><span class="css">    <span class="selector-class">.item</span><span class="selector-pseudo">:nth-child</span>(<span class="number">2</span>) &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">align-self</span>: center;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css"></span></span><br><span class="line"><span class="css">    <span class="selector-class">.item</span><span class="selector-pseudo">:nth-child</span>(<span class="number">3</span>) &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">align-self</span>: flex-end;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css"></span></span><br><span class="line"><span class="css">    <span class="selector-class">.item</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">display</span>: block;</span></span><br><span class="line"><span class="css">      <span class="attribute">width</span>: <span class="number">40px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">height</span>: <span class="number">40px</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span></span><br><span class="line"><span class="css">      <span class="attribute">background-color</span>: <span class="number">#666</span>;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css">  </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h3><h4 id="1-absolute-和-relative-分别依据什么定位？"><a href="#1-absolute-和-relative-分别依据什么定位？" class="headerlink" title="1.absolute 和 relative 分别依据什么定位？"></a>1.absolute 和 relative 分别依据什么定位？</h4><p>relative：依据自身定位，不会对外层元素造成影响。</p>
+<p>absolute：依据最近一层的定位元素定位。向上查找直到 body。</p>
+<h4 id="2-居中对齐都有哪些实现方式？"><a href="#2-居中对齐都有哪些实现方式？" class="headerlink" title="2.居中对齐都有哪些实现方式？"></a>2.居中对齐都有哪些实现方式？</h4><p><strong>水平居中：</strong></p>
+<ul>
+<li>inline 元素：text- align：center</li>
+<li>block 元素：margin：auto</li>
+<li>absolute 元素：left：50%+margin-left 负值</li>
+</ul>
+<p><strong>垂直居中：</strong></p>
+<ul>
+<li>inline 元素：line- height 的值等于 height 值</li>
+<li>absolute 元素：top：50%+margin-top 负值</li>
+<li>absolute 元素：transform（-50%，-50%）</li>
+<li>absolute 元素：top，left，bottom，right=0+margin：auto</li>
+</ul>
+<h3 id="图文样式"><a href="#图文样式" class="headerlink" title="图文样式"></a>图文样式</h3><h4 id="1-line-height-如何继承"><a href="#1-line-height-如何继承" class="headerlink" title="1.line-height 如何继承"></a>1.line-height 如何继承</h4><ul>
+<li><p>写具体数值，如 30px，则继承该值</p>
+</li>
+<li><p>写比例，如 2，2.5 此类，则继承该比例</p>
+</li>
+<li><p>写百分比，如 200%，则继承<strong>计算出来的值</strong>（重点）</p>
+</li>
+</ul>
+<h3 id="响应式"><a href="#响应式" class="headerlink" title="响应式"></a>响应式</h3><h4 id="1-rem-是什么？"><a href="#1-rem-是什么？" class="headerlink" title="1.rem 是什么？"></a>1.rem 是什么？</h4><p><strong>rem 是一个长度单位。</strong></p>
+<ul>
+<li>px，绝对长度单位，最常用。</li>
+<li>em，相对长度单位，相对父元素，不常用。</li>
+<li>rem，相对长度单位，相对于跟元素，常用于响应式布局。</li>
+</ul>
+<h4 id="2-响应式的常见方案"><a href="#2-响应式的常见方案" class="headerlink" title="2.响应式的常见方案"></a>2.响应式的常见方案</h4><ul>
+<li>media- query，根据不同的屏幕宽度设置根元素 font-size</li>
+<li>rem，基于根元素的相对单位</li>
+</ul>
+<h4 id="3-rem-的弊端：“阶梯”性"><a href="#3-rem-的弊端：“阶梯”性" class="headerlink" title="3.rem 的弊端：“阶梯”性"></a>3.rem 的弊端：“阶梯”性</h4><p>其实 rem 的实用性并不好，阶梯形产生了一些不适配</p>
+<h4 id="4-网页视口尺寸"><a href="#4-网页视口尺寸" class="headerlink" title="4.网页视口尺寸"></a>4.网页视口尺寸</h4><ul>
+<li>window.screen.height 屏幕高度</li>
+<li>window.innerHeight 网页视口高度</li>
+<li>document.body.clienHeight body 高度</li>
+</ul>
+<h4 id="5-vw-vh"><a href="#5-vw-vh" class="headerlink" title="5.vw vh"></a>5.vw vh</h4><ul>
+<li>vh 网页视口高度的百分之一</li>
+<li>vw 网页视口宽度的百分之一</li>
+<li>vmax vh vw 中取最大值</li>
+<li>vmin vh vw 中取最小值</li>
+</ul>
+]]></content>
+      <categories>
+        <category>练习题</category>
+      </categories>
+      <tags>
+        <tag>HTML/CSS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello,好久不见</title>
     <url>/2021/08/11/Hello-%E5%A5%BD%E4%B9%85%E4%B8%8D%E8%A7%81/</url>
     <content><![CDATA[<h2 id="最近都去干什么了？"><a href="#最近都去干什么了？" class="headerlink" title="最近都去干什么了？"></a>最近都去干什么了？</h2><p>距离上次更新我的博客已经过去了 10 多天了，在这段时间里我开始新的征程 =&gt; 准备 9 月份的 辽宁省大学生移动开发大赛</p>
@@ -46,43 +225,6 @@
       </categories>
       <tags>
         <tag>规划</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Better-scroll 中无法滚动问题</title>
-    <url>/2021/08/11/Better-scroll-%E4%B8%AD%E6%97%A0%E6%B3%95%E6%BB%9A%E5%8A%A8%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在昨天我在使用 Vue 开发前端页面的时候，我遇到了在使用 better-scroll 实现页面滚动的时候无法滚动<br>经过排查，问题出在与 better-scroll 的滚动原理与实际高度之间产生矛盾（图片异步加载问题）</p>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>在之前的 GoodsList 组件中，有一个加载接口图片的操作</p>
-<figure class="highlight handlebars"><table><tr><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-item&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">:src</span>=<span class="string">&quot;goodsItem.img&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span>  /&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-info&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.name</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;price&quot;</span>&gt;</span>RMB:</span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.price</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br></pre></td></tr></table></figure>
-
-<p>由于 better-scroll 在计算 wrapper content 高度的时候是在一开始就会计算好 从而达到滚动的目的</p>
-<p>但是 Goods list 会加载网路图片，存在一个异步问题<br>加载完后，实际的高度会远超于之前 better-scroll 计算的高度</p>
-<p>从而导致 better-scroll 之间计算无效了，最终无法滚动</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><figure class="highlight handlebars"><table><tr><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-item&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">:src</span>=<span class="string">&quot;goodsItem.img&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> @<span class="attr">load</span>=<span class="string">&quot;imageload&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;goods-info&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.name</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;price&quot;</span>&gt;</span>RMB:</span><span class="template-variable">&#123;&#123; <span class="name">goodsItem.price</span> &#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>在原代码 “&lt; img &gt;”标签处新增 @load=”imageload“ 监听事件</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">    <span class="built_in">imageload</span>() &#123;</span><br><span class="line">      this.$bus.$<span class="built_in">emit</span>(<span class="string">&quot;itemImageLoad&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-
-<p>随后在方法里将此事件发射到事件总线里面</p>
-<p>注意，需要在 main.js 里注册 事件总线</p>
-<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&quot;./router&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&quot;./store&quot;</span>;</span><br><span class="line"></span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span>;</span><br><span class="line">Vue.prototype.$bus = <span class="keyword">new</span> Vue();</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  router,</span><br><span class="line">  store,</span><br><span class="line">  render: h =&gt; h(App)</span><br><span class="line">&#125;).$mount(<span class="string">&quot;<span class="subst">#app</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>将事件传入事件总线后 需要在 better-scroll 滚动页面里面监听事件</p>
-<figure class="highlight coffeescript"><table><tr><td class="code"><pre><span class="line">mounted() &#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$<span class="literal">on</span>(<span class="string">&quot;itemImageLoad&quot;</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.$refs.scroll.scroll.refresh();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
-
-<p>提前设置 better-scroll 中的 refs 从而方便操作</p>
-<p>最后监听到图片加载后 调用 scroll 的 refresh（）函数达到重新计算高度的目的</p>
-<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><p>由于之前的频繁发出事件 image load 导致 实际上会 refresh 很多次</p>
-<p>此处就需要 dbounce 防抖函数来处理 ：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn,delay</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> handle;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">clearTimeout</span>(handle)</span><br><span class="line">         handle=<span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">             fn()</span><br><span class="line">         &#125;,delay)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
-
-<p>从而达到性能优化的目的</p>
-]]></content>
-      <categories>
-        <category>Obstacle</category>
-      </categories>
-      <tags>
-        <tag>vue</tag>
       </tags>
   </entry>
   <entry>
@@ -365,6 +507,50 @@
       </tags>
   </entry>
   <entry>
+    <title>Js中的构造函数及原型</title>
+    <url>/2021/09/22/Js%E4%B8%AD%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8E%9F%E5%9E%8B/</url>
+    <content><![CDATA[<h1 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h1><p>Js 中的构造函数与 Java 的构造函数思想区别不大，只是需要注意下细节。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 规范: 构造函数的首字母一般是大写</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, height, address</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">  <span class="built_in">this</span>.age = age</span><br><span class="line">  <span class="built_in">this</span>.height = height</span><br><span class="line">  <span class="built_in">this</span>.address = address</span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.eating = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27;在吃东西~&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.running = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27;在跑步&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Person(<span class="string">&#x27;张三&#x27;</span>, <span class="number">18</span>, <span class="number">1.88</span>, <span class="string">&#x27;广州市&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> p2 = <span class="keyword">new</span> Person(<span class="string">&#x27;李四&#x27;</span>, <span class="number">20</span>, <span class="number">1.98</span>, <span class="string">&#x27;北京市&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(p1)</span><br><span class="line"><span class="built_in">console</span>.log(p2)</span><br><span class="line">p1.eating()</span><br><span class="line">p2.eating()</span><br></pre></td></tr></table></figure>
+
+<p>构造函数的缺点：容易产生很多的代码冗余，例如这里的 eating，running。</p>
+<h2 id="构造函数中的-new"><a href="#构造函数中的-new" class="headerlink" title="构造函数中的 new"></a>构造函数中的 new</h2><p><strong>如果一个函数被使用 new 操作符调用了，那么它会执行如下操作：</strong></p>
+<ol>
+<li><p>在<strong>内存</strong>中创建一个新的对象（空对象）；</p>
+</li>
+<li><p>这个对象内部的[[prototype]]属性会被赋值为该构造函数的 prototype 属性；</p>
+</li>
+<li><p>构造函数内部的 this，会指向创建出来的新对象；</p>
+</li>
+<li><p>执行函数的内部代码（函数体代码）；</p>
+</li>
+<li><p>如果构造函数没有返回非空对象，则返回创建出来的新对象；</p>
+</li>
+</ol>
+<h1 id="对象原型"><a href="#对象原型" class="headerlink" title="对象原型"></a>对象原型</h1><p>JavaScript 当中每个对象都有一个特殊的内置属性 [[prototype]]，这个特殊的对象可以指向另外一个对象。</p>
+<p>我们可以通过 _ proto _ / Object.getPrototypeOf 来查看对象的对象原型</p>
+<p><strong>所有的函数都有一个 prototype 属性</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数也是一个对象</span></span><br><span class="line"><span class="comment">// console.log(foo.__proto__) // 函数作为对象来说, 它也是有[[prototype]] 隐式原型</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数它因为是一个函数, 所以它还会多出来一个显示原型属性: prototype</span></span><br><span class="line"><span class="built_in">console</span>.log(foo.prototype)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> f1 = <span class="keyword">new</span> foo()</span><br><span class="line"><span class="keyword">var</span> f2 = <span class="keyword">new</span> foo()</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(f1.__proto__ === foo.prototype)</span><br><span class="line"><span class="built_in">console</span>.log(f2.__proto__ === foo.prototype)</span><br></pre></td></tr></table></figure>
+
+<h2 id="new-创建新的对象时"><a href="#new-创建新的对象时" class="headerlink" title="new 创建新的对象时"></a>new 创建新的对象时</h2><ol>
+<li><p>在内存中创建一个新的对象（空对象）；</p>
+</li>
+<li><p>这个对象内部的[[prototype]]属性会被赋值为该构造函数的 prototype 属性；</p>
+</li>
+</ol>
+<h2 id="对象原型的应用"><a href="#对象原型的应用" class="headerlink" title="对象原型的应用"></a>对象原型的应用</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, height, address</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">  <span class="built_in">this</span>.age = age</span><br><span class="line">  <span class="built_in">this</span>.height = height</span><br><span class="line">  <span class="built_in">this</span>.address = address</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在上构造函数的方式创建对象时，有一个弊端：会创建出重复的函数，比如running、eating这些函数</span></span><br><span class="line"><span class="comment">//所以我们这里使用prototype来给对象原型添加方法，属性</span></span><br><span class="line">Person.prototype.eating = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27;在吃东西~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.running = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27;在跑步~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Person(<span class="string">&#x27;OLiver&#x27;</span>, <span class="number">18</span>, <span class="number">1.88</span>, <span class="string">&#x27;北京市&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> p2 = <span class="keyword">new</span> Person(<span class="string">&#x27;kobe&#x27;</span>, <span class="number">20</span>, <span class="number">1.98</span>, <span class="string">&#x27;洛杉矶市&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p1.eating()</span><br><span class="line">p2.eating()</span><br><span class="line"></span><br><span class="line">Person.prototype.page = <span class="string">&#x27;xuan&#x27;</span></span><br><span class="line"></span><br><span class="line">p1.eating() <span class="comment">// Oliver在吃东西~</span></span><br><span class="line">p2.eating() <span class="comment">// kobe在吃东西~</span></span><br><span class="line"><span class="comment">//当当前的p1对象中没有定义page时则会向上查找，此处为Person中的page</span></span><br><span class="line"><span class="built_in">console</span>.log(p1.page) <span class="comment">// xuan</span></span><br><span class="line">p2.page = <span class="string">&#x27;Oliver-xuan&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(p2.page) <span class="comment">// Oliver-xuan</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Js 中的对象原型给我的感觉就像是 JAVA 中的父类，我们在父类中定义一些方法，子类可以继承该方法，属性。</p>
+<p>例如此处我们定义了 eating running 两个方法，我们在子类中并没有对其进行一些定义赋值，但是我们可以用 new 出来的对象直接使用。</p>
+<p>正是因为 this 的存在，在构造器中的 this 也会以一种隐式绑定的方式，this 绑定到调用的对象上。如 p1.running 这里 running 的 this 就是 p1.</p>
+]]></content>
+      <categories>
+        <category>底层逻辑</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Js中的严格模式</title>
     <url>/2021/09/16/Js%E4%B8%AD%E7%9A%84%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>在 JavaScript 中，我们常常在非严格模式/松散模式下进行编译。Js 会将一些语法的错误保持静默，像是睁一只眼闭一只眼。在严格模式下，这些错误就会被 Js 揪出来。</p>
@@ -442,50 +628,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Js中的构造函数及原型</title>
-    <url>/2021/09/22/Js%E4%B8%AD%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%8F%8A%E5%8E%9F%E5%9E%8B/</url>
-    <content><![CDATA[<h1 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h1><p>Js 中的构造函数与 Java 的构造函数思想区别不大，只是需要注意下细节。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 规范: 构造函数的首字母一般是大写</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, height, address</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">  <span class="built_in">this</span>.age = age</span><br><span class="line">  <span class="built_in">this</span>.height = height</span><br><span class="line">  <span class="built_in">this</span>.address = address</span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.eating = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27;在吃东西~&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.running = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27;在跑步&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Person(<span class="string">&#x27;张三&#x27;</span>, <span class="number">18</span>, <span class="number">1.88</span>, <span class="string">&#x27;广州市&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> p2 = <span class="keyword">new</span> Person(<span class="string">&#x27;李四&#x27;</span>, <span class="number">20</span>, <span class="number">1.98</span>, <span class="string">&#x27;北京市&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(p1)</span><br><span class="line"><span class="built_in">console</span>.log(p2)</span><br><span class="line">p1.eating()</span><br><span class="line">p2.eating()</span><br></pre></td></tr></table></figure>
-
-<p>构造函数的缺点：容易产生很多的代码冗余，例如这里的 eating，running。</p>
-<h2 id="构造函数中的-new"><a href="#构造函数中的-new" class="headerlink" title="构造函数中的 new"></a>构造函数中的 new</h2><p><strong>如果一个函数被使用 new 操作符调用了，那么它会执行如下操作：</strong></p>
-<ol>
-<li><p>在<strong>内存</strong>中创建一个新的对象（空对象）；</p>
-</li>
-<li><p>这个对象内部的[[prototype]]属性会被赋值为该构造函数的 prototype 属性；</p>
-</li>
-<li><p>构造函数内部的 this，会指向创建出来的新对象；</p>
-</li>
-<li><p>执行函数的内部代码（函数体代码）；</p>
-</li>
-<li><p>如果构造函数没有返回非空对象，则返回创建出来的新对象；</p>
-</li>
-</ol>
-<h1 id="对象原型"><a href="#对象原型" class="headerlink" title="对象原型"></a>对象原型</h1><p>JavaScript 当中每个对象都有一个特殊的内置属性 [[prototype]]，这个特殊的对象可以指向另外一个对象。</p>
-<p>我们可以通过 _ proto _ / Object.getPrototypeOf 来查看对象的对象原型</p>
-<p><strong>所有的函数都有一个 prototype 属性</strong></p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数也是一个对象</span></span><br><span class="line"><span class="comment">// console.log(foo.__proto__) // 函数作为对象来说, 它也是有[[prototype]] 隐式原型</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数它因为是一个函数, 所以它还会多出来一个显示原型属性: prototype</span></span><br><span class="line"><span class="built_in">console</span>.log(foo.prototype)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> f1 = <span class="keyword">new</span> foo()</span><br><span class="line"><span class="keyword">var</span> f2 = <span class="keyword">new</span> foo()</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(f1.__proto__ === foo.prototype)</span><br><span class="line"><span class="built_in">console</span>.log(f2.__proto__ === foo.prototype)</span><br></pre></td></tr></table></figure>
-
-<h2 id="new-创建新的对象时"><a href="#new-创建新的对象时" class="headerlink" title="new 创建新的对象时"></a>new 创建新的对象时</h2><ol>
-<li><p>在内存中创建一个新的对象（空对象）；</p>
-</li>
-<li><p>这个对象内部的[[prototype]]属性会被赋值为该构造函数的 prototype 属性；</p>
-</li>
-</ol>
-<h2 id="对象原型的应用"><a href="#对象原型的应用" class="headerlink" title="对象原型的应用"></a>对象原型的应用</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, height, address</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">  <span class="built_in">this</span>.age = age</span><br><span class="line">  <span class="built_in">this</span>.height = height</span><br><span class="line">  <span class="built_in">this</span>.address = address</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在上构造函数的方式创建对象时，有一个弊端：会创建出重复的函数，比如running、eating这些函数</span></span><br><span class="line"><span class="comment">//所以我们这里使用prototype来给对象原型添加方法，属性</span></span><br><span class="line">Person.prototype.eating = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27;在吃东西~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.running = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27;在跑步~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Person(<span class="string">&#x27;OLiver&#x27;</span>, <span class="number">18</span>, <span class="number">1.88</span>, <span class="string">&#x27;北京市&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> p2 = <span class="keyword">new</span> Person(<span class="string">&#x27;kobe&#x27;</span>, <span class="number">20</span>, <span class="number">1.98</span>, <span class="string">&#x27;洛杉矶市&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p1.eating()</span><br><span class="line">p2.eating()</span><br><span class="line"></span><br><span class="line">Person.prototype.page = <span class="string">&#x27;xuan&#x27;</span></span><br><span class="line"></span><br><span class="line">p1.eating() <span class="comment">// Oliver在吃东西~</span></span><br><span class="line">p2.eating() <span class="comment">// kobe在吃东西~</span></span><br><span class="line"><span class="comment">//当当前的p1对象中没有定义page时则会向上查找，此处为Person中的page</span></span><br><span class="line"><span class="built_in">console</span>.log(p1.page) <span class="comment">// xuan</span></span><br><span class="line">p2.page = <span class="string">&#x27;Oliver-xuan&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(p2.page) <span class="comment">// Oliver-xuan</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Js 中的对象原型给我的感觉就像是 JAVA 中的父类，我们在父类中定义一些方法，子类可以继承该方法，属性。</p>
-<p>例如此处我们定义了 eating running 两个方法，我们在子类中并没有对其进行一些定义赋值，但是我们可以用 new 出来的对象直接使用。</p>
-<p>正是因为 this 的存在，在构造器中的 this 也会以一种隐式绑定的方式，this 绑定到调用的对象上。如 p1.running 这里 running 的 this 就是 p1.</p>
-]]></content>
-      <categories>
-        <category>底层逻辑</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Js常用数组高阶函数</title>
     <url>/2021/09/06/Js%E4%B8%AD%E7%9A%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<p>js 中有很多高阶函数，能在日常的代码编写工作中提高效率。下面列举一些常用 js 的数组高阶函数</p>
@@ -514,73 +656,6 @@
       </categories>
       <tags>
         <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>React 初体验</title>
-    <url>/2021/09/15/React-%E5%88%9D%E4%BD%93%E9%AA%8C/</url>
-    <content><![CDATA[<h1 id="React"><a href="#React" class="headerlink" title="React"></a>React</h1><p>React 基本上是高级前端工程师的必备技能，相较于 Vue 也更加灵活。可以说是 Facebook 工程师们智慧的结晶。</p>
-<p>在现阶段，学习 React 可以提高自己对前端的理解，扩大及自己的技术广度。为以后开发中大型项目奠基。</p>
-<h1 id="初体验"><a href="#初体验" class="headerlink" title="初体验"></a>初体验</h1><h3 id="完成点击按钮修改文字的操作"><a href="#完成点击按钮修改文字的操作" class="headerlink" title="完成点击按钮修改文字的操作"></a>完成点击按钮修改文字的操作</h3><ul>
-<li>创建一个 html 文件 引入 React 相关 CDN 链接</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/react@16/umd/react.development.js&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">crossorigin</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/react-dom@16/umd/react-dom.development.js&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">crossorigin</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/babel-standalone@6/babel.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>React 和 Vue 不一样，React 的理念更像是类纯函数。我们从 CDN 也可以看出分别引入了 React 核心文件，React-dom，Babel 转译。每个都各司其职。而 Vue 则是全部打包在一起直接引入。</strong></p>
-<p>成功引入相关依赖后，这样我们就可以开始我们的 React 开发了</p>
-<ul>
-<li>实现功能</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 需要渲染的地方，通过id来实现挂载 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 导入相关依赖 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/react@16/umd/react.development.js&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">crossorigin</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/react-dom@16/umd/react-dom.development.js&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">crossorigin</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/babel-standalone@6/babel.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 开始开发 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 注意事项：想在script使用jsx 需要添加标签 type=“text/babel” --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- jsx多个组件在根的层面，只能有一个标签，就如同 Vue：div 来包裹--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/babel&quot;</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">//封装App组件，该App类继承了React.Component</span></span></span><br><span class="line"><span class="javascript">      <span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="comment">//变量放在constructor()中</span></span></span><br><span class="line"><span class="javascript">        <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">          <span class="comment">//由于是继承类，需要调用一下super（）</span></span></span><br><span class="line"><span class="javascript">          <span class="built_in">super</span>()</span></span><br><span class="line"><span class="javascript">          <span class="comment">//动态数据，统一存放在this.state中</span></span></span><br><span class="line"><span class="javascript">          <span class="built_in">this</span>.state = &#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">mes</span>: <span class="string">&#x27;Hello world&#x27;</span>,</span></span><br><span class="line"><span class="javascript">          &#125;</span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">        <span class="comment">//	render（）渲染</span></span></span><br><span class="line"><span class="javascript">        <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">          <span class="keyword">return</span> (</span></span><br><span class="line"><span class="javascript">            <span class="comment">//如同Vue一样，需要用唯一的&lt;div&gt;&lt;/div&gt;来包裹内容</span></span></span><br><span class="line"><span class="javascript">            <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span></span><br><span class="line"><span class="xml"><span class="javascript">              // 调用动态数据注意是this.state.的方式</span></span></span><br><span class="line"><span class="xml"><span class="javascript">              <span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;this.state.mes&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span></span><br><span class="line"><span class="xml"><span class="javascript">              //React是声明式编程，这里绑定方法用的是onClick（）=&#123;&#125;</span></span></span><br><span class="line"><span class="xml"><span class="javascript">              的方式进行的，切需要.bind来给它指定一个this</span></span></span><br><span class="line"><span class="xml"><span class="javascript">              <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;this.btnCLick.bind(this)&#125;</span>&gt;</span>改变文字<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span></span><br><span class="line"><span class="xml"><span class="javascript">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span></span><br><span class="line"><span class="javascript">          )</span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        <span class="comment">//  永远不要手动调用render（）</span></span></span><br><span class="line"><span class="javascript">        <span class="comment">// 相关函数</span></span></span><br><span class="line"><span class="javascript">        <span class="function"><span class="title">btnCLick</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">          <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span></span><br><span class="line"><span class="javascript">          <span class="built_in">console</span>.log(<span class="string">&#x27;按钮发生了点击&#x27;</span>)</span></span><br><span class="line"><span class="javascript">          <span class="comment">//通过this.setState的方式来修改state里面的内容</span></span></span><br><span class="line"><span class="javascript">          <span class="built_in">this</span>.setState(&#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">mes</span>: <span class="string">&#x27;Hello React&#x27;</span>,</span></span><br><span class="line"><span class="javascript">          &#125;)</span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">      &#125;</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">//渲染组件       渲染内容，挂载对象</span></span></span><br><span class="line"><span class="javascript">      ReactDOM.render(<span class="xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span></span>, <span class="built_in">document</span>.getElementById(<span class="string">&#x27;app&#x27;</span>))</span></span><br><span class="line"><span class="javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>React 总体上要比 Vue 难很多，但是也带来了灵活的特性。希望通过自己的坚持，能够掌握 React 的开发技术！</p>
-]]></content>
-      <categories>
-        <category>技术实现</category>
-      </categories>
-      <tags>
-        <tag>React</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>axios拦截</title>
-    <url>/2021/08/30/axios%E6%8B%A6%E6%88%AA/</url>
-    <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>实现在 axios 每次请求/响应时，对请求/响应进行相关的处理。我们把这种处理方式称之为拦截。</p>
-<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><ol>
-<li>request.js 文件的封装</li>
-</ol>
-<h4 id="首先我们要将-axios-主要的请求封装在-request-js-文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。"><a href="#首先我们要将-axios-主要的请求封装在-request-js-文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。" class="headerlink" title="首先我们要将 axios 主要的请求封装在 request.js 文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。"></a>首先我们要将 axios 主要的请求封装在 request.js 文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。</h4><figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="comment">//将axios插件导入</span></span><br><span class="line"><span class="keyword">import</span> axios from <span class="string">&quot;axios&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建axios方法，并将该方法导出</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> request(<span class="keyword">config</span>) &#123;</span><br><span class="line">  <span class="comment">// 1.创建axios的实例</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">instance</span> = axios<span class="variable">.create</span>(&#123;</span><br><span class="line">    baseURL: <span class="string">&quot;*******&quot;</span>,</span><br><span class="line">    timeout: <span class="number">5000</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// 2.设立请求/响应拦截</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3.发送真正的网络请求</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">instance</span>(<span class="keyword">config</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>axios 拦截器</li>
-</ol>
-<ul>
-<li>请求拦截</li>
-</ul>
-<p>可以在任何的请求上进行修饰，改变。此处我以添加 Authorization：Token 的方法为例：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用axios的请求拦截方法</span></span><br><span class="line">instance.interceptors.request.use(</span><br><span class="line">  <span class="comment">//对参数进行处理</span></span><br><span class="line">    <span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//具体操作</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">localStorage</span>.getItem(<span class="string">&quot;Authorization&quot;</span>)) &#123;</span><br><span class="line">        config.headers.Authorization = <span class="built_in">localStorage</span>.getItem(<span class="string">&quot;Authorization&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//最后注意需要返回修饰后的参数</span></span><br><span class="line">      <span class="keyword">return</span> config;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//如果请求是错误的，我们将异常抛出</span></span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error);</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>响应拦截</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//axios响应拦截方法</span></span><br><span class="line">instance.interceptors.response.use(</span><br><span class="line">    <span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//获取响应参数，并返回</span></span><br><span class="line">      <span class="keyword">return</span> res.data;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//如果返还错误，提取相关的Status响应码，进行错误提示</span></span><br><span class="line">      <span class="keyword">const</span> &#123; response &#125; = err;</span><br><span class="line">      <span class="keyword">if</span> ((response.status = <span class="number">401</span>)) &#123;</span><br><span class="line">        <span class="built_in">localStorage</span>.removeItem(<span class="string">&quot;Authorization&quot;</span>);</span><br><span class="line">        <span class="built_in">localStorage</span>.removeItem(<span class="string">&quot;userName&quot;</span>);</span><br><span class="line">        <span class="built_in">localStorage</span>.removeItem(<span class="string">&quot;userId&quot;</span>);</span><br><span class="line">        alert(<span class="string">&quot;请登陆后再使用哦～&quot;</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(err);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>后续调用</li>
-</ol>
-<p>如需对接后端接口，仅需要创建相关 js 文件，并写入具体请求方法。</p>
-<ul>
-<li>user.js</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入我们之前封装好的request文件</span></span><br><span class="line"><span class="keyword">import</span> &#123; request &#125; <span class="keyword">from</span> <span class="string">&quot;./request&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//写具体的对接接口的方法</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">GetUser</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> request(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&quot;/users/name&quot;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//传参类：</span></span><br><span class="line"><span class="comment">//将需要的参数写在方法内</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">ChangeUserSkin</span>(<span class="params">flag, <span class="keyword">type</span>, fix</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> request(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&quot;/users/skintest&quot;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">    <span class="comment">//将所需的数据创建好。</span></span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">      <span class="attr">flag</span>: flag,</span><br><span class="line">      <span class="attr">type</span>: <span class="keyword">type</span>,</span><br><span class="line">      <span class="attr">fix</span>: fix</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>axios 在日常的 vue 开发中是使用频率很高的组件，用来进行前后端数据交互工作。整体上并不难。需要我们熟练掌握相关的方法，逻辑。其中也需要注意代码的规范，体现封装性。</p>
-]]></content>
-      <categories>
-        <category>技术实现</category>
-      </categories>
-      <tags>
-        <tag>axios</tag>
       </tags>
   </entry>
   <entry>
@@ -667,6 +742,97 @@
       </tags>
   </entry>
   <entry>
+    <title>React 初体验</title>
+    <url>/2021/09/15/React-%E5%88%9D%E4%BD%93%E9%AA%8C/</url>
+    <content><![CDATA[<h1 id="React"><a href="#React" class="headerlink" title="React"></a>React</h1><p>React 基本上是高级前端工程师的必备技能，相较于 Vue 也更加灵活。可以说是 Facebook 工程师们智慧的结晶。</p>
+<p>在现阶段，学习 React 可以提高自己对前端的理解，扩大及自己的技术广度。为以后开发中大型项目奠基。</p>
+<h1 id="初体验"><a href="#初体验" class="headerlink" title="初体验"></a>初体验</h1><h3 id="完成点击按钮修改文字的操作"><a href="#完成点击按钮修改文字的操作" class="headerlink" title="完成点击按钮修改文字的操作"></a>完成点击按钮修改文字的操作</h3><ul>
+<li>创建一个 html 文件 引入 React 相关 CDN 链接</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/react@16/umd/react.development.js&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">crossorigin</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/react-dom@16/umd/react-dom.development.js&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">crossorigin</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/babel-standalone@6/babel.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>React 和 Vue 不一样，React 的理念更像是类纯函数。我们从 CDN 也可以看出分别引入了 React 核心文件，React-dom，Babel 转译。每个都各司其职。而 Vue 则是全部打包在一起直接引入。</strong></p>
+<p>成功引入相关依赖后，这样我们就可以开始我们的 React 开发了</p>
+<ul>
+<li>实现功能</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 需要渲染的地方，通过id来实现挂载 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 导入相关依赖 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/react@16/umd/react.development.js&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">crossorigin</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/react-dom@16/umd/react-dom.development.js&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">crossorigin</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/babel-standalone@6/babel.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 开始开发 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 注意事项：想在script使用jsx 需要添加标签 type=“text/babel” --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- jsx多个组件在根的层面，只能有一个标签，就如同 Vue：div 来包裹--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/babel&quot;</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">//封装App组件，该App类继承了React.Component</span></span></span><br><span class="line"><span class="javascript">      <span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="comment">//变量放在constructor()中</span></span></span><br><span class="line"><span class="javascript">        <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">          <span class="comment">//由于是继承类，需要调用一下super（）</span></span></span><br><span class="line"><span class="javascript">          <span class="built_in">super</span>()</span></span><br><span class="line"><span class="javascript">          <span class="comment">//动态数据，统一存放在this.state中</span></span></span><br><span class="line"><span class="javascript">          <span class="built_in">this</span>.state = &#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">mes</span>: <span class="string">&#x27;Hello world&#x27;</span>,</span></span><br><span class="line"><span class="javascript">          &#125;</span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">        <span class="comment">//	render（）渲染</span></span></span><br><span class="line"><span class="javascript">        <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">          <span class="keyword">return</span> (</span></span><br><span class="line"><span class="javascript">            <span class="comment">//如同Vue一样，需要用唯一的&lt;div&gt;&lt;/div&gt;来包裹内容</span></span></span><br><span class="line"><span class="javascript">            <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span></span><br><span class="line"><span class="xml"><span class="javascript">              // 调用动态数据注意是this.state.的方式</span></span></span><br><span class="line"><span class="xml"><span class="javascript">              <span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;this.state.mes&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span></span><br><span class="line"><span class="xml"><span class="javascript">              //React是声明式编程，这里绑定方法用的是onClick（）=&#123;&#125;</span></span></span><br><span class="line"><span class="xml"><span class="javascript">              的方式进行的，切需要.bind来给它指定一个this</span></span></span><br><span class="line"><span class="xml"><span class="javascript">              <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;this.btnCLick.bind(this)&#125;</span>&gt;</span>改变文字<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span></span><br><span class="line"><span class="xml"><span class="javascript">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span></span><br><span class="line"><span class="javascript">          )</span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">        <span class="comment">//  永远不要手动调用render（）</span></span></span><br><span class="line"><span class="javascript">        <span class="comment">// 相关函数</span></span></span><br><span class="line"><span class="javascript">        <span class="function"><span class="title">btnCLick</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">          <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span></span><br><span class="line"><span class="javascript">          <span class="built_in">console</span>.log(<span class="string">&#x27;按钮发生了点击&#x27;</span>)</span></span><br><span class="line"><span class="javascript">          <span class="comment">//通过this.setState的方式来修改state里面的内容</span></span></span><br><span class="line"><span class="javascript">          <span class="built_in">this</span>.setState(&#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">mes</span>: <span class="string">&#x27;Hello React&#x27;</span>,</span></span><br><span class="line"><span class="javascript">          &#125;)</span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">      &#125;</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">//渲染组件       渲染内容，挂载对象</span></span></span><br><span class="line"><span class="javascript">      ReactDOM.render(<span class="xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span></span>, <span class="built_in">document</span>.getElementById(<span class="string">&#x27;app&#x27;</span>))</span></span><br><span class="line"><span class="javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>React 总体上要比 Vue 难很多，但是也带来了灵活的特性。希望通过自己的坚持，能够掌握 React 的开发技术！</p>
+]]></content>
+      <categories>
+        <category>技术实现</category>
+      </categories>
+      <tags>
+        <tag>React</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>axios拦截</title>
+    <url>/2021/08/30/axios%E6%8B%A6%E6%88%AA/</url>
+    <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>实现在 axios 每次请求/响应时，对请求/响应进行相关的处理。我们把这种处理方式称之为拦截。</p>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><ol>
+<li>request.js 文件的封装</li>
+</ol>
+<h4 id="首先我们要将-axios-主要的请求封装在-request-js-文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。"><a href="#首先我们要将-axios-主要的请求封装在-request-js-文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。" class="headerlink" title="首先我们要将 axios 主要的请求封装在 request.js 文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。"></a>首先我们要将 axios 主要的请求封装在 request.js 文件中，这样我们可以降低代码的耦合度，提高整体的效率，方便后期的维护。</h4><figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="comment">//将axios插件导入</span></span><br><span class="line"><span class="keyword">import</span> axios from <span class="string">&quot;axios&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建axios方法，并将该方法导出</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> request(<span class="keyword">config</span>) &#123;</span><br><span class="line">  <span class="comment">// 1.创建axios的实例</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">instance</span> = axios<span class="variable">.create</span>(&#123;</span><br><span class="line">    baseURL: <span class="string">&quot;*******&quot;</span>,</span><br><span class="line">    timeout: <span class="number">5000</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// 2.设立请求/响应拦截</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3.发送真正的网络请求</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">instance</span>(<span class="keyword">config</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>axios 拦截器</li>
+</ol>
+<ul>
+<li>请求拦截</li>
+</ul>
+<p>可以在任何的请求上进行修饰，改变。此处我以添加 Authorization：Token 的方法为例：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用axios的请求拦截方法</span></span><br><span class="line">instance.interceptors.request.use(</span><br><span class="line">  <span class="comment">//对参数进行处理</span></span><br><span class="line">    <span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//具体操作</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">localStorage</span>.getItem(<span class="string">&quot;Authorization&quot;</span>)) &#123;</span><br><span class="line">        config.headers.Authorization = <span class="built_in">localStorage</span>.getItem(<span class="string">&quot;Authorization&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//最后注意需要返回修饰后的参数</span></span><br><span class="line">      <span class="keyword">return</span> config;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//如果请求是错误的，我们将异常抛出</span></span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error);</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>响应拦截</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//axios响应拦截方法</span></span><br><span class="line">instance.interceptors.response.use(</span><br><span class="line">    <span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//获取响应参数，并返回</span></span><br><span class="line">      <span class="keyword">return</span> res.data;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//如果返还错误，提取相关的Status响应码，进行错误提示</span></span><br><span class="line">      <span class="keyword">const</span> &#123; response &#125; = err;</span><br><span class="line">      <span class="keyword">if</span> ((response.status = <span class="number">401</span>)) &#123;</span><br><span class="line">        <span class="built_in">localStorage</span>.removeItem(<span class="string">&quot;Authorization&quot;</span>);</span><br><span class="line">        <span class="built_in">localStorage</span>.removeItem(<span class="string">&quot;userName&quot;</span>);</span><br><span class="line">        <span class="built_in">localStorage</span>.removeItem(<span class="string">&quot;userId&quot;</span>);</span><br><span class="line">        alert(<span class="string">&quot;请登陆后再使用哦～&quot;</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(err);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>后续调用</li>
+</ol>
+<p>如需对接后端接口，仅需要创建相关 js 文件，并写入具体请求方法。</p>
+<ul>
+<li>user.js</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入我们之前封装好的request文件</span></span><br><span class="line"><span class="keyword">import</span> &#123; request &#125; <span class="keyword">from</span> <span class="string">&quot;./request&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//写具体的对接接口的方法</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">GetUser</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> request(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&quot;/users/name&quot;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//传参类：</span></span><br><span class="line"><span class="comment">//将需要的参数写在方法内</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">ChangeUserSkin</span>(<span class="params">flag, <span class="keyword">type</span>, fix</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> request(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&quot;/users/skintest&quot;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">    <span class="comment">//将所需的数据创建好。</span></span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">      <span class="attr">flag</span>: flag,</span><br><span class="line">      <span class="attr">type</span>: <span class="keyword">type</span>,</span><br><span class="line">      <span class="attr">fix</span>: fix</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>axios 在日常的 vue 开发中是使用频率很高的组件，用来进行前后端数据交互工作。整体上并不难。需要我们熟练掌握相关的方法，逻辑。其中也需要注意代码的规范，体现封装性。</p>
+]]></content>
+      <categories>
+        <category>技术实现</category>
+      </categories>
+      <tags>
+        <tag>axios</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo s 时4000端口被占用问题</title>
+    <url>/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>hexo s 启动的时候遇到了 4000 端口无法创建使用的问题。<br>具体打开 localhost：4000 发现 4000 端口下 hexo 依然在运行！</p>
+<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>(mac 环境):</p>
+<ol>
+<li>sudo lsof -i tcp:4000<br><strong>查询当前端口的进程</strong></li>
+<li>报错：</li>
+</ol>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">COMMAND</span>   PID USER   FD   TYPE             DEVICE SIZE/<span class="literal">OFF</span> NODE NAME</span><br><span class="line"><span class="attribute">node</span>    <span class="number">19087</span> root   <span class="number">23</span>u  IPv<span class="number">6</span> <span class="number">0</span>xe<span class="number">0</span>d<span class="number">367</span>ae<span class="number">3505</span>eeb<span class="number">3</span>      <span class="number">0</span>t<span class="number">0</span>  TCP *:terabase (LISTEN)</span><br></pre></td></tr></table></figure>
+
+<p>发现进程 19087</p>
+<ol start="3">
+<li>sudo kill 19087</li>
+</ol>
+<p><strong>再次打开就没有 hexo 的页面了</strong></p>
+<h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>]]></content>
+      <categories>
+        <category>Obstacle</category>
+      </categories>
+      <tags>
+        <tag>技术踩坑</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>mmjd项目的完成情况</title>
     <url>/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/</url>
     <content><![CDATA[<h2 id="项目进度"><a href="#项目进度" class="headerlink" title="项目进度:"></a>项目进度:</h2><p>最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式</p>
@@ -695,30 +861,6 @@
       </categories>
       <tags>
         <tag>项目</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo s 时4000端口被占用问题</title>
-    <url>/2021/07/25/hexo-s-%E6%97%B64000%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>hexo s 启动的时候遇到了 4000 端口无法创建使用的问题。<br>具体打开 localhost：4000 发现 4000 端口下 hexo 依然在运行！</p>
-<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>(mac 环境):</p>
-<ol>
-<li>sudo lsof -i tcp:4000<br><strong>查询当前端口的进程</strong></li>
-<li>报错：</li>
-</ol>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">COMMAND</span>   PID USER   FD   TYPE             DEVICE SIZE/<span class="literal">OFF</span> NODE NAME</span><br><span class="line"><span class="attribute">node</span>    <span class="number">19087</span> root   <span class="number">23</span>u  IPv<span class="number">6</span> <span class="number">0</span>xe<span class="number">0</span>d<span class="number">367</span>ae<span class="number">3505</span>eeb<span class="number">3</span>      <span class="number">0</span>t<span class="number">0</span>  TCP *:terabase (LISTEN)</span><br></pre></td></tr></table></figure>
-
-<p>发现进程 19087</p>
-<ol start="3">
-<li>sudo kill 19087</li>
-</ol>
-<p><strong>再次打开就没有 hexo 的页面了</strong></p>
-<h2 id="最后成功在-4000-默认端口下启动-hexo"><a href="#最后成功在-4000-默认端口下启动-hexo" class="headerlink" title="最后成功在 4000 默认端口下启动 hexo"></a>最后成功在 4000 默认端口下启动 hexo</h2>]]></content>
-      <categories>
-        <category>Obstacle</category>
-      </categories>
-      <tags>
-        <tag>技术踩坑</tag>
       </tags>
   </entry>
   <entry>
@@ -783,23 +925,6 @@
       </categories>
       <tags>
         <tag>node.js</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>vue表单提交时自动刷新</title>
-    <url>/2021/08/31/vue%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4%E6%97%B6%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0/</url>
-    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在之前 mmjd 的项目中，我设计了一个登陆的界面。发现当第一次提交的时候，会默认刷新一次。导致用户提交的表单是空的。从而报错。</p>
-<p>这直接导致了很不好的用户体验。</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>vue 中使用表单 form 默认提交行为是刷新一下，在这儿我们使用事件修饰符 prevent 来阻止 form 表单的默认行为</p>
-<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&lt;input <span class="attribute">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attribute">value</span>=<span class="string">&quot;提交&quot;</span> @click.<span class="attribute">prevent</span>=<span class="string">&#x27;had&#x27;</span>&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个点似曾相识，在以前学习的时候老师好像提到过。自己没注意到细节上的东西。反向说明了自己对 vue 的一些细节，和项目经验不足。需要继续提高！</p>
-]]></content>
-      <categories>
-        <category>Obstacle</category>
-      </categories>
-      <tags>
-        <tag>vue</tag>
       </tags>
   </entry>
   <entry>
@@ -869,6 +994,23 @@
       </categories>
       <tags>
         <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue表单提交时自动刷新</title>
+    <url>/2021/08/31/vue%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4%E6%97%B6%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0/</url>
+    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在之前 mmjd 的项目中，我设计了一个登陆的界面。发现当第一次提交的时候，会默认刷新一次。导致用户提交的表单是空的。从而报错。</p>
+<p>这直接导致了很不好的用户体验。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>vue 中使用表单 form 默认提交行为是刷新一下，在这儿我们使用事件修饰符 prevent 来阻止 form 表单的默认行为</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&lt;input <span class="attribute">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attribute">value</span>=<span class="string">&quot;提交&quot;</span> @click.<span class="attribute">prevent</span>=<span class="string">&#x27;had&#x27;</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个点似曾相识，在以前学习的时候老师好像提到过。自己没注意到细节上的东西。反向说明了自己对 vue 的一些细节，和项目经验不足。需要继续提高！</p>
+]]></content>
+      <categories>
+        <category>Obstacle</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
       </tags>
   </entry>
   <entry>
@@ -999,6 +1141,23 @@
       </tags>
   </entry>
   <entry>
+    <title>岛屿问题的实现</title>
+    <url>/2021/07/31/%E5%B2%9B%E5%B1%BF%E9%97%AE%E9%A2%98%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>给你一个由  ‘1’（陆地）和 ‘0’（水）组成的的二维网格，请你计算网格中岛屿的数量。</p>
+<p>岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。</p>
+<p>此外，你可以假设该网格的四条边均被水包围。</p>
+<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/number-of-islands">https://leetcode-cn.com/problems/number-of-islands</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>此问题与上一期的门墙算法的实现的思想基本一致，属于利用队列，以及广度优先搜索（dfs）的方式解决问题。但是并不是完全的相同。本问题需要注意在于广度优先搜索的时候，需要有“感染”的思想。 首先遍历整个二维数组，寻找数组中的岛 再在孤岛的基础上 遍历他的上下左右临格元素 是否也为“1”岛屿 如果是 将它感染。</p>
+<figure class="highlight mel"><table><tr><td class="code"><pre><span class="line">public class Solution &#123;</span><br><span class="line">        public <span class="keyword">int</span> numIslands(char[][] <span class="keyword">grid</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span>(<span class="keyword">grid</span>.length==<span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">int</span> count=<span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">grid</span>.length; i++) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="keyword">grid</span>[<span class="number">0</span>].length; j++) &#123;</span><br><span class="line">                    <span class="keyword">if</span>(<span class="keyword">grid</span>[i][j]==<span class="string">&#x27;1&#x27;</span>)&#123;</span><br><span class="line">                        count++;</span><br><span class="line">                        dfs(<span class="keyword">grid</span>,i,j);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> count;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    private void dfs(char[][] <span class="keyword">grid</span>, <span class="keyword">int</span> i, <span class="keyword">int</span> j) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i&lt;<span class="number">0</span> || i&gt;= <span class="keyword">grid</span>.length || j&lt;<span class="number">0</span> || j&gt;=<span class="keyword">grid</span>[<span class="number">0</span>].length || <span class="keyword">grid</span>[i][j]==<span class="string">&#x27;0&#x27;</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">grid</span>[i][j]=<span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">        dfs(<span class="keyword">grid</span>, i - <span class="number">1</span>, j);</span><br><span class="line">        dfs(<span class="keyword">grid</span>, i + <span class="number">1</span>, j);</span><br><span class="line">        dfs(<span class="keyword">grid</span>, i, j + <span class="number">1</span>);</span><br><span class="line">        dfs(<span class="keyword">grid</span>, i, j - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Problems</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>循环队列的实现</title>
     <url>/2021/07/28/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>设计你的循环队列实现。 循环队列是一种线性数据结构，其操作表现基于 FIFO（先进先出）原则并且队尾被连接在队首之后以形成一个循环。它也被称为“环形缓冲器”。</p>
@@ -1027,145 +1186,6 @@
       </categories>
       <tags>
         <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>浅谈js闭包</title>
-    <url>/2021/09/05/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/</url>
-    <content><![CDATA[<p>最近在学习 Javascript 高级语法，研究到了一些底层逻辑，有了很多的心得体会。赶紧记录下来！</p>
-<h1 id="什么是-Js-闭包？"><a href="#什么是-Js-闭包？" class="headerlink" title="什么是 Js 闭包？"></a>什么是 Js 闭包？</h1><p><img src="/2021/09/05/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/book.png" alt="描述"></p>
-<h2 id="js-中函数是一等公民"><a href="#js-中函数是一等公民" class="headerlink" title="js 中函数是一等公民"></a>js 中函数是一等公民</h2><h3 id="什么是一等公民？"><a href="#什么是一等公民？" class="headerlink" title="什么是一等公民？"></a>什么是一等公民？</h3><p>就好比 java 中的对象。js 中的函数十分灵活！</p>
-<ul>
-<li>函数可以作为另一个函数的参数，也可以作为另一个函数的返回值来使用</li>
-<li>自己可以编写高阶函数</li>
-<li>可以使用内置的高阶函数</li>
-</ul>
-<h3 id="代码演示："><a href="#代码演示：" class="headerlink" title="代码演示："></a>代码演示：</h3><ul>
-<li>函数作为一等公民，可以作为参数传入其他的函数中</li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calc</span>(<span class="params">num1, num2, fnc</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(fnc(num1, num2))</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num1 + num2</span><br><span class="line">&#125;</span><br><span class="line">calc(<span class="number">20</span>, <span class="number">30</span>, add)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>js 允许函数的嵌套定义</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;bar&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fn = foo()</span><br><span class="line">fn()</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">makeAdder</span>(<span class="params">count</span>)</span></span><br><span class="line"><span class="function">   <span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">num</span>) </span>&#123;</span></span><br><span class="line"><span class="function">     <span class="title">return</span> <span class="title">count</span> + <span class="title">num</span></span></span><br><span class="line"><span class="function">   &#125;</span></span><br><span class="line"><span class="function">   <span class="title">return</span> <span class="title">add</span></span></span><br><span class="line"><span class="function"> &#125;</span></span><br><span class="line"><span class="function"> <span class="title">var</span> <span class="title">add5</span> = <span class="title">makeAdder</span>(<span class="params"><span class="number">5</span></span>)</span></span><br><span class="line"><span class="function"> <span class="title">var</span> <span class="title">add10</span> = <span class="title">makeAdder</span>(<span class="params"><span class="number">10</span></span>)</span></span><br><span class="line"><span class="function"> <span class="title">console</span>.<span class="title">log</span>(<span class="params">add5(<span class="number">10</span>)</span>)</span></span><br><span class="line"><span class="function"> <span class="title">console</span>.<span class="title">log</span>(<span class="params">add10(<span class="number">10</span>)</span>)</span></span><br></pre></td></tr></table></figure></li>
-<li><p>高阶函数:把一个函数，接受另一个函数的返回值，作为参数使用，称为高阶函数。</p>
-</li>
-</ul>
-<h2 id="js-中的闭包定义"><a href="#js-中的闭包定义" class="headerlink" title="js 中的闭包定义"></a>js 中的闭包定义</h2><h3 id="官方式定义："><a href="#官方式定义：" class="headerlink" title="官方式定义："></a>官方式定义：</h3><h4 id="在计算机科学中对闭包的定义（维基百科）："><a href="#在计算机科学中对闭包的定义（维基百科）：" class="headerlink" title="在计算机科学中对闭包的定义（维基百科）："></a>在计算机科学中对闭包的定义（维基百科）：</h4><ul>
-<li><p>闭包（英语：Closure），又称<strong>词法闭包</strong>（Lexical Closure）或<strong>函数闭包</strong>（function closures）；</p>
-</li>
-<li><p>是在支持 <strong>头等函数</strong> 的编程语言中，实现词法绑定的一种技术；</p>
-</li>
-<li><p>闭包在实现上是一个结构体，它存储了一个函数和一个关联的环境（相当于一个符号查找表）；</p>
-</li>
-<li><p>闭包跟函数最大的区别在于，当捕捉闭包的时候，它的 <strong>自由变量</strong> 会在捕捉时被确定，这样即使脱离了捕捉时的上下文，它也能照常运行；</p>
-</li>
-</ul>
-<h4 id="MDN-对-JavaScript-闭包的解释："><a href="#MDN-对-JavaScript-闭包的解释：" class="headerlink" title="MDN 对 JavaScript 闭包的解释："></a>MDN 对 JavaScript 闭包的解释：</h4><ul>
-<li><p>一个函数和对其周围状态（<strong>lexical environment，词法环境</strong>）的引用捆绑在一起（或者说函数被引用包围），这样的组合就是<strong>闭包</strong>（<strong>closure</strong>）；</p>
-</li>
-<li><p>也就是说，闭包让你可以在一个内层函数中访问到其外层函数的作用域；</p>
-</li>
-<li><p>在 JavaScript 中，每当创建一个函数，闭包就会在函数创建的同时被创建出来；</p>
-</li>
-</ul>
-<h4 id="我对-Js-闭包的理解："><a href="#我对-Js-闭包的理解：" class="headerlink" title="我对 Js 闭包的理解："></a>我对 Js 闭包的理解：</h4><ul>
-<li>广义上来讲，js 中的函数都是闭包</li>
-<li>狭义上来讲，js 中的一个函数，如果访问了外层作用域的变量，那它就是一个闭包。</li>
-<li>闭包：函数+可以访问的自由变量</li>
-</ul>
-<h3 id="简单的闭包，以及逻辑："><a href="#简单的闭包，以及逻辑：" class="headerlink" title="简单的闭包，以及逻辑："></a>简单的闭包，以及逻辑：</h3><p><img src="/2021/09/05/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/1.png" alt="1"></p>
-<p>简单描述逻辑：GO 对象，执行上下文调用栈 EcStack-&gt;全局执行上下文，VO：GO-&gt;解析函数，创建函数对象,上层作用域,函数执行体-&gt;函数执行上下文-&gt;执行代码-&gt;执行上下文销毁，AO 也销毁</p>
-<h2 id="闭包中的问题"><a href="#闭包中的问题" class="headerlink" title="闭包中的问题"></a>闭包中的问题</h2><h3 id="闭包中的某些-AO-为什么不会被销毁？"><a href="#闭包中的某些-AO-为什么不会被销毁？" class="headerlink" title="闭包中的某些 AO 为什么不会被销毁？"></a>闭包中的某些 AO 为什么不会被销毁？</h3><p>这就涉及到 Js 的内存回收机制：垃圾回收器会定期从这个根开始，找所有从根开始有引用到的对象，对于哪些没有引用到的对象，就认为是不可用的对象；</p>
-<p>我们可以参考：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;foo&#x27;</span></span><br><span class="line">  <span class="keyword">var</span> age = <span class="number">18</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(name)</span><br><span class="line">    <span class="built_in">console</span>.log(age)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fn = foo()</span><br><span class="line">fn()</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2021/09/05/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/2.png" alt="2"></p>
-<p>我们对 function bar 进行研究。</p>
-<ol>
-<li>创建 GO 对象，包含了 fn：undefined ，foo：undefined</li>
-<li>运行 foo（）</li>
-<li>创建 foo 函数对象，其中包含了他作用域链，函数执行体；创建 foo AO 对象，name：undefined …，并对 bar（）进行预加载</li>
-<li>执行 foo 函数，对 foo AO 进行修改。</li>
-<li>创建 bar 函数对象，bar AO</li>
-</ol>
-<p>其中 bar 的函数对象中 父级作用域是 foo，指向 foo AO 。</p>
-<ol start="6">
-<li>返回 bar（）</li>
-<li>fn 存储 bar 的地址</li>
-<li>运行 fn（）</li>
-<li>bar 开始寻找相关的 name，age，bar AO 无，则向 foo AO 中寻找。</li>
-<li>找到相关数据，执行函数。</li>
-</ol>
-<p>由于我们可以很清楚地找到一条线：GO 的 fn（）-&gt; bar-&gt;bar AO 父级作用域指向 foo 的 AO</p>
-<p>所以此时的 foo AO 不会被销毁，因为我们可以从根目录开始寻找这一条线路。</p>
-<h3 id="闭包内存泄漏"><a href="#闭包内存泄漏" class="headerlink" title="闭包内存泄漏"></a>闭包内存泄漏</h3><p>由于某些 AO 一直存在，就有着内存泄漏的问题存在。</p>
-<p>解决方法就直接将其指向 null</p>
-<p>如：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;foo&#x27;</span></span><br><span class="line">  <span class="keyword">var</span> age = <span class="number">18</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(name)</span><br><span class="line">    <span class="built_in">console</span>.log(age)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fn = foo()</span><br><span class="line">fn()</span><br><span class="line"></span><br><span class="line">fn = <span class="literal">null</span></span><br><span class="line">foo = <span class="literal">null</span></span><br></pre></td></tr></table></figure>
-
-<p>就可以解决这个问题</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>JavaScript 博大精深，还需继续努力，深入研究其中的原理。冲冲冲！</p>
-]]></content>
-      <categories>
-        <category>底层逻辑</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>岛屿问题的实现</title>
-    <url>/2021/07/31/%E5%B2%9B%E5%B1%BF%E9%97%AE%E9%A2%98%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>给你一个由  ‘1’（陆地）和 ‘0’（水）组成的的二维网格，请你计算网格中岛屿的数量。</p>
-<p>岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。</p>
-<p>此外，你可以假设该网格的四条边均被水包围。</p>
-<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/number-of-islands">https://leetcode-cn.com/problems/number-of-islands</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>此问题与上一期的门墙算法的实现的思想基本一致，属于利用队列，以及广度优先搜索（dfs）的方式解决问题。但是并不是完全的相同。本问题需要注意在于广度优先搜索的时候，需要有“感染”的思想。 首先遍历整个二维数组，寻找数组中的岛 再在孤岛的基础上 遍历他的上下左右临格元素 是否也为“1”岛屿 如果是 将它感染。</p>
-<figure class="highlight mel"><table><tr><td class="code"><pre><span class="line">public class Solution &#123;</span><br><span class="line">        public <span class="keyword">int</span> numIslands(char[][] <span class="keyword">grid</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span>(<span class="keyword">grid</span>.length==<span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">int</span> count=<span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">grid</span>.length; i++) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="keyword">grid</span>[<span class="number">0</span>].length; j++) &#123;</span><br><span class="line">                    <span class="keyword">if</span>(<span class="keyword">grid</span>[i][j]==<span class="string">&#x27;1&#x27;</span>)&#123;</span><br><span class="line">                        count++;</span><br><span class="line">                        dfs(<span class="keyword">grid</span>,i,j);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> count;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    private void dfs(char[][] <span class="keyword">grid</span>, <span class="keyword">int</span> i, <span class="keyword">int</span> j) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i&lt;<span class="number">0</span> || i&gt;= <span class="keyword">grid</span>.length || j&lt;<span class="number">0</span> || j&gt;=<span class="keyword">grid</span>[<span class="number">0</span>].length || <span class="keyword">grid</span>[i][j]==<span class="string">&#x27;0&#x27;</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">grid</span>[i][j]=<span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">        dfs(<span class="keyword">grid</span>, i - <span class="number">1</span>, j);</span><br><span class="line">        dfs(<span class="keyword">grid</span>, i + <span class="number">1</span>, j);</span><br><span class="line">        dfs(<span class="keyword">grid</span>, i, j + <span class="number">1</span>);</span><br><span class="line">        dfs(<span class="keyword">grid</span>, i, j - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Problems</category>
-      </categories>
-      <tags>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>通过node如何创建一个接口</title>
-    <url>/2021/08/31/%E9%80%9A%E8%BF%87node%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8E%A5%E5%8F%A3/</url>
-    <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>通过 node.js 环境与 Koa 框架，编写一个接口</p>
-<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><ul>
-<li>app 文件夹</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;!-- index.js --&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入Koa框架</span></span><br><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">&#x27;koa-bodyparser&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> errorHandler = <span class="built_in">require</span>(<span class="string">&#x27;./error-handle&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="built_in">require</span>(<span class="string">&#x27;../router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//新建Koa实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</span><br><span class="line"></span><br><span class="line">app.use(bodyParser())</span><br><span class="line">useRoutes(app)</span><br><span class="line">app.on(<span class="string">&#x27;error&#x27;</span>, errorHandler)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = app</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>main.js 文件</li>
-</ul>
-<p>main.js 文件一般是程序的主要入口</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入之前创建的app实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="built_in">require</span>(<span class="string">&#x27;./app&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入数据库相关配置</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;./app/database&#x27;</span>)</span><br><span class="line"><span class="comment">//导入相关配置</span></span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">&#x27;./app/config&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建启动服务器</span></span><br><span class="line">app.listen(config.APP_PORT, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`服务器在<span class="subst">$&#123;config.APP_PORT&#125;</span>端口已启动`</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>router 文件夹<br>index.js 文件 主要用来配置 router（路由）相关信息</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入fs插件</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建useRoutes</span></span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="function">(<span class="params">app</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">//自动生成router相关配置</span></span><br><span class="line">  fs.readdirSync(__dirname).forEach(<span class="function">(<span class="params">file</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (file === <span class="string">&#x27;index.js&#x27;</span>) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">const</span> router = <span class="built_in">require</span>(<span class="string">`./<span class="subst">$&#123;file&#125;</span>`</span>)</span><br><span class="line">    app.use(router.routes())</span><br><span class="line">    app.use(router.allowedMethods())</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = useRoutes</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>img.router.js 具体的路由文件</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入koa路由</span></span><br><span class="line"><span class="keyword">const</span> Router = <span class="built_in">require</span>(<span class="string">&#x27;koa-router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//制定接口的路径</span></span><br><span class="line"><span class="keyword">const</span> imgRouter = <span class="keyword">new</span> Router(&#123; <span class="attr">prefix</span>: <span class="string">&#x27;/mmjd&#x27;</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入相关方法/中间件</span></span><br><span class="line"><span class="keyword">const</span> &#123; getImgs,personType,personImgs &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../controller/img.controller&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> &#123; verifyAuth &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../middleware/auth.middleware&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//注册接口，并标明请求方法</span></span><br><span class="line">imgRouter.get(<span class="string">&#x27;/&#x27;</span>, getImgs)</span><br><span class="line">imgRouter.post(<span class="string">&#x27;/personimg&#x27;</span>,verifyAuth,personType,personImgs)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = imgRouter</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>其次就是在 middleware 或者 controller，service 中写具体操作了</li>
-</ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其中还是有很多细节的东西没有掌握好，此点需要以后继续深入研究！</p>
-]]></content>
-      <categories>
-        <category>技术实现</category>
-      </categories>
-      <tags>
-        <tag>node.js</tag>
       </tags>
   </entry>
   <entry>
@@ -1288,6 +1308,43 @@
       </tags>
   </entry>
   <entry>
+    <title>通过node如何创建一个接口</title>
+    <url>/2021/08/31/%E9%80%9A%E8%BF%87node%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8E%A5%E5%8F%A3/</url>
+    <content><![CDATA[<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><p>通过 node.js 环境与 Koa 框架，编写一个接口</p>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><ul>
+<li>app 文件夹</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;!-- index.js --&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入Koa框架</span></span><br><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">&#x27;koa-bodyparser&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> errorHandler = <span class="built_in">require</span>(<span class="string">&#x27;./error-handle&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="built_in">require</span>(<span class="string">&#x27;../router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//新建Koa实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</span><br><span class="line"></span><br><span class="line">app.use(bodyParser())</span><br><span class="line">useRoutes(app)</span><br><span class="line">app.on(<span class="string">&#x27;error&#x27;</span>, errorHandler)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = app</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>main.js 文件</li>
+</ul>
+<p>main.js 文件一般是程序的主要入口</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入之前创建的app实例</span></span><br><span class="line"><span class="keyword">const</span> app = <span class="built_in">require</span>(<span class="string">&#x27;./app&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入数据库相关配置</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;./app/database&#x27;</span>)</span><br><span class="line"><span class="comment">//导入相关配置</span></span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">&#x27;./app/config&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建启动服务器</span></span><br><span class="line">app.listen(config.APP_PORT, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`服务器在<span class="subst">$&#123;config.APP_PORT&#125;</span>端口已启动`</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>router 文件夹<br>index.js 文件 主要用来配置 router（路由）相关信息</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入fs插件</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建useRoutes</span></span><br><span class="line"><span class="keyword">const</span> useRoutes = <span class="function">(<span class="params">app</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">//自动生成router相关配置</span></span><br><span class="line">  fs.readdirSync(__dirname).forEach(<span class="function">(<span class="params">file</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (file === <span class="string">&#x27;index.js&#x27;</span>) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">const</span> router = <span class="built_in">require</span>(<span class="string">`./<span class="subst">$&#123;file&#125;</span>`</span>)</span><br><span class="line">    app.use(router.routes())</span><br><span class="line">    app.use(router.allowedMethods())</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = useRoutes</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>img.router.js 具体的路由文件</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//导入koa路由</span></span><br><span class="line"><span class="keyword">const</span> Router = <span class="built_in">require</span>(<span class="string">&#x27;koa-router&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//制定接口的路径</span></span><br><span class="line"><span class="keyword">const</span> imgRouter = <span class="keyword">new</span> Router(&#123; <span class="attr">prefix</span>: <span class="string">&#x27;/mmjd&#x27;</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//导入相关方法/中间件</span></span><br><span class="line"><span class="keyword">const</span> &#123; getImgs,personType,personImgs &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../controller/img.controller&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> &#123; verifyAuth &#125; = <span class="built_in">require</span>(<span class="string">&#x27;../middleware/auth.middleware&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//注册接口，并标明请求方法</span></span><br><span class="line">imgRouter.get(<span class="string">&#x27;/&#x27;</span>, getImgs)</span><br><span class="line">imgRouter.post(<span class="string">&#x27;/personimg&#x27;</span>,verifyAuth,personType,personImgs)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = imgRouter</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>其次就是在 middleware 或者 controller，service 中写具体操作了</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其中还是有很多细节的东西没有掌握好，此点需要以后继续深入研究！</p>
+]]></content>
+      <categories>
+        <category>技术实现</category>
+      </categories>
+      <tags>
+        <tag>node.js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>门与墙算法的实现</title>
     <url>/2021/07/29/%E9%97%A8%E4%B8%8E%E5%A2%99%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<h2 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h2><p>你被给定一个  m × n  的二维网格 rooms ，网格中有以下三种可能的初始化值：-1  表示墙或是障碍物 0  表示一扇门<br>INF  无限表示一个空的房间。然后，我们用  231 - 1 = 2147483647  代表  INF。你可以认为通往门的距离总是小于  2147483647  的。<br>你要给每个空房间位上填上该房间到   最近门的距离 ，如果无法到达门，则填  INF  即可。</p>
@@ -1323,6 +1380,91 @@
       </categories>
       <tags>
         <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浅谈js闭包</title>
+    <url>/2021/09/05/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/</url>
+    <content><![CDATA[<p>最近在学习 Javascript 高级语法，研究到了一些底层逻辑，有了很多的心得体会。赶紧记录下来！</p>
+<h1 id="什么是-Js-闭包？"><a href="#什么是-Js-闭包？" class="headerlink" title="什么是 Js 闭包？"></a>什么是 Js 闭包？</h1><p><img src="/2021/09/05/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/book.png" alt="描述"></p>
+<h2 id="js-中函数是一等公民"><a href="#js-中函数是一等公民" class="headerlink" title="js 中函数是一等公民"></a>js 中函数是一等公民</h2><h3 id="什么是一等公民？"><a href="#什么是一等公民？" class="headerlink" title="什么是一等公民？"></a>什么是一等公民？</h3><p>就好比 java 中的对象。js 中的函数十分灵活！</p>
+<ul>
+<li>函数可以作为另一个函数的参数，也可以作为另一个函数的返回值来使用</li>
+<li>自己可以编写高阶函数</li>
+<li>可以使用内置的高阶函数</li>
+</ul>
+<h3 id="代码演示："><a href="#代码演示：" class="headerlink" title="代码演示："></a>代码演示：</h3><ul>
+<li>函数作为一等公民，可以作为参数传入其他的函数中</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calc</span>(<span class="params">num1, num2, fnc</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(fnc(num1, num2))</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num1 + num2</span><br><span class="line">&#125;</span><br><span class="line">calc(<span class="number">20</span>, <span class="number">30</span>, add)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>js 允许函数的嵌套定义</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;bar&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fn = foo()</span><br><span class="line">fn()</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">makeAdder</span>(<span class="params">count</span>)</span></span><br><span class="line"><span class="function">   <span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">num</span>) </span>&#123;</span></span><br><span class="line"><span class="function">     <span class="title">return</span> <span class="title">count</span> + <span class="title">num</span></span></span><br><span class="line"><span class="function">   &#125;</span></span><br><span class="line"><span class="function">   <span class="title">return</span> <span class="title">add</span></span></span><br><span class="line"><span class="function"> &#125;</span></span><br><span class="line"><span class="function"> <span class="title">var</span> <span class="title">add5</span> = <span class="title">makeAdder</span>(<span class="params"><span class="number">5</span></span>)</span></span><br><span class="line"><span class="function"> <span class="title">var</span> <span class="title">add10</span> = <span class="title">makeAdder</span>(<span class="params"><span class="number">10</span></span>)</span></span><br><span class="line"><span class="function"> <span class="title">console</span>.<span class="title">log</span>(<span class="params">add5(<span class="number">10</span>)</span>)</span></span><br><span class="line"><span class="function"> <span class="title">console</span>.<span class="title">log</span>(<span class="params">add10(<span class="number">10</span>)</span>)</span></span><br></pre></td></tr></table></figure></li>
+<li><p>高阶函数:把一个函数，接受另一个函数的返回值，作为参数使用，称为高阶函数。</p>
+</li>
+</ul>
+<h2 id="js-中的闭包定义"><a href="#js-中的闭包定义" class="headerlink" title="js 中的闭包定义"></a>js 中的闭包定义</h2><h3 id="官方式定义："><a href="#官方式定义：" class="headerlink" title="官方式定义："></a>官方式定义：</h3><h4 id="在计算机科学中对闭包的定义（维基百科）："><a href="#在计算机科学中对闭包的定义（维基百科）：" class="headerlink" title="在计算机科学中对闭包的定义（维基百科）："></a>在计算机科学中对闭包的定义（维基百科）：</h4><ul>
+<li><p>闭包（英语：Closure），又称<strong>词法闭包</strong>（Lexical Closure）或<strong>函数闭包</strong>（function closures）；</p>
+</li>
+<li><p>是在支持 <strong>头等函数</strong> 的编程语言中，实现词法绑定的一种技术；</p>
+</li>
+<li><p>闭包在实现上是一个结构体，它存储了一个函数和一个关联的环境（相当于一个符号查找表）；</p>
+</li>
+<li><p>闭包跟函数最大的区别在于，当捕捉闭包的时候，它的 <strong>自由变量</strong> 会在捕捉时被确定，这样即使脱离了捕捉时的上下文，它也能照常运行；</p>
+</li>
+</ul>
+<h4 id="MDN-对-JavaScript-闭包的解释："><a href="#MDN-对-JavaScript-闭包的解释：" class="headerlink" title="MDN 对 JavaScript 闭包的解释："></a>MDN 对 JavaScript 闭包的解释：</h4><ul>
+<li><p>一个函数和对其周围状态（<strong>lexical environment，词法环境</strong>）的引用捆绑在一起（或者说函数被引用包围），这样的组合就是<strong>闭包</strong>（<strong>closure</strong>）；</p>
+</li>
+<li><p>也就是说，闭包让你可以在一个内层函数中访问到其外层函数的作用域；</p>
+</li>
+<li><p>在 JavaScript 中，每当创建一个函数，闭包就会在函数创建的同时被创建出来；</p>
+</li>
+</ul>
+<h4 id="我对-Js-闭包的理解："><a href="#我对-Js-闭包的理解：" class="headerlink" title="我对 Js 闭包的理解："></a>我对 Js 闭包的理解：</h4><ul>
+<li>广义上来讲，js 中的函数都是闭包</li>
+<li>狭义上来讲，js 中的一个函数，如果访问了外层作用域的变量，那它就是一个闭包。</li>
+<li>闭包：函数+可以访问的自由变量</li>
+</ul>
+<h3 id="简单的闭包，以及逻辑："><a href="#简单的闭包，以及逻辑：" class="headerlink" title="简单的闭包，以及逻辑："></a>简单的闭包，以及逻辑：</h3><p><img src="/2021/09/05/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/1.png" alt="1"></p>
+<p>简单描述逻辑：GO 对象，执行上下文调用栈 EcStack-&gt;全局执行上下文，VO：GO-&gt;解析函数，创建函数对象,上层作用域,函数执行体-&gt;函数执行上下文-&gt;执行代码-&gt;执行上下文销毁，AO 也销毁</p>
+<h2 id="闭包中的问题"><a href="#闭包中的问题" class="headerlink" title="闭包中的问题"></a>闭包中的问题</h2><h3 id="闭包中的某些-AO-为什么不会被销毁？"><a href="#闭包中的某些-AO-为什么不会被销毁？" class="headerlink" title="闭包中的某些 AO 为什么不会被销毁？"></a>闭包中的某些 AO 为什么不会被销毁？</h3><p>这就涉及到 Js 的内存回收机制：垃圾回收器会定期从这个根开始，找所有从根开始有引用到的对象，对于哪些没有引用到的对象，就认为是不可用的对象；</p>
+<p>我们可以参考：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;foo&#x27;</span></span><br><span class="line">  <span class="keyword">var</span> age = <span class="number">18</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(name)</span><br><span class="line">    <span class="built_in">console</span>.log(age)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fn = foo()</span><br><span class="line">fn()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/09/05/%E6%B5%85%E8%B0%88js%E9%97%AD%E5%8C%85/2.png" alt="2"></p>
+<p>我们对 function bar 进行研究。</p>
+<ol>
+<li>创建 GO 对象，包含了 fn：undefined ，foo：undefined</li>
+<li>运行 foo（）</li>
+<li>创建 foo 函数对象，其中包含了他作用域链，函数执行体；创建 foo AO 对象，name：undefined …，并对 bar（）进行预加载</li>
+<li>执行 foo 函数，对 foo AO 进行修改。</li>
+<li>创建 bar 函数对象，bar AO</li>
+</ol>
+<p>其中 bar 的函数对象中 父级作用域是 foo，指向 foo AO 。</p>
+<ol start="6">
+<li>返回 bar（）</li>
+<li>fn 存储 bar 的地址</li>
+<li>运行 fn（）</li>
+<li>bar 开始寻找相关的 name，age，bar AO 无，则向 foo AO 中寻找。</li>
+<li>找到相关数据，执行函数。</li>
+</ol>
+<p>由于我们可以很清楚地找到一条线：GO 的 fn（）-&gt; bar-&gt;bar AO 父级作用域指向 foo 的 AO</p>
+<p>所以此时的 foo AO 不会被销毁，因为我们可以从根目录开始寻找这一条线路。</p>
+<h3 id="闭包内存泄漏"><a href="#闭包内存泄漏" class="headerlink" title="闭包内存泄漏"></a>闭包内存泄漏</h3><p>由于某些 AO 一直存在，就有着内存泄漏的问题存在。</p>
+<p>解决方法就直接将其指向 null</p>
+<p>如：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">&#x27;foo&#x27;</span></span><br><span class="line">  <span class="keyword">var</span> age = <span class="number">18</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(name)</span><br><span class="line">    <span class="built_in">console</span>.log(age)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fn = foo()</span><br><span class="line">fn()</span><br><span class="line"></span><br><span class="line">fn = <span class="literal">null</span></span><br><span class="line">foo = <span class="literal">null</span></span><br></pre></td></tr></table></figure>
+
+<p>就可以解决这个问题</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>JavaScript 博大精深，还需继续努力，深入研究其中的原理。冲冲冲！</p>
+]]></content>
+      <categories>
+        <category>底层逻辑</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
       </tags>
   </entry>
 </search>
