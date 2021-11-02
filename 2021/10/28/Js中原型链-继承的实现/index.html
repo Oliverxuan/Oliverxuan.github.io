@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.useso.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oliverxuan.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="继承是面向对象中非常重要的，不仅仅可以减少代码的数量，提高复用性，也是多态的前提。 多态：不同的对象在执行时表现出不同的形态。 原型我们来举个例子： 123456789101112131415161718var obj &#x3D; &amp;#123;  name: &amp;#x27;Oliver&amp;#x27;,  age: 18,&amp;#125;&#x2F;&#x2F;OLiverconsole.log(obj.name)&#x2F;&#x2F;undefind">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Js中原型链-继承的实现">
+<meta property="og:url" content="http://oliverxuan.github.io/2021/10/28/Js%E4%B8%AD%E5%8E%9F%E5%9E%8B%E9%93%BE-%E7%BB%A7%E6%89%BF%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Oliver-xuan">
+<meta property="og:description" content="继承是面向对象中非常重要的，不仅仅可以减少代码的数量，提高复用性，也是多态的前提。 多态：不同的对象在执行时表现出不同的形态。 原型我们来举个例子： 123456789101112131415161718var obj &#x3D; &amp;#123;  name: &amp;#x27;Oliver&amp;#x27;,  age: 18,&amp;#125;&#x2F;&#x2F;OLiverconsole.log(obj.name)&#x2F;&#x2F;undefind">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-28T11:17:55.000Z">
+<meta property="article:modified_time" content="2021-11-02T14:13:29.693Z">
+<meta property="article:author" content="Oliverxuan">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://oliverxuan.github.io/2021/10/28/Js%E4%B8%AD%E5%8E%9F%E5%9E%8B%E9%93%BE-%E7%BB%A7%E6%89%BF%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Js中原型链-继承的实现 | Oliver-xuan</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Oliver-xuan</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录我的程序员生涯</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/10/28/Js%E4%B8%AD%E5%8E%9F%E5%9E%8B%E9%93%BE-%E7%BB%A7%E6%89%BF%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/2.jpeg">
+      <meta itemprop="name" content="Oliverxuan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oliver-xuan">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Js中原型链-继承的实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-28 19:17:55" itemprop="dateCreated datePublished" datetime="2021-10-28T19:17:55+08:00">2021-10-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-11-02 22:13:29" itemprop="dateModified" datetime="2021-11-02T22:13:29+08:00">2021-11-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BA%95%E5%B1%82%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">底层逻辑</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.8k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>继承是面向对象中非常重要的，不仅仅可以减少代码的数量，提高复用性，也是多态的前提。</p>
+<p>多态：不同的对象在执行时表现出不同的形态。</p>
+<h1 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h1><p>我们来举个例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Oliver&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//OLiver</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.name)</span><br><span class="line"></span><br><span class="line"><span class="comment">//undefind</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.height)</span><br><span class="line"></span><br><span class="line"><span class="comment">//obj的原型   obj.__proto__</span></span><br><span class="line">obj.__proto__ = &#123;</span><br><span class="line">  <span class="attr">height</span>: <span class="number">180</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//180</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.height)</span><br></pre></td></tr></table></figure>
+
+<p>我们有个 obj 对象，在最开始的时候他并没有 height 属性，我们在第一次打印时，就只能打印出 name 属性，height 为 undefined。</p>
+<p>当我们为他的原型添加上新的对象，其中有属性 height 为 18，当我们第二打印的时候，obj 就可以向上查找自己的原型（直到找到/Object 顶层对象），其中就得到了 height 属性</p>
+<h2 id="顶层对象：Object-null-prototype"><a href="#顶层对象：Object-null-prototype" class="headerlink" title="顶层对象：Object : null prototype"></a>顶层对象：Object : null prototype</h2><h2 id="原型判断方法"><a href="#原型判断方法" class="headerlink" title="原型判断方法"></a>原型判断方法</h2><h3 id="判断属性是否在对象中"><a href="#判断属性是否在对象中" class="headerlink" title="判断属性是否在对象中"></a>判断属性是否在对象中</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Oliver&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> info = <span class="built_in">Object</span>.create(obj, &#123;</span><br><span class="line">  <span class="attr">address</span>: &#123;</span><br><span class="line">    <span class="attr">value</span>: <span class="string">&#x27;北京市&#x27;</span>,</span><br><span class="line">    <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// hasOwnProperty方法判断当前对象是否存在该属性</span></span><br><span class="line"><span class="built_in">console</span>.log(info.hasOwnProperty(<span class="string">&#x27;address&#x27;</span>)) <span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(info.hasOwnProperty(<span class="string">&#x27;name&#x27;</span>)) <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// in 操作符: 不管在当前对象还是原型中返回的都是true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;address&#x27;</span> <span class="keyword">in</span> info)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;name&#x27;</span> <span class="keyword">in</span> info)</span><br></pre></td></tr></table></figure>
+
+<h3 id="instanceof"><a href="#instanceof" class="headerlink" title="instanceof"></a>instanceof</h3><p>检测某一个<strong>构造函数</strong>原型链上是否存在该实例对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createObject</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Fn</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">  Fn.prototype = o</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Fn()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inheritPrototype</span>(<span class="params">SubType, SuperType</span>) </span>&#123;</span><br><span class="line">  SubType.prototype = createObject(SuperType.prototype)</span><br><span class="line">  <span class="built_in">Object</span>.defineProperty(SubType.prototype, <span class="string">&#x27;constructor&#x27;</span>, &#123;</span><br><span class="line">    <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">configurable</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">value</span>: SubType,</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Student</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">inheritPrototype(Student, Person)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(Person.prototype.__proto__)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student()</span><br><span class="line"><span class="built_in">console</span>.log(stu <span class="keyword">instanceof</span> Student) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(stu <span class="keyword">instanceof</span> Person) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(stu <span class="keyword">instanceof</span> <span class="built_in">Object</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="isPrototypeOf-NaN"><a href="#isPrototypeOf-NaN" class="headerlink" title="isPrototypeOf"></a>isPrototypeOf</h3><p>检测某一个<strong>函数</strong>原型链上是否存在该实例对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Person()</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(p <span class="keyword">instanceof</span> Person)</span><br><span class="line"><span class="built_in">console</span>.log(Person.prototype.isPrototypeOf(p))</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;why&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> info = <span class="built_in">Object</span>.create(obj)</span><br><span class="line"></span><br><span class="line"><span class="comment">// console.log(info instanceof obj) instanceof不能检测函数，只能检测构造函数，否则会报错！</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.isPrototypeOf(info))</span><br></pre></td></tr></table></figure>
+
+<h2 id="对象-函数-原型之间的关系"><a href="#对象-函数-原型之间的关系" class="headerlink" title="对象-函数-原型之间的关系"></a>对象-函数-原型之间的关系</h2><p>对象里面是有一个 _ _ proto_ _对象: 隐式原型对象</p>
+<p>Foo 是一个函数, 那么它会有一个显示原型对象: Foo.prototyp</p>
+<p>Foo.prototype 来自哪里?</p>
+<p>答案: 创建了一个函数, Foo.prototype = { constructor: Foo }</p>
+<p>Foo 是一个对象, 那么它会有一个隐式原型对象: Foo._ _ proto _ _</p>
+<p>Foo._ _ proto _ _来自哪里?</p>
+<p>答案: new Function() Foo._ _ proto _ _ = Function.prototype</p>
+<p>Function.prototype = { constructor: Function }</p>
+<p>var Foo = new Function()</p>
+<h1 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h1><ol>
+<li><strong>在当前的对象中查找属性</strong></li>
+<li><strong>如果没有找到，这个时候会去原型链（_ _ proto_ _）对象上寻找</strong></li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">obj.__proto__ = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 原型链</span></span><br><span class="line">obj.__proto__.__proto__ = &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="new-对象的过程"><a href="#new-对象的过程" class="headerlink" title="new 对象的过程"></a>new 对象的过程</h2><p>当我们在 new 新对象的时候：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Person()</span><br></pre></td></tr></table></figure>
+
+<p>我们并不清楚在这个 new 的过程里，都发生了什么。</p>
+<p>其实 new 的过程可以分为四步：</p>
+<ol>
+<li>创建一个模拟空对象</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>()</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>让 Person 中的 this 指向 obj，并执行 Person 这个构造函数</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = Person.call(obj)</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>设置原型链。将 obj 的 _ _ proto_ _指向 Person 函数对象的 prototype</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.__proto__ = Person.prototype</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>判断 result 的返回值类型，如果是值类型，返回 obj。如果是引用类型，就返回这个引用类型的对象。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> result == <span class="string">&#x27;object&#x27;</span>) person = result</span><br><span class="line"><span class="keyword">else</span> person = obj</span><br></pre></td></tr></table></figure>
+
+<h3 id="手写实现"><a href="#手写实现" class="headerlink" title="手写实现"></a>手写实现</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = <span class="string">&#x27;Oliver&#x27;</span></span><br><span class="line">  <span class="built_in">this</span>.age = <span class="number">18</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//step1:新建一个空对象</span></span><br><span class="line"><span class="keyword">let</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line"><span class="comment">//step2:绑定this</span></span><br><span class="line"><span class="keyword">let</span> result = Person.call(obj)</span><br><span class="line"><span class="comment">//step3:将原型绑定</span></span><br><span class="line">obj.__proto__ = Person.prototype</span><br><span class="line"></span><br><span class="line"><span class="comment">//step4:判断类型</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> result === <span class="string">&#x27;object&#x27;</span>) &#123;</span><br><span class="line">  person = result</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  person = obj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><h2 id="原型链-1"><a href="#原型链-1" class="headerlink" title="原型链"></a>原型链</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 父类: 公共属性和方法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = <span class="string">&#x27;Oliver&#x27;</span></span><br><span class="line">  <span class="built_in">this</span>.friends = []</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.eating = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27; eating~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 子类: 特有属性和方法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Student</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.sno = <span class="number">111</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Person()</span><br><span class="line">Student.prototype = p</span><br><span class="line"></span><br><span class="line">Student.prototype.studying = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27; studying~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 原型链实现继承的弊端:</span></span><br><span class="line"><span class="comment">// 1.第一个弊端: 打印stu对象, 继承的属性是看不到的</span></span><br><span class="line"><span class="comment">// console.log(stu.name)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.第二个弊端: 创建出来两个stu的对象</span></span><br><span class="line"><span class="keyword">var</span> stu1 = <span class="keyword">new</span> Student()</span><br><span class="line"><span class="keyword">var</span> stu2 = <span class="keyword">new</span> Student()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接修改对象上的属性, 是给本对象添加了一个新属性</span></span><br><span class="line">stu1.name = <span class="string">&#x27;kobe&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(stu2.name)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取引用, 修改引用中的值, 会相互影响</span></span><br><span class="line">stu1.friends.push(<span class="string">&#x27;kobe&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(stu1.friends)</span><br><span class="line"><span class="built_in">console</span>.log(stu2.friends)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3.第三个弊端: 在前面实现类的过程中都没有传递参数</span></span><br><span class="line"><span class="keyword">var</span> stu3 = <span class="keyword">new</span> Student(<span class="string">&#x27;lilei&#x27;</span>, <span class="number">112</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="弊端"><a href="#弊端" class="headerlink" title="弊端"></a>弊端</h3><ol>
+<li>打印子对象的时候，继承的属性是看不到的</li>
+<li>创建的子对象，之间的值会相互影响（因为指向同一个 p 对象）</li>
+<li>在实现类的时候，并没有传递参数</li>
+</ol>
+<h2 id="借用构造函数"><a href="#借用构造函数" class="headerlink" title="借用构造函数"></a>借用构造函数</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 父类: 公共属性和方法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, friends</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// this = stu</span></span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">  <span class="built_in">this</span>.age = age</span><br><span class="line">  <span class="built_in">this</span>.friends = friends</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.eating = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27; eating~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 子类: 特有属性和方法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Student</span>(<span class="params">name, age, friends, sno</span>) </span>&#123;</span><br><span class="line">  Person.call(<span class="built_in">this</span>, name, age, friends)</span><br><span class="line">  <span class="comment">// this.name = name</span></span><br><span class="line">  <span class="comment">// this.age = age</span></span><br><span class="line">  <span class="comment">// this.friends = friends</span></span><br><span class="line">  <span class="built_in">this</span>.sno = <span class="number">111</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Person()</span><br><span class="line">Student.prototype = p</span><br><span class="line"></span><br><span class="line">Student.prototype.studying = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27; studying~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student(<span class="string">&#x27;foo&#x27;</span>, <span class="number">18</span>, [<span class="string">&#x27;kobe&#x27;</span>], <span class="number">111</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(stu)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> stu1 = <span class="keyword">new</span> Student(<span class="string">&#x27;bar&#x27;</span>, <span class="number">18</span>, [<span class="string">&#x27;lilei&#x27;</span>], <span class="number">111</span>)</span><br><span class="line"><span class="keyword">var</span> stu2 = <span class="keyword">new</span> Student(<span class="string">&#x27;kobe&#x27;</span>, <span class="number">30</span>, [<span class="string">&#x27;james&#x27;</span>], <span class="number">112</span>)</span><br><span class="line"></span><br><span class="line">stu1.friends.push(<span class="string">&#x27;lucy&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(stu1.friends)</span><br><span class="line"><span class="built_in">console</span>.log(stu2.friends)</span><br></pre></td></tr></table></figure>
+
+<h3 id="弊端-1"><a href="#弊端-1" class="headerlink" title="弊端"></a>弊端</h3><ol>
+<li>第一个弊端: Person 函数至少被调用了两次</li>
+<li>第二个弊端: stu 的原型对象上会多出一些属性, 但是这些属性是没有存在的必要</li>
+</ol>
+<h2 id="父类原型赋值给子类"><a href="#父类原型赋值给子类" class="headerlink" title="父类原型赋值给子类"></a>父类原型赋值给子类</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 父类: 公共属性和方法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, friends</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// this = stu</span></span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">  <span class="built_in">this</span>.age = age</span><br><span class="line">  <span class="built_in">this</span>.friends = friends</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.eating = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27; eating~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 子类: 特有属性和方法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Student</span>(<span class="params">name, age, friends, sno</span>) </span>&#123;</span><br><span class="line">  Person.call(<span class="built_in">this</span>, name, age, friends)</span><br><span class="line">  <span class="comment">// this.name = name</span></span><br><span class="line">  <span class="comment">// this.age = age</span></span><br><span class="line">  <span class="comment">// this.friends = friends</span></span><br><span class="line">  <span class="built_in">this</span>.sno = <span class="number">111</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接将父类的原型赋值给子类, 作为子类的原型</span></span><br><span class="line">Student.prototype = Person.prototype</span><br><span class="line"></span><br><span class="line">Student.prototype.studying = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27; studying~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// name/sno</span></span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student(<span class="string">&#x27;foo&#x27;</span>, <span class="number">18</span>, [<span class="string">&#x27;kobe&#x27;</span>], <span class="number">111</span>)</span><br><span class="line"><span class="built_in">console</span>.log(stu)</span><br><span class="line">stu.eating()</span><br></pre></td></tr></table></figure>
+
+<h3 id="弊端-2"><a href="#弊端-2" class="headerlink" title="弊端"></a>弊端</h3><p>由于子类的原型对象是来自于父类赋值的，那么子类的原型对象就是指向父类的原型。</p>
+<p>当自类的进行类似 Student.prototype.studding=function（ ）{ }操作的时候，父类的原型也会有此属性。</p>
+<p>那么父类的所有自类都会有该属性。</p>
+<h2 id="原型式继承"><a href="#原型式继承" class="headerlink" title="原型式继承"></a>原型式继承</h2><p>目的：将子类对象的原型指向父类对象的原型的新的空的中间层。</p>
+<p>如果不设置该空的中间层，那么就会像父类原型赋值给子类一样。所以需要设置一个中间层，来放置子类的属性，从而不改变父类里面的属性。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;foo&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//等同于下面的原型式继承函数</span></span><br><span class="line"><span class="keyword">var</span> info = <span class="built_in">Object</span>.create(obj)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 原型式继承函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createObject1</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//创建空对象</span></span><br><span class="line">  <span class="keyword">var</span> newObj = &#123;&#125;</span><br><span class="line">  <span class="comment">//将空对象的函数原型设置为参数的函数原型</span></span><br><span class="line">  <span class="built_in">Object</span>.setPrototypeOf(newObj, o)</span><br><span class="line">  <span class="comment">//将新对象返回</span></span><br><span class="line">  <span class="keyword">return</span> newObj</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createObject2</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Fn</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">  Fn.prototype = o</span><br><span class="line">  <span class="keyword">var</span> newObj = <span class="keyword">new</span> Fn()</span><br><span class="line">  <span class="keyword">return</span> newObj</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// var info = createObject2(obj)</span></span><br><span class="line"><span class="keyword">var</span> info = <span class="built_in">Object</span>.create(obj)</span><br><span class="line"><span class="built_in">console</span>.log(info)</span><br><span class="line"><span class="built_in">console</span>.log(info.__proto__)</span><br></pre></td></tr></table></figure>
+
+<h2 id="寄生式"><a href="#寄生式" class="headerlink" title="寄生式"></a>寄生式</h2><p>类似于工厂模式，直接将该对象创建好，直接引用就可以。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> personObj = &#123;</span><br><span class="line">  <span class="attr">running</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;running&#x27;</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createStudent</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> stu = <span class="built_in">Object</span>.create(personObj)</span><br><span class="line">  stu.name = name</span><br><span class="line">  stu.studying = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name + <span class="string">&#x27;studying~&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> stu</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> stuObj = createStudent(<span class="string">&#x27;Oliver&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> stuObj1 = createStudent(<span class="string">&#x27;kobe&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> stuObj2 = createStudent(<span class="string">&#x27;james&#x27;</span>)</span><br><span class="line">stuObj.studying()</span><br></pre></td></tr></table></figure>
+
+<h2 id="寄生组合式"><a href="#寄生组合式" class="headerlink" title="寄生组合式"></a>寄生组合式</h2><p>将借用构造函数式与寄生是相结合，实现相对于齐全的继承方案。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createObject</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Fn</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">  Fn.prototype = o</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> Fn()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inheritPrototype</span>(<span class="params">SubType, SuperType</span>) </span>&#123;</span><br><span class="line">  SubType.prototype = Objec.create(SuperType.prototype)</span><br><span class="line">  <span class="built_in">Object</span>.defineProperty(SubType.prototype, <span class="string">&#x27;constructor&#x27;</span>, &#123;</span><br><span class="line">    <span class="attr">enumerable</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">configurable</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">value</span>: SubType,</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, friends</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">  <span class="built_in">this</span>.age = age</span><br><span class="line">  <span class="built_in">this</span>.friends = friends</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.running = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;running~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.eating = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;eating~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Student</span>(<span class="params">name, age, friends, sno, score</span>) </span>&#123;</span><br><span class="line">  <span class="comment">//将Person构造函数放在我们子类中，实现也可以传递相关参数</span></span><br><span class="line">  Person.call(<span class="built_in">this</span>, name, age, friends)</span><br><span class="line">  <span class="built_in">this</span>.sno = sno</span><br><span class="line">  <span class="built_in">this</span>.score = score</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//继承函数，建立继承关系</span></span><br><span class="line">inheritPrototype(Student, Person)</span><br><span class="line"></span><br><span class="line">Student.prototype.studying = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;studying~&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student(<span class="string">&#x27;Oliver&#x27;</span>, <span class="number">18</span>, [<span class="string">&#x27;kobe&#x27;</span>], <span class="number">111</span>, <span class="number">100</span>)</span><br><span class="line"><span class="built_in">console</span>.log(stu)</span><br><span class="line">stu.studying()</span><br><span class="line">stu.running()</span><br><span class="line">stu.eating()</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(stu.constructor.name)</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Js 中的原型与原型链是很重要的部分，需要反复揣摩其中的思路，实现方法。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/18/HTML-CSS%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" rel="prev" title="HTML/CSS常见问题">
+      <i class="fa fa-chevron-left"></i> HTML/CSS常见问题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">原型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B6%E5%B1%82%E5%AF%B9%E8%B1%A1%EF%BC%9AObject-null-prototype"><span class="nav-number">1.1.</span> <span class="nav-text">顶层对象：Object : null prototype</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E5%88%A4%E6%96%AD%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">原型判断方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%B1%9E%E6%80%A7%E6%98%AF%E5%90%A6%E5%9C%A8%E5%AF%B9%E8%B1%A1%E4%B8%AD"><span class="nav-number">1.2.1.</span> <span class="nav-text">判断属性是否在对象中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#instanceof"><span class="nav-number">1.2.2.</span> <span class="nav-text">instanceof</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#isPrototypeOf-NaN"><span class="nav-number">1.2.3.</span> <span class="nav-text">isPrototypeOf</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1-%E5%87%BD%E6%95%B0-%E5%8E%9F%E5%9E%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.3.</span> <span class="nav-text">对象-函数-原型之间的关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E9%93%BE"><span class="nav-number">2.</span> <span class="nav-text">原型链</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#new-%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">new 对象的过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%86%99%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.1.1.</span> <span class="nav-text">手写实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF"><span class="nav-number">3.</span> <span class="nav-text">继承</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E9%93%BE-1"><span class="nav-number">3.1.</span> <span class="nav-text">原型链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%8A%E7%AB%AF"><span class="nav-number">3.1.1.</span> <span class="nav-text">弊端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%80%9F%E7%94%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">借用构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%8A%E7%AB%AF-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">弊端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%88%B6%E7%B1%BB%E5%8E%9F%E5%9E%8B%E8%B5%8B%E5%80%BC%E7%BB%99%E5%AD%90%E7%B1%BB"><span class="nav-number">3.3.</span> <span class="nav-text">父类原型赋值给子类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%8A%E7%AB%AF-2"><span class="nav-number">3.3.1.</span> <span class="nav-text">弊端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E5%BC%8F%E7%BB%A7%E6%89%BF"><span class="nav-number">3.4.</span> <span class="nav-text">原型式继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%84%E7%94%9F%E5%BC%8F"><span class="nav-number">3.5.</span> <span class="nav-text">寄生式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%84%E7%94%9F%E7%BB%84%E5%90%88%E5%BC%8F"><span class="nav-number">3.6.</span> <span class="nav-text">寄生组合式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Oliverxuan"
+      src="/images/2.jpeg">
+  <p class="site-author-name" itemprop="name">Oliverxuan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Oliverxuan</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">72k</span>
+</div>
+<!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">25.4k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
