@@ -184,6 +184,184 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/11/06/Js-ES6%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8Blet-const/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/2.jpeg">
+      <meta itemprop="name" content="Oliverxuan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oliver-xuan">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/06/Js-ES6%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8Blet-const/" class="post-title-link" itemprop="url">Js-ES6新特性之let/const</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-06 16:59:25 / 修改时间：17:00:31" itemprop="dateCreated datePublished" datetime="2021-11-06T16:59:25+08:00">2021-11-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ES6/" itemprop="url" rel="index"><span itemprop="name">ES6</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>var，let，const，都是 JavaScript 中定义变量/衡量的关键字。总的来说，都是定义，为什么还分这三种呢？</p>
+<p>下面，我将从基础定义，作用域，应用场景来逐一解析。</p>
+<h1 id="let-const-基本使用"><a href="#let-const-基本使用" class="headerlink" title="let/const 基本使用"></a>let/const 基本使用</h1><h2 id="基础数据类型"><a href="#基础数据类型" class="headerlink" title="基础数据类型"></a>基础数据类型</h2><p>var 与 let 常用于定义变量，而 const 用于定义衡量（常量）。</p>
+<p>也就是说一旦给 const foo 赋值后，foo 无法再进行值的改变。不仅对基础数据类型是如此，对象也是如此。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = <span class="number">123</span></span><br><span class="line"><span class="built_in">console</span>.log(foo) <span class="comment">//123</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//TypeError: Assignment to constant variable.</span></span><br><span class="line">foo = <span class="number">999</span></span><br><span class="line"><span class="built_in">console</span>.log(foo)</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，我们尝试给 const 衡量进行第二次赋值操作的时候，报错：TypeError: Assignment to constant variable.</p>
+<h2 id="对象（引用类型）"><a href="#对象（引用类型）" class="headerlink" title="对象（引用类型）"></a>对象（引用类型）</h2><p>如果我们使用 const 来接收一个对象，我们还能对<strong>对象里的内容</strong>进行修改吗？</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/06/Js-ES6%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8Blet-const/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/11/06/Js-ES6%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8B%E5%A2%9E%E5%BC%BA-%E8%A7%A3%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/2.jpeg">
+      <meta itemprop="name" content="Oliverxuan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oliver-xuan">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/06/Js-ES6%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8B%E5%A2%9E%E5%BC%BA-%E8%A7%A3%E6%9E%84/" class="post-title-link" itemprop="url">Js-ES6新特性之增强/解构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-06 15:08:30 / 修改时间：15:08:46" itemprop="dateCreated datePublished" datetime="2021-11-06T15:08:30+08:00">2021-11-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ES6/" itemprop="url" rel="index"><span itemprop="name">ES6</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.4k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在 ES6 中，提供了许多的新特性，为我们的编写代码提供了许多的便利。这里我将简单记录一下 ES6 中，字面量增强写法，数组解构，对象解构。</p>
+<h1 id="字面量的增强写法"><a href="#字面量的增强写法" class="headerlink" title="字面量的增强写法"></a>字面量的增强写法</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//字面量的增强写法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;Oliver&#x27;</span></span><br><span class="line"><span class="keyword">var</span> age = <span class="number">19</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="comment">//字面量的增强写法，属性的简写</span></span><br><span class="line">  <span class="comment">//不需要 name：name这种形式。当两个名称重复的时候，直接就写一个名称即可。</span></span><br><span class="line">  name,</span><br><span class="line">  age,</span><br><span class="line"></span><br><span class="line">  <span class="comment">//方法的简写</span></span><br><span class="line">  <span class="comment">// ES6之前 key：value的方式创建</span></span><br><span class="line">  <span class="attr">foo</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;ES6之前&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//ES6之后 直接方法名</span></span><br><span class="line">  <span class="function"><span class="title">bar</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;ES6方法的简写&#x27;</span>)</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">//计算属性名</span></span><br><span class="line">  [name + <span class="number">123</span>]: <span class="string">&#x27;计算属性名&#x27;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="解构"><a href="#解构" class="headerlink" title="解构"></a>解构</h1><h2 id="数组的解构"><a href="#数组的解构" class="headerlink" title="数组的解构"></a>数组的解构</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> names = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">//未解构,十分麻烦，需要一个一个地去赋值，提取出来。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> item1 = names[<span class="number">0</span>]</span><br><span class="line"><span class="keyword">var</span> item2 = names[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">var</span> item3 = names[<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(item1, item2, item3)</span><br><span class="line"></span><br><span class="line"><span class="comment">//ES6解构后：</span></span><br><span class="line"><span class="comment">//直接统一提取。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> [item1, item2, item3] = names</span><br><span class="line"><span class="built_in">console</span>.log(item1, item2, item3)</span><br><span class="line"></span><br><span class="line"><span class="comment">//解构后面的元素，注意逗号！</span></span><br><span class="line"><span class="keyword">var</span> [, itemb, itemc] = names</span><br><span class="line"><span class="built_in">console</span>.log(itemb, itemc)</span><br><span class="line"></span><br><span class="line"><span class="comment">//解构部分元素，剩余元素放到一个新数组中，此处使用到了省略，缺省。</span></span><br><span class="line"><span class="keyword">var</span> [itemq, ...newArry] = names</span><br><span class="line"><span class="built_in">console</span>.log(newArry)</span><br><span class="line"><span class="built_in">console</span>.log(itemq)</span><br><span class="line"></span><br><span class="line"><span class="comment">//解构的默认值</span></span><br><span class="line"><span class="keyword">var</span> [itemx, itemy, itemz, iteml = <span class="string">&#x27;value&#x27;</span>] = names</span><br><span class="line"><span class="built_in">console</span>.log(itemx, itemy, itemz, iteml)</span><br></pre></td></tr></table></figure>
+
+<h2 id="对象的解构"><a href="#对象的解构" class="headerlink" title="对象的解构"></a>对象的解构</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对象的解构</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Oliver&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">  <span class="attr">height</span>: <span class="number">1.76</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//注意括号类型。</span></span><br><span class="line"><span class="keyword">var</span> &#123; name, age, height &#125; = obj</span><br><span class="line"><span class="built_in">console</span>.log(name, age, height)</span><br><span class="line"></span><br><span class="line"><span class="comment">//内容顺序无限制</span></span><br><span class="line"><span class="keyword">var</span> &#123; height, age &#125; = obj</span><br><span class="line"><span class="built_in">console</span>.log(age, height)</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以对名称进行修改</span></span><br><span class="line"><span class="keyword">var</span> &#123; <span class="attr">age</span>: newAge &#125; = obj</span><br><span class="line"><span class="built_in">console</span>.log(newAge)</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以使用默认值</span></span><br><span class="line"><span class="keyword">var</span> &#123; <span class="attr">index</span>: newIndex = <span class="number">99</span> &#125; = obj</span><br><span class="line"><span class="built_in">console</span>.log(newIndex)</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽然内容很少，但是这些特性在开发中使用频率还是很高的，也可以大大提高开发中的编码效率！</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/06/Js-ES6%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8B%E5%A2%9E%E5%BC%BA-%E8%A7%A3%E6%9E%84/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/11/05/Js-ES6%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8Bclass/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -949,203 +1127,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/09/14/Js%E7%BA%AF%E5%87%BD%E6%95%B0%E5%8F%8A%E5%87%BD%E6%95%B0%E6%9F%AF%E9%87%8C%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/2.jpeg">
-      <meta itemprop="name" content="Oliverxuan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Oliver-xuan">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/14/Js%E7%BA%AF%E5%87%BD%E6%95%B0%E5%8F%8A%E5%87%BD%E6%95%B0%E6%9F%AF%E9%87%8C%E5%8C%96/" class="post-title-link" itemprop="url">Js纯函数及函数柯里化</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-14 13:04:05 / 修改时间：15:36:29" itemprop="dateCreated datePublished" datetime="2021-09-14T13:04:05+08:00">2021-09-14</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BA%95%E5%B1%82%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">底层逻辑</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在函数式编程中，有一个非常重要的概念：纯函数。</p>
-<p>那究竟什么是纯函数呢？</p>
-<h1 id="纯函数"><a href="#纯函数" class="headerlink" title="纯函数"></a>纯函数</h1><h2 id="纯函数的定义"><a href="#纯函数的定义" class="headerlink" title="纯函数的定义"></a>纯函数的定义</h2><ul>
-<li>维基百科：<ol>
-<li>此函数在<strong>相同的输入值</strong>时需<strong>产生相同的输出</strong>。</li>
-<li>函数的<strong>输出和输入值以外的其他隐藏信息或状态无关</strong>，也和<strong>I/O 设备产生的外部输出</strong>无关。</li>
-<li>该函数<strong>不能有语义上可观察的函数副作用</strong>，诸如<strong>“触发事件”</strong>，<strong>使输出设备输出，或更改输出值以外物件的内容</strong>等。</li>
-</ol>
-</li>
-</ul>
-<p>维基百科的解释很严谨，但是未免有些晦涩。</p>
-<ul>
-<li>我的理解：<ol>
-<li>一个函数，有确定的输入，一定会产生确定的输出。</li>
-<li>我们在执行函数的时候，不会对外界产生任何的副作用。</li>
-</ol>
-</li>
-</ul>
-<h2 id="副作用"><a href="#副作用" class="headerlink" title="副作用"></a>副作用</h2><p><strong><em>副作用：比如改变了函数外的变量，造成全局变量被篡改。</em></strong></p>
-<p>eg：slice 与 splice 的比较</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/14/Js%E7%BA%AF%E5%87%BD%E6%95%B0%E5%8F%8A%E5%87%BD%E6%95%B0%E6%9F%AF%E9%87%8C%E5%8C%96/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/09/12/Js%E4%B8%ADcall-apply-bind%E7%9A%84%E5%AE%9E%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/2.jpeg">
-      <meta itemprop="name" content="Oliverxuan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Oliver-xuan">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/12/Js%E4%B8%ADcall-apply-bind%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">Js中call,apply,bind的实现</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-12 16:42:43 / 修改时间：21:59:59" itemprop="dateCreated datePublished" datetime="2021-09-12T16:42:43+08:00">2021-09-12</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BA%95%E5%B1%82%E9%80%BB%E8%BE%91/" itemprop="url" rel="index"><span itemprop="name">底层逻辑</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在 Js 中，我们常常会用到 call，apply，bind。进行一些 this 操作。我们不禁对其产生了好奇。</p>
-<p>Js 中，这些方法是通过 C++实现的，那么我们尝试用 Js 来实现一下。</p>
-<h1 id="call"><a href="#call" class="headerlink" title="call"></a>call</h1><ul>
-<li><strong>将手写的 mycall 方法，绑定在函数原型上。</strong></li>
-</ul>
-<p>实现所有函数都可以通过 foo（）.mycall 的方式调用。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Function.prototype :函数原型</span></span><br><span class="line"><span class="built_in">Function</span>.prototype.mycall = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>拿到调用 mycall（）的对象。</strong></li>
-</ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不难发现，此处是一个隐式绑定，函数foo（）.mycall。我们可以通过this拿到目标函数</span></span><br><span class="line"><span class="keyword">var</span> fn = <span class="built_in">this</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>目前，我们完成了最基本的通过 mycall 执行函数体的方法。</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.mycall = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> fn = <span class="built_in">this</span></span><br><span class="line">  fn()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;foo函数被调用&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo.mycall() <span class="comment">//foo函数被调用</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/12/Js%E4%B8%ADcall-apply-bind%E7%9A%84%E5%AE%9E%E7%8E%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1217,7 +1198,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1266,7 +1247,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">87k</span>
+    <span title="站点总字数">93k</span>
 </div>
 <!-- 新增访客统计代码 -->
 
@@ -1284,7 +1265,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">29.2k</span> 字
+      博客全站共： <span class="post-count">31.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

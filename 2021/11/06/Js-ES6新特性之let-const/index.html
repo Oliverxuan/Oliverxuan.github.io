@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="fonts.useso.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"oliverxuan.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="var，let，const，都是 JavaScript 中定义变量&#x2F;衡量的关键字。总的来说，都是定义，为什么还分这三种呢？ 下面，我将从基础定义，作用域，应用场景来逐一解析。 let&#x2F;const 基本使用基础数据类型var 与 let 常用于定义变量，而 const 用于定义衡量（常量）。 也就是说一旦给 const foo 赋值后，foo 无法再进行值的改变。不仅对基础数据类型是如此，对象也是如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Js-ES6新特性之let&#x2F;const">
+<meta property="og:url" content="http://oliverxuan.github.io/2021/11/06/Js-ES6%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8Blet-const/index.html">
+<meta property="og:site_name" content="Oliver-xuan">
+<meta property="og:description" content="var，let，const，都是 JavaScript 中定义变量&#x2F;衡量的关键字。总的来说，都是定义，为什么还分这三种呢？ 下面，我将从基础定义，作用域，应用场景来逐一解析。 let&#x2F;const 基本使用基础数据类型var 与 let 常用于定义变量，而 const 用于定义衡量（常量）。 也就是说一旦给 const foo 赋值后，foo 无法再进行值的改变。不仅对基础数据类型是如此，对象也是如">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-06T08:59:25.000Z">
+<meta property="article:modified_time" content="2021-11-06T09:00:31.675Z">
+<meta property="article:author" content="Oliverxuan">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://oliverxuan.github.io/2021/11/06/Js-ES6%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8Blet-const/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Js-ES6新特性之let/const | Oliver-xuan</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Oliver-xuan</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录我的程序员生涯</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/11/06/Js-ES6%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8Blet-const/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/2.jpeg">
+      <meta itemprop="name" content="Oliverxuan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oliver-xuan">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Js-ES6新特性之let/const
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-06 16:59:25 / 修改时间：17:00:31" itemprop="dateCreated datePublished" datetime="2021-11-06T16:59:25+08:00">2021-11-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ES6/" itemprop="url" rel="index"><span itemprop="name">ES6</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>var，let，const，都是 JavaScript 中定义变量/衡量的关键字。总的来说，都是定义，为什么还分这三种呢？</p>
+<p>下面，我将从基础定义，作用域，应用场景来逐一解析。</p>
+<h1 id="let-const-基本使用"><a href="#let-const-基本使用" class="headerlink" title="let/const 基本使用"></a>let/const 基本使用</h1><h2 id="基础数据类型"><a href="#基础数据类型" class="headerlink" title="基础数据类型"></a>基础数据类型</h2><p>var 与 let 常用于定义变量，而 const 用于定义衡量（常量）。</p>
+<p>也就是说一旦给 const foo 赋值后，foo 无法再进行值的改变。不仅对基础数据类型是如此，对象也是如此。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = <span class="number">123</span></span><br><span class="line"><span class="built_in">console</span>.log(foo) <span class="comment">//123</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//TypeError: Assignment to constant variable.</span></span><br><span class="line">foo = <span class="number">999</span></span><br><span class="line"><span class="built_in">console</span>.log(foo)</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，我们尝试给 const 衡量进行第二次赋值操作的时候，报错：TypeError: Assignment to constant variable.</p>
+<h2 id="对象（引用类型）"><a href="#对象（引用类型）" class="headerlink" title="对象（引用类型）"></a>对象（引用类型）</h2><p>如果我们使用 const 来接收一个对象，我们还能对<strong>对象里的内容</strong>进行修改吗？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Oliver&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(obj.name)</span><br><span class="line"><span class="comment">//Oliver</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//对obj对象中的属性，进行修改。</span></span><br><span class="line">obj.name = <span class="string">&#x27;Yin&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(obj.name)</span><br><span class="line"><span class="comment">//Yin</span></span><br></pre></td></tr></table></figure>
+
+<p>事实证明是可以的。</p>
+<p>我们再来看下一个案例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Oliver&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">18</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(obj.name)</span><br><span class="line"></span><br><span class="line"><span class="comment">//将新对象重新赋值给obj</span></span><br><span class="line">obj = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;newObj&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">99</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//TypeError: Assignment to constant variable.</span></span><br></pre></td></tr></table></figure>
+
+<p>此处报错：TypeError: Assignment to constant variable.</p>
+<p>事实证明，我们不可以定义已经定义，赋值过的 const 常量进行修改。</p>
+<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>为什么我们可以修改对象里的属性，而不能为 obj 新赋值一个对象呢？</p>
+<h4 id="修改对象属性"><a href="#修改对象属性" class="headerlink" title="修改对象属性"></a>修改对象属性</h4><p>其实这里的 cosnt obj 它接收的是一个对象的内存地址。</p>
+<p>对象在内存中创建，const obj 保存了这个地址，该内存地址指向内存中这个对象。</p>
+<p>当我们修改内存中的属性的时候，我们是修改的该内存地址指向的对象的值。改变的是内存中对象的属性，而这个内存地址并没有发生改变。</p>
+<h4 id="尝试重新给-obj-赋值"><a href="#尝试重新给-obj-赋值" class="headerlink" title="尝试重新给 obj 赋值"></a>尝试重新给 obj 赋值</h4><p>此时，我们尝试给 obj 赋值一个新的对象。由于 const obj，obj 已经赋值过内存地址了。所以当第二次接受赋值的时候，会报错。TypeError: Assignment to constant variable.</p>
+<h2 id="不可重复定义"><a href="#不可重复定义" class="headerlink" title="不可重复定义"></a>不可重复定义</h2><p>通过 let/const 定义的变量名是不可以重复定义</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line"><span class="keyword">var</span> foo = <span class="string">&#x27;cba&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> foo = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line"><span class="comment">// SyntaxError: Identifier &#x27;foo&#x27; has already been declared</span></span><br><span class="line"><span class="keyword">let</span> foo = <span class="string">&#x27;cba&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(foo)</span><br></pre></td></tr></table></figure>
+
+<h1 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h1><p>作用域，可以把他看作是一个房间。是在运行时代码中的某些特定部分中变量，函数和对象的可访问性。</p>
+<h2 id="ES5-中的作用域"><a href="#ES5-中的作用域" class="headerlink" title="ES5 中的作用域"></a>ES5 中的作用域</h2><p>在 ES5 中只有两个对象会有作用域：</p>
+<ol>
+<li>全局作用域</li>
+<li>函数作用域</li>
+</ol>
+<p>在 ES5 中也没有块级作用域概念。</p>
+<h2 id="ES6-中的作用域"><a href="#ES6-中的作用域" class="headerlink" title="ES6 中的作用域"></a>ES6 中的作用域</h2><ol>
+<li>全局作用域</li>
+<li>函数作用域</li>
+<li>class 类作用域</li>
+<li>let/const 作用域</li>
+<li>块级作用域</li>
+<li>if-switch-for 块级作用域</li>
+</ol>
+<h2 id="作用域提升"><a href="#作用域提升" class="headerlink" title="作用域提升"></a>作用域提升</h2><p>我们可以先看一个简单的例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(foo) <span class="comment">//undefined</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> foo = <span class="string">&#x27;var&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们先进行打印 foo 变量的值，再创建。</p>
+<p>此时我们的 foo 已经被创建出来了，在全局中。但是还没有进行赋值操作，所以此处为 undefined。</p>
+<p>简单地来说：</p>
+<p><strong>作用域提升: 在声明变量的作用域中，如果这个变量可以在声明之前被访问，那么我们可以称之为作用域提升</strong></p>
+<h1 id="let-const-作用域"><a href="#let-const-作用域" class="headerlink" title="let/const 作用域"></a>let/const 作用域</h1><h2 id="let-const-没有作用域提升"><a href="#let-const-没有作用域提升" class="headerlink" title="let/const 没有作用域提升"></a>let/const 没有作用域提升</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(foo)</span><br><span class="line"><span class="keyword">let</span> foo = <span class="string">&#x27;let&#x27;</span></span><br><span class="line"><span class="comment">// (引用报错）ReferenceError: Cannot access &#x27;foo&#x27; before initialization</span></span><br></pre></td></tr></table></figure>
+
+<p>当我们尝试上面的操作的时候，并未出现我们预期的 undefined。而是直接报出 ReferenceError: Cannot access ‘foo’ before initialization 引用错误。</p>
+<p>这是因为 let/const 并没有作用域提升。</p>
+<p>我们可以肯定的是，此处的 let 虽然被创建出来了，但是我们是不可以访问的。所以不满足作用域提升的条件。</p>
+<p><strong>ECMA262:这些变量会被创建在包含他们的词法环境被实例化时，但是是不可以访问他们的，直到词法绑定被求值。</strong></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="keyword">var</span> bar = <span class="string">&#x27;bar&#x27;</span></span><br><span class="line">  <span class="keyword">let</span> foo = <span class="string">&#x27;Oliver&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(bar) <span class="comment">//bar</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(foo) <span class="comment">//ReferenceError: foo is not defined</span></span><br></pre></td></tr></table></figure>
+
+<p>由此我们可以看出，let 在块级作用域里被定义后，外界想访问时，会直接报错。</p>
+<p>而 var 没有作用域，所以块级作用域中也无效。外部可以访问到。</p>
+<h2 id="if-switch-for-块级代码"><a href="#if-switch-for-块级代码" class="headerlink" title="if-switch-for 块级代码"></a>if-switch-for 块级代码</h2><p>在 if，switch，for 中存在块级作用域。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//if语句的代码就是块级作用域</span></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> foo = <span class="string">&#x27;foo&#x27;</span></span><br><span class="line">  <span class="keyword">let</span> bar = <span class="string">&#x27;bar&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(foo)</span><br><span class="line"><span class="built_in">console</span>.log(bar)</span><br><span class="line"></span><br><span class="line"><span class="comment">//switch语句的代码也是块级作用域</span></span><br><span class="line"><span class="keyword">var</span> color = <span class="string">&#x27;red&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> (color) &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">&#x27;red&#x27;</span>:</span><br><span class="line">    <span class="keyword">var</span> foo = <span class="string">&#x27;foo&#x27;</span></span><br><span class="line">    <span class="keyword">let</span> bar = <span class="string">&#x27;bar&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(foo)</span><br><span class="line"><span class="built_in">console</span>.log(bar)</span><br><span class="line"></span><br><span class="line"><span class="comment">//for语句的代码也是块级作用域</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">  <span class="comment">// console.log(&quot;Hello World&quot; + i)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(i)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(i)</span><br></pre></td></tr></table></figure>
+
+<h1 id="作用域的应用场景"><a href="#作用域的应用场景" class="headerlink" title="作用域的应用场景"></a>作用域的应用场景</h1><p>当我们想实现一个监听点击事件的时候。我们会出现以下场景。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> btns = <span class="built_in">document</span>.getElementsByTagName(<span class="string">&#x27;button&#x27;</span>)</span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; btns.length; i++) &#123;</span><br><span class="line">     btns[i].onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="string">&quot;第&quot;</span> + i + <span class="string">&quot;个按钮被点击&quot;</span>)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(i)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>但是这里就会出现一个致命 bug，不管我们怎么点击，都是 log 最后一个按钮，这是为什么呢？</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//此时的i一直在++，btns的i已完成赋值，但是function中的i还未被定义，因为此时function还未执行。</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// i=0</span></span><br><span class="line">  btns[<span class="number">0</span>].onclick = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//function中的i未赋值</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;第&#x27;</span> + i + <span class="string">&#x27;个按钮被点击&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//i=1</span></span><br><span class="line">  btns[<span class="number">1</span>].onclick = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;第&#x27;</span> + i + <span class="string">&#x27;个按钮被点击&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//i=2</span></span><br><span class="line">  btns[<span class="number">2</span>].onclick = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;第&#x27;</span> + i + <span class="string">&#x27;个按钮被点击&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们结束循环后，就会创建如上程序，但是每个程序中的 function 还未被定义。当最终监听到执行的时候，function 寻找这个 i。由于 var i 有作用域提升的属性，且没有作用域的属性。此时的 i 存在于全局中，而 i 已经是最终的 length。所以就会导致此情况的产生。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>按照 ES6 之前的解决方法，我们此时需要一个立即执行函数。将此时的 i 立即传入到 function 中</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> btns = <span class="built_in">document</span>.getElementsByTagName(<span class="string">&#x27;button&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; btns.length; i++) &#123;</span><br><span class="line">  ;(<span class="function"><span class="keyword">function</span> (<span class="params">n</span>) </span>&#123;</span><br><span class="line">    btns[i].onclick = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;第&#x27;</span> + n + <span class="string">&#x27;个按钮被点击&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)(i)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(i)</span><br></pre></td></tr></table></figure>
+
+<p>由于 function 有自己的作用域，此时 i 传入后传化为 n，n 再进行相关操作。等后续时，每个 function 的作用域中都有自己的 n 值。所以不会出现错误。</p>
+<h2 id="ES6-let-解决方案"><a href="#ES6-let-解决方案" class="headerlink" title="ES6-let 解决方案"></a>ES6-let 解决方案</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; btns.length; i++) &#123;</span><br><span class="line">  btns[i].onclick = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;第&#x27;</span> + i + <span class="string">&#x27;个按钮被点击&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(i)</span><br></pre></td></tr></table></figure>
+
+<p>由于在 let 有作用域的性质，所以在 for 块级作用域中，每一个块中都有自己的 i。每个里面的 i 都不相同。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  i = <span class="number">0</span></span><br><span class="line">  btns[<span class="number">0</span>].onclick = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;第&#x27;</span> + n + <span class="string">&#x27;个按钮被点击&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">  i = <span class="number">1</span></span><br><span class="line">  btns[<span class="number">0</span>].onclick = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;第&#x27;</span> + n + <span class="string">&#x27;个按钮被点击&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">  i = <span class="number">2</span></span><br><span class="line">  btns[<span class="number">0</span>].onclick = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;第&#x27;</span> + n + <span class="string">&#x27;个按钮被点击&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="const？"><a href="#const？" class="headerlink" title="const？"></a>const？</h2><p>那如果我们将此处的 let 换成 const 的可以吗？</p>
+<p>答案是不可以的，因为每次都需要一次++的自加操作，由于 const 的值无法自加，所以只能用 let 不能用 const。</p>
+<h1 id="let-const-暂时性死区"><a href="#let-const-暂时性死区" class="headerlink" title="let/const 暂时性死区"></a>let/const 暂时性死区</h1><p><strong>暂时性死区：在一个代码中，使用 let，const 声明的变量，在声明之前，变量都是不可以访问的。</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="string">&#x27;foo&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(foo)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> foo = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//ReferenceError: Cannot access &#x27;foo&#x27; before initialization</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="var，let，const-使用"><a href="#var，let，const-使用" class="headerlink" title="var，let，const 使用"></a>var，let，const 使用</h1><p>考虑到程序的安全性，我们在开发中，尽可能地去使用·const，以保证，别人不可以随意更改我们的变量。如果发现一个值，需要更改，我们这时候再考虑使用 let。</p>
+<p>var 属于是历史的遗留问题，也会造成很多 bug 温床，所以在后续开发的过程中我们还是尽量使用 let，const。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/06/Js-ES6%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8B%E5%A2%9E%E5%BC%BA-%E8%A7%A3%E6%9E%84/" rel="prev" title="Js-ES6新特性之增强/解构">
+      <i class="fa fa-chevron-left"></i> Js-ES6新特性之增强/解构
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#let-const-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">let&#x2F;const 基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">基础数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%EF%BC%88%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">对象（引用类型）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-number">1.2.1.</span> <span class="nav-text">思考</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">修改对象属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95%E9%87%8D%E6%96%B0%E7%BB%99-obj-%E8%B5%8B%E5%80%BC"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">尝试重新给 obj 赋值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E5%AE%9A%E4%B9%89"><span class="nav-number">1.3.</span> <span class="nav-text">不可重复定义</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">2.</span> <span class="nav-text">作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ES5-%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">2.1.</span> <span class="nav-text">ES5 中的作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES6-%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">2.2.</span> <span class="nav-text">ES6 中的作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8F%90%E5%8D%87"><span class="nav-number">2.3.</span> <span class="nav-text">作用域提升</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#let-const-%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">3.</span> <span class="nav-text">let&#x2F;const 作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#let-const-%E6%B2%A1%E6%9C%89%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8F%90%E5%8D%87"><span class="nav-number">3.1.</span> <span class="nav-text">let&#x2F;const 没有作用域提升</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-number">3.2.</span> <span class="nav-text">Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if-switch-for-%E5%9D%97%E7%BA%A7%E4%BB%A3%E7%A0%81"><span class="nav-number">3.3.</span> <span class="nav-text">if-switch-for 块级代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">4.</span> <span class="nav-text">作用域的应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">4.1.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES6-let-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">4.3.</span> <span class="nav-text">ES6-let 解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#const%EF%BC%9F"><span class="nav-number">4.4.</span> <span class="nav-text">const？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#let-const-%E6%9A%82%E6%97%B6%E6%80%A7%E6%AD%BB%E5%8C%BA"><span class="nav-number">5.</span> <span class="nav-text">let&#x2F;const 暂时性死区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#var%EF%BC%8Clet%EF%BC%8Cconst-%E4%BD%BF%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">var，let，const 使用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Oliverxuan"
+      src="/images/2.jpeg">
+  <p class="site-author-name" itemprop="name">Oliverxuan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Oliverxuan</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">93k</span>
+</div>
+<!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">31.8k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
