@@ -184,6 +184,99 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/09/15/React-%E5%88%9D%E4%BD%93%E9%AA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/2.jpeg">
+      <meta itemprop="name" content="Oliverxuan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oliver-xuan">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/15/React-%E5%88%9D%E4%BD%93%E9%AA%8C/" class="post-title-link" itemprop="url">React 初体验</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-09-15 14:44:16 / 修改时间：15:08:18" itemprop="dateCreated datePublished" datetime="2021-09-15T14:44:16+08:00">2021-09-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0/" itemprop="url" rel="index"><span itemprop="name">技术实现</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.9k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="React"><a href="#React" class="headerlink" title="React"></a>React</h1><p>React 基本上是高级前端工程师的必备技能，相较于 Vue 也更加灵活。可以说是 Facebook 工程师们智慧的结晶。</p>
+<p>在现阶段，学习 React 可以提高自己对前端的理解，扩大及自己的技术广度。为以后开发中大型项目奠基。</p>
+<h1 id="初体验"><a href="#初体验" class="headerlink" title="初体验"></a>初体验</h1><h3 id="完成点击按钮修改文字的操作"><a href="#完成点击按钮修改文字的操作" class="headerlink" title="完成点击按钮修改文字的操作"></a>完成点击按钮修改文字的操作</h3><ul>
+<li>创建一个 html 文件 引入 React 相关 CDN 链接</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/react@16/umd/react.development.js&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">crossorigin</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span></span></span><br><span class="line"><span class="tag">      <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/react-dom@16/umd/react-dom.development.js&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">crossorigin</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/babel-standalone@6/babel.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>React 和 Vue 不一样，React 的理念更像是类纯函数。我们从 CDN 也可以看出分别引入了 React 核心文件，React-dom，Babel 转译。每个都各司其职。而 Vue 则是全部打包在一起直接引入。</strong></p>
+<p>成功引入相关依赖后，这样我们就可以开始我们的 React 开发了</p>
+<ul>
+<li>实现功能</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/09/15/React-%E5%88%9D%E4%BD%93%E9%AA%8C/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/09/14/Js%E7%BA%AF%E5%87%BD%E6%95%B0%E5%8F%8A%E5%87%BD%E6%95%B0%E6%9F%AF%E9%87%8C%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1056,97 +1149,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://oliverxuan.github.io/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/2.jpeg">
-      <meta itemprop="name" content="Oliverxuan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Oliver-xuan">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/" class="post-title-link" itemprop="url">mmjd项目的完成情况</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-08-25 01:24:58 / 修改时间：01:43:34" itemprop="dateCreated datePublished" datetime="2021-08-25T01:24:58+08:00">2021-08-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CodeLife/" itemprop="url" rel="index"><span itemprop="name">CodeLife</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>471</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="项目进度"><a href="#项目进度" class="headerlink" title="项目进度:"></a>项目进度:</h2><p>最近一直在做那个护肤品测评网站，可谓是从无到有，功能也都在慢慢实现。目前已经完成了 90% 剩余的就是 Debug 和样式</p>
-<h2 id="接口功能："><a href="#接口功能：" class="headerlink" title="接口功能："></a>接口功能：</h2><h3 id="不多说了，直接上图！"><a href="#不多说了，直接上图！" class="headerlink" title="不多说了，直接上图！"></a>不多说了，直接上图！</h3><ol>
-<li>后端接口：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/user.png" alt="接口功能图"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/end.png" alt="接口功能图"></li>
-</ol>
-<p>真的是完完整地做完了整个项目的后端接口。从中真的学会了很多！慢慢也熟悉了 Node.js + Koa 开发接口的开发逻辑。</p>
-<ol start="2">
-<li>Mysql：<br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql1.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql2.png" alt="mysql"><br><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/mysql3.png" alt="mysql"></li>
-</ol>
-<p>从中也重新回忆起了很多的 sql 语句（真的好久不用生疏了！）比如：left join ，json_object….</p>
-<h2 id="前端界面："><a href="#前端界面：" class="headerlink" title="前端界面："></a>前端界面：</h2><p><img src="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/font1.png" alt="font"><br>现在的前端界面真的奇丑无比，等着这两天我调好了我们再看！</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/08/25/mmjd%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%8C%E6%88%90%E6%83%85%E5%86%B5/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1218,7 +1220,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1267,7 +1269,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">93k</span>
+    <span title="站点总字数">102k</span>
 </div>
 <!-- 新增访客统计代码 -->
 
@@ -1285,7 +1287,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">31.8k</span> 字
+      博客全站共： <span class="post-count">34.9k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
